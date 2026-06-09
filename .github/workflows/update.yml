@@ -22,9 +22,9 @@ jobs:
 
       - name: Тянем данные из Яндекса
         env:
-          YANDEX_TOKEN: $ secrets.YANDEX_TOKEN 
+          YANDEX_TOKEN: ${{ secrets.YANDEX_TOKEN }}
           SITE: igear-shop.ru
-          METRIKA_COUNTER: $ secrets.METRIKA_COUNTER 
+          METRIKA_COUNTER: ${{ secrets.METRIKA_COUNTER }} 
         run: python fetch.py
 
       - name: Сохраняем свежий data.json

@@ -1,0 +1,78 @@
+{
+  "updated": "2026-06-09T09:49",
+  "site": "igear-shop.ru",
+  "sqi": 30,
+  "queries": [
+    {
+      "query": "igear",
+      "shows": 188.0,
+      "clicks": 114.0,
+      "ctr": 60.64,
+      "position": 1.2
+    },
+    {
+      "query": "тактические брюки",
+      "shows": 64.0,
+      "clicks": 3.0,
+      "ctr": 4.69,
+      "position": 10.3
+    },
+    {
+      "query": "российская тактическая одежда",
+      "shows": 58.0,
+      "clicks": 1.0,
+      "ctr": 1.72,
+      "position": 6.9
+    },
+    {
+      "query": "igear-shop.ru",
+      "shows": 50.0,
+      "clicks": 20.0,
+      "ctr": 40.0,
+      "position": 1.5
+    },
+    {
+      "query": "российский производитель туристической одежды",
+      "shows": 48.0,
+      "clicks": 0,
+      "ctr": 0.0,
+      "position": 4.3
+    },
+    {
+      "query": "производители тактической одежды",
+      "shows": 47.0,
+      "clicks": 0,
+      "ctr": 0.0,
+      "position": 8.1
+    },
+    {
+      "query": "igear официальный сайт",
+      "shows": 43.0,
+      "clicks": 33.0,
+      "ctr": 76.74,
+      "position": 1.2
+    },
+    {
+      "query": "китель тактический",
+      "shows": 40.0,
+      "clicks": 0,
+      "ctr": 0.0,
+      "position": 10.7
+    },
+    {
+      "query": "ranger green",
+      "shows": 37.0,
+      "clicks": 1.0,
+      "ctr": 2.7,
+      "position": 6.0
+    },
+    {
+      "query": "штаны тактические купить",
+      "shows": 35.0,
+      "clicks": 1.0,
+      "ctr": 2.86,
+      "position": 10.0
+    }
+  ],
+  "metrika": {}
+}

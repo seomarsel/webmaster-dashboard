@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T19:42",
+  "updated": "2026-06-09T20:13",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
@@ -1178,26 +1178,26 @@
   "health": {
     "problems": [
       {
-        "code": "DOCUMENTS_MISSING_DESCRIPTION",
-        "title": "Страницы без description",
-        "severity": "POSSIBLE_PROBLEM",
-        "severity_ru": "Возможная"
-      },
-      {
         "code": "DOCUMENTS_MISSING_TITLE",
         "title": "Страницы без title",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
       {
-        "code": "ERROR_IN_ROBOTS_TXT",
-        "title": "ERROR_IN_ROBOTS_TXT",
+        "code": "DOCUMENTS_MISSING_DESCRIPTION",
+        "title": "Страницы без description",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
       {
         "code": "DUPLICATE_CONTENT_ATTRS",
         "title": "DUPLICATE_CONTENT_ATTRS",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
+        "code": "ERROR_IN_ROBOTS_TXT",
+        "title": "ERROR_IN_ROBOTS_TXT",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       }

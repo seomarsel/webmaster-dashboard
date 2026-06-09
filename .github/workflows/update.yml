@@ -2,8 +2,8 @@ name: Обновление дашборда
 
 on:
   schedule:
-    - cron: "0 6 * * *"      # каждый день в 6:00 UTC (≈ 9:00 по Уфе)
-  workflow_dispatch:           # + запуск вручную и по кнопке
+    - cron: "0 6 * * *"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -24,7 +24,7 @@ jobs:
         env:
           YANDEX_TOKEN: $ secrets.YANDEX_TOKEN 
           SITE: igear-shop.ru
-          METRIKA_COUNTER: $34
+          METRIKA_COUNTER: $ secrets.METRIKA_COUNTER 
         run: python fetch.py
 
       - name: Сохраняем свежий data.json

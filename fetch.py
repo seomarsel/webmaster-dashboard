@@ -290,6 +290,58 @@ for s in (sitemaps_raw.get("sitemaps") or []):
         "last_access": s.get("last_access_date", ""),
     })
 
+# ============ ССЫЛОЧНЫЙ ПРОФИЛЬ ============
+def links_samples(path, limit=100):
+    raw = safe(lambda: get(f"{WM}/user/{user_id}/hosts/{host_id}/{path}", params={"limit": limit}), {})
+    print(f"🔗 {path} ключи: {list(raw.keys())}")
+    items = raw.get("links") or raw.get("samples") or []
+    if items:
+        print(f"🔗 {path} пример: {json.dumps(items[0], ensure_ascii=False)[:300]}")
+    out = []
+    for l in items[:20]:
+        if not isinstance(l, dict):
+            continue
+        out.append({
+            "source": l.get("source_url") or l.get("source") or l.get("url") or "",
+            "date": (l.get("discovery_date") or l.get("broken_date") or l.get("date") or "")[:10],
+        })
+    cnt = raw.get("count")
+    if cnt is None:
+        cnt = len(items)
+    return cnt, out
+
+links_hist_raw = safe(lambda: get(
+    f"{WM}/user/{user_id}/hosts/{host_id}/links/external/history/",
+    params={"indicator": "LINKS_TOTAL_COUNT"},
+), {})
+lh_ind = links_hist_raw.get("indicators", {}) or {}
+print(f"🔗 links/external/history индикаторы: {list(lh_ind.keys())}")
+links_history = []
+total_links = None
+if lh_ind:
+    series = lh_ind.get("LINKS_TOTAL_COUNT") or next(iter(lh_ind.values()), [])
+    for pt in series:
+        d = (pt.get("date") or "")[:10]
+        if d:
+            links_history.append({"date": d, "value": pt.get("value") or 0})
+    if links_history:
+        total_links = links_history[-1]["value"]
+
+total_samples, _ = links_samples("links/external/samples/")
+if total_links is None:
+    total_links = total_samples
+new_count, new_links = links_samples("links/external/new/samples/")
+broken_count, broken_links = links_samples("links/external/broken/samples/")
+
+link_profile = {
+    "total_count": total_links,
+    "history": links_history,
+    "new_count": new_count,
+    "new_links": new_links,
+    "broken_count": broken_count,
+    "broken_links": broken_links,
+}
+
 # ============ МЕТРИКА ============
 metrika = {}
 if COUNTER:
@@ -324,10 +376,11 @@ result = {
     "excluded_reasons": excluded_reasons,
     "health": {"problems": problems, "counts": counts},
     "sitemaps": sitemaps,
+    "link_profile": link_profile,
     "metrika": metrika,
 }
 
 with open("data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
-print(f"✅ Готово! Запросов: {len(all_q)}, Новых: {len(new_q)}, Потерянных: {len(lost_q)}, Возможностей: {len(opportunities)}")
+print(f"✅ Готово! Запросов: {len(all_q)}, Ссылок всего: {total_links}, Новых ссылок: {new_count}, Битых: {broken_count}")

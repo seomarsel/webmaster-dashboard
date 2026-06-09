@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T19:19",
+  "updated": "2026-06-09T19:42",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
@@ -1184,12 +1184,6 @@
         "severity_ru": "Возможная"
       },
       {
-        "code": "DUPLICATE_CONTENT_ATTRS",
-        "title": "DUPLICATE_CONTENT_ATTRS",
-        "severity": "POSSIBLE_PROBLEM",
-        "severity_ru": "Возможная"
-      },
-      {
         "code": "DOCUMENTS_MISSING_TITLE",
         "title": "Страницы без title",
         "severity": "POSSIBLE_PROBLEM",
@@ -1198,6 +1192,12 @@
       {
         "code": "ERROR_IN_ROBOTS_TXT",
         "title": "ERROR_IN_ROBOTS_TXT",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
+        "code": "DUPLICATE_CONTENT_ATTRS",
+        "title": "DUPLICATE_CONTENT_ATTRS",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       }
@@ -1362,637 +1362,728 @@
       "visits": 59,
       "users": 49,
       "pageviews": 304,
-      "bounceRate": 25.4
+      "bounceRate": 25.4,
+      "search_visits": 28
     },
     {
       "date": "2026-03-12",
       "visits": 59,
       "users": 53,
       "pageviews": 286,
-      "bounceRate": 22.0
+      "bounceRate": 22.0,
+      "search_visits": 28
     },
     {
       "date": "2026-03-13",
       "visits": 542,
       "users": 443,
       "pageviews": 668,
-      "bounceRate": 41.1
+      "bounceRate": 41.1,
+      "search_visits": 31
     },
     {
       "date": "2026-03-14",
       "visits": 69,
       "users": 60,
       "pageviews": 324,
-      "bounceRate": 21.7
+      "bounceRate": 21.7,
+      "search_visits": 27
     },
     {
       "date": "2026-03-15",
       "visits": 63,
       "users": 54,
       "pageviews": 345,
-      "bounceRate": 22.2
+      "bounceRate": 22.2,
+      "search_visits": 36
     },
     {
       "date": "2026-03-16",
       "visits": 151,
       "users": 135,
       "pageviews": 383,
-      "bounceRate": 22.5
+      "bounceRate": 22.5,
+      "search_visits": 33
     },
     {
       "date": "2026-03-17",
       "visits": 128,
       "users": 112,
       "pageviews": 448,
-      "bounceRate": 27.3
+      "bounceRate": 27.3,
+      "search_visits": 30
     },
     {
       "date": "2026-03-18",
       "visits": 85,
       "users": 82,
       "pageviews": 400,
-      "bounceRate": 25.9
+      "bounceRate": 25.9,
+      "search_visits": 41
     },
     {
       "date": "2026-03-19",
       "visits": 85,
       "users": 71,
       "pageviews": 361,
-      "bounceRate": 29.4
+      "bounceRate": 29.4,
+      "search_visits": 39
     },
     {
       "date": "2026-03-20",
       "visits": 106,
       "users": 96,
       "pageviews": 581,
-      "bounceRate": 30.2
+      "bounceRate": 30.2,
+      "search_visits": 40
     },
     {
       "date": "2026-03-21",
       "visits": 88,
       "users": 74,
       "pageviews": 341,
-      "bounceRate": 36.4
+      "bounceRate": 36.4,
+      "search_visits": 32
     },
     {
       "date": "2026-03-22",
       "visits": 84,
       "users": 79,
       "pageviews": 268,
-      "bounceRate": 32.1
+      "bounceRate": 32.1,
+      "search_visits": 37
     },
     {
       "date": "2026-03-23",
       "visits": 96,
       "users": 81,
       "pageviews": 307,
-      "bounceRate": 28.1
+      "bounceRate": 28.1,
+      "search_visits": 39
     },
     {
       "date": "2026-03-24",
       "visits": 80,
       "users": 74,
       "pageviews": 421,
-      "bounceRate": 26.2
+      "bounceRate": 26.2,
+      "search_visits": 31
     },
     {
       "date": "2026-03-25",
       "visits": 97,
       "users": 75,
       "pageviews": 466,
-      "bounceRate": 16.5
+      "bounceRate": 16.5,
+      "search_visits": 64
     },
     {
       "date": "2026-03-26",
       "visits": 76,
       "users": 57,
       "pageviews": 325,
-      "bounceRate": 21.1
+      "bounceRate": 21.1,
+      "search_visits": 45
     },
     {
       "date": "2026-03-27",
       "visits": 55,
       "users": 46,
       "pageviews": 231,
-      "bounceRate": 25.5
+      "bounceRate": 25.5,
+      "search_visits": 34
     },
     {
       "date": "2026-03-28",
       "visits": 56,
       "users": 50,
       "pageviews": 269,
-      "bounceRate": 26.8
+      "bounceRate": 26.8,
+      "search_visits": 36
     },
     {
       "date": "2026-03-29",
       "visits": 70,
       "users": 56,
       "pageviews": 327,
-      "bounceRate": 25.7
+      "bounceRate": 25.7,
+      "search_visits": 33
     },
     {
       "date": "2026-03-30",
       "visits": 79,
       "users": 69,
       "pageviews": 306,
-      "bounceRate": 29.1
+      "bounceRate": 29.1,
+      "search_visits": 38
     },
     {
       "date": "2026-03-31",
       "visits": 72,
       "users": 64,
       "pageviews": 314,
-      "bounceRate": 33.3
+      "bounceRate": 33.3,
+      "search_visits": 36
     },
     {
       "date": "2026-04-01",
       "visits": 73,
       "users": 61,
       "pageviews": 327,
-      "bounceRate": 28.8
+      "bounceRate": 28.8,
+      "search_visits": 48
     },
     {
       "date": "2026-04-02",
       "visits": 74,
       "users": 54,
       "pageviews": 317,
-      "bounceRate": 27.0
+      "bounceRate": 27.0,
+      "search_visits": 43
     },
     {
       "date": "2026-04-03",
       "visits": 54,
       "users": 48,
       "pageviews": 239,
-      "bounceRate": 31.5
+      "bounceRate": 31.5,
+      "search_visits": 29
     },
     {
       "date": "2026-04-04",
       "visits": 55,
       "users": 46,
       "pageviews": 239,
-      "bounceRate": 18.2
+      "bounceRate": 18.2,
+      "search_visits": 34
     },
     {
       "date": "2026-04-05",
       "visits": 54,
       "users": 48,
       "pageviews": 214,
-      "bounceRate": 29.6
+      "bounceRate": 29.6,
+      "search_visits": 39
     },
     {
       "date": "2026-04-06",
       "visits": 54,
       "users": 44,
       "pageviews": 229,
-      "bounceRate": 29.6
+      "bounceRate": 29.6,
+      "search_visits": 29
     },
     {
       "date": "2026-04-07",
       "visits": 58,
       "users": 50,
       "pageviews": 314,
-      "bounceRate": 25.9
+      "bounceRate": 25.9,
+      "search_visits": 36
     },
     {
       "date": "2026-04-08",
       "visits": 43,
       "users": 36,
       "pageviews": 168,
-      "bounceRate": 23.3
+      "bounceRate": 23.3,
+      "search_visits": 29
     },
     {
       "date": "2026-04-09",
       "visits": 47,
       "users": 38,
       "pageviews": 229,
-      "bounceRate": 23.4
+      "bounceRate": 23.4,
+      "search_visits": 31
     },
     {
       "date": "2026-04-10",
       "visits": 64,
       "users": 58,
       "pageviews": 363,
-      "bounceRate": 21.9
+      "bounceRate": 21.9,
+      "search_visits": 47
     },
     {
       "date": "2026-04-11",
       "visits": 54,
       "users": 50,
       "pageviews": 303,
-      "bounceRate": 29.6
+      "bounceRate": 29.6,
+      "search_visits": 34
     },
     {
       "date": "2026-04-12",
       "visits": 65,
       "users": 53,
       "pageviews": 266,
-      "bounceRate": 24.6
+      "bounceRate": 24.6,
+      "search_visits": 36
     },
     {
       "date": "2026-04-13",
       "visits": 68,
       "users": 54,
       "pageviews": 370,
-      "bounceRate": 17.6
+      "bounceRate": 17.6,
+      "search_visits": 44
     },
     {
       "date": "2026-04-14",
       "visits": 47,
       "users": 41,
       "pageviews": 277,
-      "bounceRate": 21.3
+      "bounceRate": 21.3,
+      "search_visits": 33
     },
     {
       "date": "2026-04-15",
       "visits": 58,
       "users": 46,
       "pageviews": 323,
-      "bounceRate": 17.2
+      "bounceRate": 17.2,
+      "search_visits": 40
     },
     {
       "date": "2026-04-16",
       "visits": 71,
       "users": 65,
       "pageviews": 447,
-      "bounceRate": 28.2
+      "bounceRate": 28.2,
+      "search_visits": 31
     },
     {
       "date": "2026-04-17",
       "visits": 58,
       "users": 45,
       "pageviews": 286,
-      "bounceRate": 24.1
+      "bounceRate": 24.1,
+      "search_visits": 39
     },
     {
       "date": "2026-04-18",
       "visits": 44,
       "users": 35,
       "pageviews": 177,
-      "bounceRate": 20.5
+      "bounceRate": 20.5,
+      "search_visits": 23
     },
     {
       "date": "2026-04-19",
       "visits": 45,
       "users": 41,
       "pageviews": 181,
-      "bounceRate": 13.3
+      "bounceRate": 13.3,
+      "search_visits": 26
     },
     {
       "date": "2026-04-20",
       "visits": 51,
       "users": 45,
       "pageviews": 219,
-      "bounceRate": 17.6
+      "bounceRate": 17.6,
+      "search_visits": 32
     },
     {
       "date": "2026-04-21",
       "visits": 54,
       "users": 52,
       "pageviews": 355,
-      "bounceRate": 20.4
+      "bounceRate": 20.4,
+      "search_visits": 34
     },
     {
       "date": "2026-04-22",
       "visits": 49,
       "users": 42,
       "pageviews": 197,
-      "bounceRate": 28.6
+      "bounceRate": 28.6,
+      "search_visits": 23
     },
     {
       "date": "2026-04-23",
       "visits": 54,
       "users": 48,
       "pageviews": 277,
-      "bounceRate": 13.0
+      "bounceRate": 13.0,
+      "search_visits": 29
     },
     {
       "date": "2026-04-24",
       "visits": 30,
       "users": 29,
       "pageviews": 136,
-      "bounceRate": 16.7
+      "bounceRate": 16.7,
+      "search_visits": 20
     },
     {
       "date": "2026-04-25",
       "visits": 36,
       "users": 29,
       "pageviews": 171,
-      "bounceRate": 19.4
+      "bounceRate": 19.4,
+      "search_visits": 27
     },
     {
       "date": "2026-04-26",
       "visits": 39,
       "users": 38,
       "pageviews": 198,
-      "bounceRate": 25.6
+      "bounceRate": 25.6,
+      "search_visits": 32
     },
     {
       "date": "2026-04-27",
       "visits": 68,
       "users": 47,
       "pageviews": 366,
-      "bounceRate": 16.2
+      "bounceRate": 16.2,
+      "search_visits": 52
     },
     {
       "date": "2026-04-28",
       "visits": 64,
       "users": 51,
       "pageviews": 379,
-      "bounceRate": 18.8
+      "bounceRate": 18.8,
+      "search_visits": 48
     },
     {
       "date": "2026-04-29",
       "visits": 63,
       "users": 47,
       "pageviews": 315,
-      "bounceRate": 23.8
+      "bounceRate": 23.8,
+      "search_visits": 38
     },
     {
       "date": "2026-04-30",
       "visits": 53,
       "users": 43,
       "pageviews": 291,
-      "bounceRate": 18.9
+      "bounceRate": 18.9,
+      "search_visits": 34
     },
     {
       "date": "2026-05-01",
       "visits": 52,
       "users": 44,
       "pageviews": 196,
-      "bounceRate": 40.4
+      "bounceRate": 40.4,
+      "search_visits": 26
     },
     {
       "date": "2026-05-02",
       "visits": 50,
       "users": 39,
       "pageviews": 215,
-      "bounceRate": 26.0
+      "bounceRate": 26.0,
+      "search_visits": 33
     },
     {
       "date": "2026-05-03",
       "visits": 39,
       "users": 31,
       "pageviews": 192,
-      "bounceRate": 20.5
+      "bounceRate": 20.5,
+      "search_visits": 19
     },
     {
       "date": "2026-05-04",
       "visits": 71,
       "users": 57,
       "pageviews": 300,
-      "bounceRate": 26.8
+      "bounceRate": 26.8,
+      "search_visits": 41
     },
     {
       "date": "2026-05-05",
       "visits": 66,
       "users": 52,
       "pageviews": 328,
-      "bounceRate": 27.3
+      "bounceRate": 27.3,
+      "search_visits": 42
     },
     {
       "date": "2026-05-06",
       "visits": 60,
       "users": 36,
       "pageviews": 272,
-      "bounceRate": 25.0
+      "bounceRate": 25.0,
+      "search_visits": 35
     },
     {
       "date": "2026-05-07",
       "visits": 51,
       "users": 40,
       "pageviews": 209,
-      "bounceRate": 21.6
+      "bounceRate": 21.6,
+      "search_visits": 30
     },
     {
       "date": "2026-05-08",
       "visits": 50,
       "users": 35,
       "pageviews": 288,
-      "bounceRate": 12.0
+      "bounceRate": 12.0,
+      "search_visits": 39
     },
     {
       "date": "2026-05-09",
       "visits": 42,
       "users": 37,
       "pageviews": 160,
-      "bounceRate": 14.3
+      "bounceRate": 14.3,
+      "search_visits": 29
     },
     {
       "date": "2026-05-10",
       "visits": 40,
       "users": 34,
       "pageviews": 198,
-      "bounceRate": 27.5
+      "bounceRate": 27.5,
+      "search_visits": 28
     },
     {
       "date": "2026-05-11",
       "visits": 50,
       "users": 42,
       "pageviews": 277,
-      "bounceRate": 22.0
+      "bounceRate": 22.0,
+      "search_visits": 34
     },
     {
       "date": "2026-05-12",
       "visits": 88,
       "users": 65,
       "pageviews": 539,
-      "bounceRate": 28.4
+      "bounceRate": 28.4,
+      "search_visits": 41
     },
     {
       "date": "2026-05-13",
       "visits": 50,
       "users": 43,
       "pageviews": 237,
-      "bounceRate": 28.0
+      "bounceRate": 28.0,
+      "search_visits": 28
     },
     {
       "date": "2026-05-14",
       "visits": 47,
       "users": 39,
       "pageviews": 242,
-      "bounceRate": 23.4
+      "bounceRate": 23.4,
+      "search_visits": 33
     },
     {
       "date": "2026-05-15",
       "visits": 49,
       "users": 43,
       "pageviews": 226,
-      "bounceRate": 24.5
+      "bounceRate": 24.5,
+      "search_visits": 28
     },
     {
       "date": "2026-05-16",
       "visits": 56,
       "users": 47,
       "pageviews": 273,
-      "bounceRate": 21.4
+      "bounceRate": 21.4,
+      "search_visits": 41
     },
     {
       "date": "2026-05-17",
       "visits": 73,
       "users": 63,
       "pageviews": 254,
-      "bounceRate": 20.5
+      "bounceRate": 20.5,
+      "search_visits": 31
     },
     {
       "date": "2026-05-18",
       "visits": 47,
       "users": 39,
       "pageviews": 183,
-      "bounceRate": 25.5
+      "bounceRate": 25.5,
+      "search_visits": 32
     },
     {
       "date": "2026-05-19",
       "visits": 39,
       "users": 32,
       "pageviews": 236,
-      "bounceRate": 17.9
+      "bounceRate": 17.9,
+      "search_visits": 21
     },
     {
       "date": "2026-05-20",
       "visits": 41,
       "users": 35,
       "pageviews": 149,
-      "bounceRate": 29.3
+      "bounceRate": 29.3,
+      "search_visits": 26
     },
     {
       "date": "2026-05-21",
       "visits": 35,
       "users": 32,
       "pageviews": 200,
-      "bounceRate": 17.1
+      "bounceRate": 17.1,
+      "search_visits": 21
     },
     {
       "date": "2026-05-22",
       "visits": 30,
       "users": 28,
       "pageviews": 161,
-      "bounceRate": 16.7
+      "bounceRate": 16.7,
+      "search_visits": 24
     },
     {
       "date": "2026-05-23",
       "visits": 19,
       "users": 16,
       "pageviews": 117,
-      "bounceRate": 21.1
+      "bounceRate": 21.1,
+      "search_visits": 16
     },
     {
       "date": "2026-05-24",
       "visits": 28,
       "users": 26,
       "pageviews": 140,
-      "bounceRate": 28.6
+      "bounceRate": 28.6,
+      "search_visits": 20
     },
     {
       "date": "2026-05-25",
       "visits": 43,
       "users": 36,
       "pageviews": 187,
-      "bounceRate": 18.6
+      "bounceRate": 18.6,
+      "search_visits": 32
     },
     {
       "date": "2026-05-26",
       "visits": 48,
       "users": 45,
       "pageviews": 165,
-      "bounceRate": 27.1
+      "bounceRate": 27.1,
+      "search_visits": 37
     },
     {
       "date": "2026-05-27",
       "visits": 42,
       "users": 39,
       "pageviews": 214,
-      "bounceRate": 11.9
+      "bounceRate": 11.9,
+      "search_visits": 35
     },
     {
       "date": "2026-05-28",
       "visits": 38,
       "users": 31,
       "pageviews": 230,
-      "bounceRate": 21.1
+      "bounceRate": 21.1,
+      "search_visits": 23
     },
     {
       "date": "2026-05-29",
       "visits": 40,
       "users": 35,
       "pageviews": 179,
-      "bounceRate": 12.5
+      "bounceRate": 12.5,
+      "search_visits": 30
     },
     {
       "date": "2026-05-30",
       "visits": 55,
       "users": 47,
       "pageviews": 278,
-      "bounceRate": 20.0
+      "bounceRate": 20.0,
+      "search_visits": 37
     },
     {
       "date": "2026-05-31",
       "visits": 46,
       "users": 42,
       "pageviews": 230,
-      "bounceRate": 23.9
+      "bounceRate": 23.9,
+      "search_visits": 32
     },
     {
       "date": "2026-06-01",
       "visits": 65,
       "users": 51,
       "pageviews": 300,
-      "bounceRate": 12.3
+      "bounceRate": 12.3,
+      "search_visits": 48
     },
     {
       "date": "2026-06-02",
       "visits": 53,
       "users": 45,
       "pageviews": 282,
-      "bounceRate": 34.0
+      "bounceRate": 34.0,
+      "search_visits": 38
     },
     {
       "date": "2026-06-03",
       "visits": 44,
       "users": 35,
       "pageviews": 119,
-      "bounceRate": 36.4
+      "bounceRate": 36.4,
+      "search_visits": 29
     },
     {
       "date": "2026-06-04",
       "visits": 52,
       "users": 46,
       "pageviews": 301,
-      "bounceRate": 28.8
+      "bounceRate": 28.8,
+      "search_visits": 35
     },
     {
       "date": "2026-06-05",
       "visits": 64,
       "users": 59,
       "pageviews": 200,
-      "bounceRate": 34.4
+      "bounceRate": 34.4,
+      "search_visits": 31
     },
     {
       "date": "2026-06-06",
       "visits": 48,
       "users": 43,
       "pageviews": 280,
-      "bounceRate": 18.8
+      "bounceRate": 18.8,
+      "search_visits": 37
     },
     {
       "date": "2026-06-07",
       "visits": 41,
       "users": 30,
       "pageviews": 273,
-      "bounceRate": 26.8
+      "bounceRate": 26.8,
+      "search_visits": 31
     },
     {
       "date": "2026-06-08",
       "visits": 41,
       "users": 34,
       "pageviews": 166,
-      "bounceRate": 29.3
+      "bounceRate": 29.3,
+      "search_visits": 31
     },
     {
       "date": "2026-06-09",
       "visits": 46,
       "users": 35,
       "pageviews": 127,
-      "bounceRate": 28.3
+      "bounceRate": 28.3,
+      "search_visits": 24
     }
   ]
 }

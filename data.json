@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T18:28",
+  "updated": "2026-06-09T18:59",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
@@ -1350,5 +1350,10 @@
     "broken_count": 0,
     "broken_links": []
   },
-  "metrika": {}
+  "metrika": {
+    "visits": 1458,
+    "users": 926,
+    "pageviews": 6963,
+    "bounceRate": 24.0
+  }
 }

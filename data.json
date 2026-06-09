@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T10:16",
+  "updated": "2026-06-09T10:30",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
@@ -74,17 +74,468 @@
       "position": 10.0
     }
   ],
+  "history": [
+    {
+      "date": "2026-03-11",
+      "shows": 75.0,
+      "clicks": 17.0
+    },
+    {
+      "date": "2026-03-12",
+      "shows": 51.0,
+      "clicks": 18.0
+    },
+    {
+      "date": "2026-03-13",
+      "shows": 52.0,
+      "clicks": 12.0
+    },
+    {
+      "date": "2026-03-14",
+      "shows": 59.0,
+      "clicks": 13.0
+    },
+    {
+      "date": "2026-03-15",
+      "shows": 80.0,
+      "clicks": 19.0
+    },
+    {
+      "date": "2026-03-16",
+      "shows": 77.0,
+      "clicks": 26.0
+    },
+    {
+      "date": "2026-03-17",
+      "shows": 61.0,
+      "clicks": 13.0
+    },
+    {
+      "date": "2026-03-18",
+      "shows": 67.0,
+      "clicks": 25.0
+    },
+    {
+      "date": "2026-03-19",
+      "shows": 96.0,
+      "clicks": 22.0
+    },
+    {
+      "date": "2026-03-20",
+      "shows": 93.0,
+      "clicks": 19.0
+    },
+    {
+      "date": "2026-03-21",
+      "shows": 102.0,
+      "clicks": 18.0
+    },
+    {
+      "date": "2026-03-22",
+      "shows": 75.0,
+      "clicks": 21.0
+    },
+    {
+      "date": "2026-03-23",
+      "shows": 51.0,
+      "clicks": 9.0
+    },
+    {
+      "date": "2026-03-24",
+      "shows": 72.0,
+      "clicks": 17.0
+    },
+    {
+      "date": "2026-03-25",
+      "shows": 121.0,
+      "clicks": 30.0
+    },
+    {
+      "date": "2026-03-26",
+      "shows": 68.0,
+      "clicks": 10.0
+    },
+    {
+      "date": "2026-03-27",
+      "shows": 86.0,
+      "clicks": 19.0
+    },
+    {
+      "date": "2026-03-28",
+      "shows": 69.0,
+      "clicks": 13.0
+    },
+    {
+      "date": "2026-03-29",
+      "shows": 70.0,
+      "clicks": 26.0
+    },
+    {
+      "date": "2026-03-30",
+      "shows": 94.0,
+      "clicks": 18.0
+    },
+    {
+      "date": "2026-03-31",
+      "shows": 87.0,
+      "clicks": 25.0
+    },
+    {
+      "date": "2026-04-01",
+      "shows": 85.0,
+      "clicks": 17.0
+    },
+    {
+      "date": "2026-04-02",
+      "shows": 74.0,
+      "clicks": 11.0
+    },
+    {
+      "date": "2026-04-03",
+      "shows": 53.0,
+      "clicks": 14.0
+    },
+    {
+      "date": "2026-04-04",
+      "shows": 70.0,
+      "clicks": 12.0
+    },
+    {
+      "date": "2026-04-05",
+      "shows": 66.0,
+      "clicks": 13.0
+    },
+    {
+      "date": "2026-04-06",
+      "shows": 67.0,
+      "clicks": 15.0
+    },
+    {
+      "date": "2026-04-07",
+      "shows": 96.0,
+      "clicks": 18.0
+    },
+    {
+      "date": "2026-04-08",
+      "shows": 73.0,
+      "clicks": 13.0
+    },
+    {
+      "date": "2026-04-09",
+      "shows": 69.0,
+      "clicks": 10.0
+    },
+    {
+      "date": "2026-04-10",
+      "shows": 111.0,
+      "clicks": 18.0
+    },
+    {
+      "date": "2026-04-11",
+      "shows": 84.0,
+      "clicks": 11.0
+    },
+    {
+      "date": "2026-04-12",
+      "shows": 68.0,
+      "clicks": 12.0
+    },
+    {
+      "date": "2026-04-13",
+      "shows": 87.0,
+      "clicks": 22.0
+    },
+    {
+      "date": "2026-04-14",
+      "shows": 81.0,
+      "clicks": 15.0
+    },
+    {
+      "date": "2026-04-15",
+      "shows": 83.0,
+      "clicks": 17.0
+    },
+    {
+      "date": "2026-04-16",
+      "shows": 78.0,
+      "clicks": 23.0
+    },
+    {
+      "date": "2026-04-17",
+      "shows": 77.0,
+      "clicks": 15.0
+    },
+    {
+      "date": "2026-04-18",
+      "shows": 90.0,
+      "clicks": 12.0
+    },
+    {
+      "date": "2026-04-19",
+      "shows": 97.0,
+      "clicks": 21.0
+    },
+    {
+      "date": "2026-04-20",
+      "shows": 98.0,
+      "clicks": 14.0
+    },
+    {
+      "date": "2026-04-21",
+      "shows": 85.0,
+      "clicks": 17.0
+    },
+    {
+      "date": "2026-04-22",
+      "shows": 78.0,
+      "clicks": 9.0
+    },
+    {
+      "date": "2026-04-23",
+      "shows": 65.0,
+      "clicks": 17.0
+    },
+    {
+      "date": "2026-04-24",
+      "shows": 75.0,
+      "clicks": 13.0
+    },
+    {
+      "date": "2026-04-25",
+      "shows": 61.0,
+      "clicks": 18.0
+    },
+    {
+      "date": "2026-04-26",
+      "shows": 65.0,
+      "clicks": 11.0
+    },
+    {
+      "date": "2026-04-27",
+      "shows": 87.0,
+      "clicks": 16.0
+    },
+    {
+      "date": "2026-04-28",
+      "shows": 74.0,
+      "clicks": 15.0
+    },
+    {
+      "date": "2026-04-29",
+      "shows": 64.0,
+      "clicks": 20.0
+    },
+    {
+      "date": "2026-04-30",
+      "shows": 75.0,
+      "clicks": 25.0
+    },
+    {
+      "date": "2026-05-01",
+      "shows": 38.0,
+      "clicks": 9.0
+    },
+    {
+      "date": "2026-05-02",
+      "shows": 55.0,
+      "clicks": 15.0
+    },
+    {
+      "date": "2026-05-03",
+      "shows": 49.0,
+      "clicks": 8.0
+    },
+    {
+      "date": "2026-05-04",
+      "shows": 81.0,
+      "clicks": 19.0
+    },
+    {
+      "date": "2026-05-05",
+      "shows": 75.0,
+      "clicks": 14.0
+    },
+    {
+      "date": "2026-05-06",
+      "shows": 79.0,
+      "clicks": 15.0
+    },
+    {
+      "date": "2026-05-07",
+      "shows": 140.0,
+      "clicks": 16.0
+    },
+    {
+      "date": "2026-05-08",
+      "shows": 136.0,
+      "clicks": 11.0
+    },
+    {
+      "date": "2026-05-09",
+      "shows": 97.0,
+      "clicks": 15.0
+    },
+    {
+      "date": "2026-05-10",
+      "shows": 107.0,
+      "clicks": 9.0
+    },
+    {
+      "date": "2026-05-11",
+      "shows": 138.0,
+      "clicks": 14.0
+    },
+    {
+      "date": "2026-05-12",
+      "shows": 135.0,
+      "clicks": 21.0
+    },
+    {
+      "date": "2026-05-13",
+      "shows": 122.0,
+      "clicks": 10.0
+    },
+    {
+      "date": "2026-05-14",
+      "shows": 139.0,
+      "clicks": 22.0
+    },
+    {
+      "date": "2026-05-15",
+      "shows": 89.0,
+      "clicks": 8.0
+    },
+    {
+      "date": "2026-05-16",
+      "shows": 115.0,
+      "clicks": 15.0
+    },
+    {
+      "date": "2026-05-17",
+      "shows": 119.0,
+      "clicks": 27.0
+    },
+    {
+      "date": "2026-05-18",
+      "shows": 129.0,
+      "clicks": 13.0
+    },
+    {
+      "date": "2026-05-19",
+      "shows": 87.0,
+      "clicks": 12.0
+    },
+    {
+      "date": "2026-05-20",
+      "shows": 78.0,
+      "clicks": 15.0
+    },
+    {
+      "date": "2026-05-21",
+      "shows": 90.0,
+      "clicks": 19.0
+    },
+    {
+      "date": "2026-05-22",
+      "shows": 92.0,
+      "clicks": 13.0
+    },
+    {
+      "date": "2026-05-23",
+      "shows": 103.0,
+      "clicks": 8.0
+    },
+    {
+      "date": "2026-05-24",
+      "shows": 92.0,
+      "clicks": 11.0
+    },
+    {
+      "date": "2026-05-25",
+      "shows": 128.0,
+      "clicks": 19.0
+    },
+    {
+      "date": "2026-05-26",
+      "shows": 123.0,
+      "clicks": 17.0
+    },
+    {
+      "date": "2026-05-27",
+      "shows": 122.0,
+      "clicks": 17.0
+    },
+    {
+      "date": "2026-05-28",
+      "shows": 124.0,
+      "clicks": 15.0
+    },
+    {
+      "date": "2026-05-29",
+      "shows": 120.0,
+      "clicks": 14.0
+    },
+    {
+      "date": "2026-05-30",
+      "shows": 183.0,
+      "clicks": 21.0
+    },
+    {
+      "date": "2026-05-31",
+      "shows": 234.0,
+      "clicks": 15.0
+    },
+    {
+      "date": "2026-06-01",
+      "shows": 261.0,
+      "clicks": 37.0
+    },
+    {
+      "date": "2026-06-02",
+      "shows": 241.0,
+      "clicks": 22.0
+    },
+    {
+      "date": "2026-06-03",
+      "shows": 204.0,
+      "clicks": 16.0
+    },
+    {
+      "date": "2026-06-04",
+      "shows": 236.0,
+      "clicks": 20.0
+    },
+    {
+      "date": "2026-06-05",
+      "shows": 216.0,
+      "clicks": 18.0
+    },
+    {
+      "date": "2026-06-06",
+      "shows": 183.0,
+      "clicks": 19.0
+    },
+    {
+      "date": "2026-06-07",
+      "shows": 183.0,
+      "clicks": 14.0
+    },
+    {
+      "date": "2026-06-08",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-06-09",
+      "shows": 0,
+      "clicks": 0
+    }
+  ],
   "health": {
     "problems": [
       {
-        "code": "DUPLICATE_CONTENT_ATTRS",
-        "title": "DUPLICATE_CONTENT_ATTRS",
-        "severity": "POSSIBLE_PROBLEM",
-        "severity_ru": "Возможная"
-      },
-      {
-        "code": "DOCUMENTS_MISSING_TITLE",
-        "title": "Страницы без title",
+        "code": "ERROR_IN_ROBOTS_TXT",
+        "title": "ERROR_IN_ROBOTS_TXT",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
@@ -95,8 +546,14 @@
         "severity_ru": "Возможная"
       },
       {
-        "code": "ERROR_IN_ROBOTS_TXT",
-        "title": "ERROR_IN_ROBOTS_TXT",
+        "code": "DOCUMENTS_MISSING_TITLE",
+        "title": "Страницы без title",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
+        "code": "DUPLICATE_CONTENT_ATTRS",
+        "title": "DUPLICATE_CONTENT_ATTRS",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       }

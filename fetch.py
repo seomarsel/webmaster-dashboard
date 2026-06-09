@@ -8,8 +8,6 @@ SITE = os.environ.get("SITE", "igear-shop.ru")
 COUNTER = os.environ.get("METRIKA_COUNTER", "")
 
 HEADERS = {"Authorization": f"OAuth {TOKEN}"}
-
-# 🔍 Диагностика: проверим, что токен вообще подставился (сам токен не раскрываем)
 print(f"🔑 Длина токена: {len(TOKEN)} символов, начало: {TOKEN[:4]}...")
 
 def get(url, params=None):
@@ -24,14 +22,13 @@ def safe(fn, default):
     try:
         return fn()
     except Exception as e:
-        print(f"⚠️ Ошибка: {e}")
+        print(f"⚠️ Пропускаю (ошибка): {e}")
         return default
 
 today = datetime.date.today()
 date_from = (today - datetime.timedelta(days=30)).isoformat()
 date_to = today.isoformat()
 
-# ======================= ЯНДЕКС.ВЕБМАСТЕР =======================
 WM = "https://api.webmaster.yandex.net/v4"
 
 user_id = get(f"{WM}/user")["user_id"]
@@ -45,6 +42,7 @@ host_id = host["host_id"]
 
 summary = safe(lambda: get(f"{WM}/user/{user_id}/hosts/{host_id}/summary"), {})
 
+# ============ ЗАПРОСЫ ============
 queries_raw = safe(lambda: get(
     f"{WM}/user/{user_id}/hosts/{host_id}/search-queries/popular/",
     params={
@@ -69,7 +67,74 @@ for q in queries_raw.get("queries", []):
         "position": round(ind.get("AVG_SHOW_POSITION") or 0, 1),
     })
 
-# ======================= ЯНДЕКС.МЕТРИКА =======================
+# ============ ЗДОРОВЬЕ САЙТА (диагностика) ============
+SEVERITY_RU = {
+    "FATAL": "Фатальная",
+    "CRITICAL": "Критическая",
+    "POSSIBLE_PROBLEM": "Возможная",
+    "RECOMMENDATION": "Рекомендация",
+}
+PROBLEM_RU = {
+    "SITE_ERROR": "Ошибки на сайте",
+    "DISALLOWED_IN_ROBOTS": "Страницы запрещены в robots.txt",
+    "DNS_ERROR": "Ошибка DNS",
+    "SITEMAP_ERROR": "Ошибки в Sitemap",
+    "SITEMAP_NOT_SET": "Не указан файл Sitemap",
+    "MAIN_MIRROR_IS_NOT_HTTPS": "Главное зеркало не на HTTPS",
+    "NO_METRIKA_COUNTER_BINDING": "Не привязан счётчик Метрики",
+    "THREATS": "Угрозы безопасности",
+    "SLOW_AVG_RESPONSE_TIME": "Медленный ответ сервера",
+    "ERRORS_IN_MICRODATA": "Ошибки в микроразметке",
+    "DECREASED_TIC": "Снижение ИКС",
+    "NO_ROBOTS_TXT": "Отсутствует robots.txt",
+    "ROBOTS_TXT_ERROR": "Ошибки в robots.txt",
+    "DOCUMENTS_MISSING_DESCRIPTION": "Страницы без description",
+    "DOCUMENTS_MISSING_TITLE": "Страницы без title",
+    "NOT_MOBILE_FRIENDLY": "Нет мобильной версии",
+    "TOO_MANY_DOMAINS_ON_SEARCH": "Много поддоменов в поиске",
+}
+
+diag_raw = safe(lambda: get(f"{WM}/user/{user_id}/hosts/{host_id}/diagnostics/"), {})
+print(f"🩺 Диагностика, ключи ответа: {list(diag_raw.keys())}")
+
+problems = []
+counts = {"FATAL": 0, "CRITICAL": 0, "POSSIBLE_PROBLEM": 0, "RECOMMENDATION": 0}
+
+problems_data = diag_raw.get("problems")
+items = []
+if isinstance(problems_data, dict):
+    items = list(problems_data.items())
+elif isinstance(problems_data, list):
+    items = [(p.get("type") or p.get("problem_type") or "", p) for p in problems_data if isinstance(p, dict)]
+
+for ptype, pdata in items:
+    if not isinstance(pdata, dict):
+        continue
+    state = str(pdata.get("state", "")).upper()
+    severity = pdata.get("severity", "")
+    if state == "ABSENT":
+        continue
+    problems.append({
+        "code": ptype,
+        "title": PROBLEM_RU.get(ptype, ptype),
+        "severity": severity,
+        "severity_ru": SEVERITY_RU.get(severity, severity),
+    })
+    if severity in counts:
+        counts[severity] += 1
+
+# ============ SITEMAP ============
+sitemaps_raw = safe(lambda: get(f"{WM}/user/{user_id}/hosts/{host_id}/sitemaps/"), {})
+sitemaps = []
+for s in (sitemaps_raw.get("sitemaps") or []):
+    sitemaps.append({
+        "url": s.get("sitemap_url", ""),
+        "urls": s.get("urls_count", 0),
+        "errors": s.get("errors_count", 0),
+        "last_access": s.get("last_access_date", ""),
+    })
+
+# ============ МЕТРИКА ============
 metrika = {}
 if COUNTER:
     m = safe(lambda: get(
@@ -90,16 +155,18 @@ if COUNTER:
             "bounceRate": round(totals[3], 1) if len(totals) > 3 else None,
         }
 
-# ======================= СОХРАНЯЕМ =======================
+# ============ СОХРАНЯЕМ ============
 result = {
     "updated": datetime.datetime.now().isoformat(timespec="minutes"),
     "site": SITE,
     "sqi": summary.get("sqi"),
     "queries": queries,
+    "health": {"problems": problems, "counts": counts},
+    "sitemaps": sitemaps,
     "metrika": metrika,
 }
 
 with open("data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
-print(f"✅ Готово! Запросов: {len(queries)}, Метрика: {'есть' if metrika else 'нет'}")
+print(f"✅ Готово! Запросов: {len(queries)}, Проблем: {len(problems)}, Sitemap: {len(sitemaps)}")

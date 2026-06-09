@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T11:56",
+  "updated": "2026-06-09T13:45",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
@@ -686,12 +686,38 @@
     }
   ],
   "pages_excluded": [],
-  "excluded_reasons": [],
+  "excluded_reasons": [
+    {
+      "reason": "CLEAN_PARAMS",
+      "reason_ru": "CLEAN_PARAMS",
+      "count": 22
+    },
+    {
+      "reason": "APPEARED_IN_SEARCH",
+      "reason_ru": "APPEARED_IN_SEARCH",
+      "count": 18
+    },
+    {
+      "reason": "ROBOTS_URL_ERROR",
+      "reason_ru": "ROBOTS_URL_ERROR",
+      "count": 16
+    },
+    {
+      "reason": "DUPLICATE",
+      "reason_ru": "Дубликат",
+      "count": 1
+    },
+    {
+      "reason": "LOW_QUALITY",
+      "reason_ru": "Низкое качество",
+      "count": 1
+    }
+  ],
   "health": {
     "problems": [
       {
-        "code": "ERROR_IN_ROBOTS_TXT",
-        "title": "ERROR_IN_ROBOTS_TXT",
+        "code": "DUPLICATE_CONTENT_ATTRS",
+        "title": "DUPLICATE_CONTENT_ATTRS",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
@@ -702,14 +728,14 @@
         "severity_ru": "Возможная"
       },
       {
-        "code": "DOCUMENTS_MISSING_TITLE",
-        "title": "Страницы без title",
+        "code": "ERROR_IN_ROBOTS_TXT",
+        "title": "ERROR_IN_ROBOTS_TXT",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
       {
-        "code": "DUPLICATE_CONTENT_ATTRS",
-        "title": "DUPLICATE_CONTENT_ATTRS",
+        "code": "DOCUMENTS_MISSING_TITLE",
+        "title": "Страницы без title",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       }

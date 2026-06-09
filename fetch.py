@@ -3,27 +3,30 @@ import json
 import datetime
 import requests
 
-# Токен берётся из секретов GitHub (НЕ пишем его прямо в коде!)
 TOKEN = os.environ["YANDEX_TOKEN"]
-SITE = os.environ.get("SITE", "igear-shop.ru")          # адрес сайта в Вебмастере
-COUNTER = os.environ.get("METRIKA_COUNTER", "")          # номер счётчика Метрики
+SITE = os.environ.get("SITE", "igear-shop.ru")
+COUNTER = os.environ.get("METRIKA_COUNTER", "")
 
 HEADERS = {"Authorization": f"OAuth {TOKEN}"}
 
+# 🔍 Диагностика: проверим, что токен вообще подставился (сам токен не раскрываем)
+print(f"🔑 Длина токена: {len(TOKEN)} символов, начало: {TOKEN[:4]}...")
+
 def get(url, params=None):
     r = requests.get(url, headers=HEADERS, params=params)
+    if not r.ok:
+        print(f"❌ Ошибка {r.status_code} при запросе: {url}")
+        print(f"📩 Что ответил Яндекс: {r.text}")
     r.raise_for_status()
     return r.json()
 
 def safe(fn, default):
-    """Если один запрос упал — не ломаем весь дашборд."""
     try:
         return fn()
     except Exception as e:
         print(f"⚠️ Ошибка: {e}")
         return default
 
-# Период: последние 30 дней
 today = datetime.date.today()
 date_from = (today - datetime.timedelta(days=30)).isoformat()
 date_to = today.isoformat()

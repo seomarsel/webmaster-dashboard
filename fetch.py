@@ -346,6 +346,30 @@ link_profile = {
 metrika = {}
 metrika_history = []
 if COUNTER:
+    # поисковый (органический) трафик по дням
+    search_map = {}
+    bts = safe(lambda: get(
+        "https://api-metrika.yandex.net/stat/v1/data/bytime",
+        params={
+            "ids": COUNTER,
+            "metrics": "ym:s:visits",
+            "filters": "ym:s:lastsignTrafficSource=='organic'",
+            "date1": date_from_90,
+            "date2": date_to,
+            "group": "day",
+        },
+    ), {})
+    ivs = bts.get("time_intervals") or []
+    sdata = bts.get("data") or []
+    smetrics = sdata[0].get("metrics") if sdata else None
+    if ivs and smetrics:
+        arr = smetrics[0]
+        for i, iv in enumerate(ivs):
+            d = (iv[0] if isinstance(iv, list) else iv)[:10]
+            search_map[d] = int(arr[i]) if i < len(arr) else 0
+    print(f"📊 Поисковый трафик, дней: {len(search_map)}, сумма: {sum(search_map.values())}")
+
+    # все визиты / пользователи / просмотры / отказы по дням
     bt = safe(lambda: get(
         "https://api-metrika.yandex.net/stat/v1/data/bytime",
         params={
@@ -369,6 +393,7 @@ if COUNTER:
                 "users": int(users_s[i]) if i < len(users_s) else 0,
                 "pageviews": int(views_s[i]) if i < len(views_s) else 0,
                 "bounceRate": round(bounce_s[i], 1) if i < len(bounce_s) else 0,
+                "search_visits": search_map.get(d, 0),
             })
     print(f"📊 Метрика дней: {len(metrika_history)}")
 
@@ -389,6 +414,7 @@ if COUNTER:
             "pageviews": int(totals[2]),
             "bounceRate": round(totals[3], 1) if len(totals) > 3 else None,
         }
+
 
 # ============ СОХРАНЯЕМ ============
 result = {

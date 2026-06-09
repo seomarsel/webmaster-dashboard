@@ -342,9 +342,36 @@ link_profile = {
     "broken_links": broken_links,
 }
 
-# ============ МЕТРИКА ============
+# ============ МЕТРИКА (по дням, 90 дней) ============
 metrika = {}
+metrika_history = []
 if COUNTER:
+    bt = safe(lambda: get(
+        "https://api-metrika.yandex.net/stat/v1/data/bytime",
+        params={
+            "ids": COUNTER,
+            "metrics": "ym:s:visits,ym:s:users,ym:s:pageviews,ym:s:bounceRate",
+            "date1": date_from_90,
+            "date2": date_to,
+            "group": "day",
+        },
+    ), {})
+    intervals = bt.get("time_intervals") or []
+    series = bt.get("data") or []
+    metric_arrays = series[0].get("metrics") if series else None
+    if intervals and metric_arrays and len(metric_arrays) >= 4:
+        visits_s, users_s, views_s, bounce_s = metric_arrays[0], metric_arrays[1], metric_arrays[2], metric_arrays[3]
+        for i, iv in enumerate(intervals):
+            d = (iv[0] if isinstance(iv, list) else iv)[:10]
+            metrika_history.append({
+                "date": d,
+                "visits": int(visits_s[i]) if i < len(visits_s) else 0,
+                "users": int(users_s[i]) if i < len(users_s) else 0,
+                "pageviews": int(views_s[i]) if i < len(views_s) else 0,
+                "bounceRate": round(bounce_s[i], 1) if i < len(bounce_s) else 0,
+            })
+    print(f"📊 Метрика дней: {len(metrika_history)}")
+
     m = safe(lambda: get(
         "https://api-metrika.yandex.net/stat/v1/data",
         params={
@@ -378,9 +405,10 @@ result = {
     "sitemaps": sitemaps,
     "link_profile": link_profile,
     "metrika": metrika,
+    "metrika_history": metrika_history,
 }
 
 with open("data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
-print(f"✅ Готово! Запросов: {len(all_q)}, Ссылок всего: {total_links}, Новых ссылок: {new_count}, Битых: {broken_count}")
+print(f"✅ Готово! Запросов: {len(all_q)}, Ссылок: {total_links}, Метрика дней: {len(metrika_history)}")

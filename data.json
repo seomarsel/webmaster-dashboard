@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T09:49",
+  "updated": "2026-06-09T10:16",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
@@ -72,6 +72,48 @@
       "clicks": 1.0,
       "ctr": 2.86,
       "position": 10.0
+    }
+  ],
+  "health": {
+    "problems": [
+      {
+        "code": "DUPLICATE_CONTENT_ATTRS",
+        "title": "DUPLICATE_CONTENT_ATTRS",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
+        "code": "DOCUMENTS_MISSING_TITLE",
+        "title": "Страницы без title",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
+        "code": "DOCUMENTS_MISSING_DESCRIPTION",
+        "title": "Страницы без description",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
+        "code": "ERROR_IN_ROBOTS_TXT",
+        "title": "ERROR_IN_ROBOTS_TXT",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      }
+    ],
+    "counts": {
+      "FATAL": 0,
+      "CRITICAL": 0,
+      "POSSIBLE_PROBLEM": 4,
+      "RECOMMENDATION": 0
+    }
+  },
+  "sitemaps": [
+    {
+      "url": "https://igear-shop.ru/sitemap.xml",
+      "urls": 3,
+      "errors": 0,
+      "last_access": "2026-06-08T18:18:51.000+03:00"
     }
   ],
   "metrika": {}

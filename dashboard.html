@@ -8,6 +8,7 @@
     <style>
         @keyframes spin { to { transform: rotate(360deg); } }
         .spinning { animation: spin 0.8s linear infinite; display: inline-block; }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.6; }
     </style>
 </head>
 <body class="bg-zinc-950 text-white min-h-screen">
@@ -41,8 +42,18 @@
         <div id="problemsList" class="space-y-2 mb-3"></div>
         <div id="sitemapList" class="space-y-2 mb-8"></div>
 
-        <!-- ПОИСК -->
-        <h2 class="text-white/50 text-sm font-medium mb-3">🔍 Поиск (за 30 дней)</h2>
+        <!-- ПОИСК + ВЫБОР ДАТЫ -->
+        <div class="flex items-center justify-between flex-wrap gap-3 mb-3">
+            <h2 class="text-white/50 text-sm font-medium">🔍 Поиск <span id="periodLabel" class="text-white/30"></span></h2>
+            <div id="dateControls" class="hidden flex items-center gap-2 flex-wrap">
+                <input type="date" id="dateFrom" onchange="applyDateRange()" class="bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-sm">
+                <span class="text-white/30">—</span>
+                <input type="date" id="dateTo" onchange="applyDateRange()" class="bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-sm">
+                <button onclick="setPreset(7)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">7 дн</button>
+                <button onclick="setPreset(30)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">30 дн</button>
+                <button onclick="setPreset(90)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">90 дн</button>
+            </div>
+        </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Показы</div><div id="mShows" class="text-3xl font-semibold mt-2">—</div></div>
             <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Клики</div><div id="mClicks" class="text-3xl font-semibold mt-2">—</div></div>
@@ -62,7 +73,7 @@
         </div>
 
         <!-- ЗАПРОСЫ -->
-        <h2 class="text-white/50 text-sm font-medium mb-3">📈 Топ запросов</h2>
+        <h2 class="text-white/50 text-sm font-medium mb-3">📈 Топ запросов (за 30 дней)</h2>
         <div class="bg-zinc-900 border border-white/10 rounded-3xl p-7">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
@@ -82,6 +93,8 @@
     </div>
 
     <script>
+        let HISTORY = [];
+
         async function loadData() {
             const icon = document.getElementById('refreshIcon');
             const status = document.getElementById('status');
@@ -99,6 +112,31 @@
             }
         }
 
+        function setPreset(days) {
+            if (!HISTORY.length) return;
+            const last = HISTORY[HISTORY.length - 1].date;
+            const lastDate = new Date(last);
+            const fromDate = new Date(lastDate);
+            fromDate.setDate(fromDate.getDate() - (days - 1));
+            document.getElementById('dateTo').value = last;
+            document.getElementById('dateFrom').value = fromDate.toISOString().slice(0, 10);
+            applyDateRange();
+        }
+
+        function applyDateRange() {
+            if (!HISTORY.length) return;
+            const from = document.getElementById('dateFrom').value;
+            const to = document.getElementById('dateTo').value;
+            const inRange = HISTORY.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
+            const shows = inRange.reduce((s, d) => s + (d.shows || 0), 0);
+            const clicks = inRange.reduce((s, d) => s + (d.clicks || 0), 0);
+            const ctr = shows ? (clicks / shows * 100).toFixed(2) : '0';
+            document.getElementById('mShows').innerText = shows.toLocaleString('ru');
+            document.getElementById('mClicks').innerText = clicks.toLocaleString('ru');
+            document.getElementById('mCtr').innerText = ctr + '%';
+            document.getElementById('periodLabel').innerText = from && to ? `(${from} — ${to})` : '';
+        }
+
         function render(data) {
             document.getElementById('siteName').innerText = data.site || 'Вебмастер';
             document.getElementById('updated').innerText = 'Обновлено: ' + (data.updated || '—');
@@ -112,7 +150,6 @@
             document.getElementById('hFatal').innerText = fatal;
             document.getElementById('hPossible').innerText = possible;
             document.getElementById('hRec').innerText = rec;
-
             const banner = document.getElementById('healthBanner');
             if (fatal > 0) {
                 banner.className = 'mb-4 p-4 rounded-2xl text-sm font-medium bg-red-500/15 text-red-300';
@@ -124,12 +161,9 @@
                 banner.className = 'mb-4 p-4 rounded-2xl text-sm font-medium bg-green-500/15 text-green-300';
                 banner.innerText = '✅ Критических проблем не обнаружено.';
             }
-
             const sevColor = {
-                FATAL: 'bg-red-500/15 text-red-300',
-                CRITICAL: 'bg-red-500/15 text-red-300',
-                POSSIBLE_PROBLEM: 'bg-yellow-500/15 text-yellow-300',
-                RECOMMENDATION: 'bg-blue-500/15 text-blue-300',
+                FATAL: 'bg-red-500/15 text-red-300', CRITICAL: 'bg-red-500/15 text-red-300',
+                POSSIBLE_PROBLEM: 'bg-yellow-500/15 text-yellow-300', RECOMMENDATION: 'bg-blue-500/15 text-blue-300',
             };
             const problems = health.problems || [];
             document.getElementById('problemsList').innerHTML = problems.length
@@ -137,29 +171,35 @@
                     <div class="flex items-center justify-between bg-zinc-900 rounded-2xl px-5 py-3 text-sm">
                         <span>${p.title}</span>
                         <span class="text-xs px-3 py-1 rounded-full ${sevColor[p.severity] || 'bg-white/10 text-white/60'}">${p.severity_ru || p.severity}</span>
-                    </div>
-                `).join('')
+                    </div>`).join('')
                 : '<div class="text-white/40 text-sm">Активных проблем нет 🎉</div>';
-
-            // --- Sitemap ---
             const sitemaps = data.sitemaps || [];
-            const totalSitemapUrls = sitemaps.reduce((s, m) => s + (m.urls || 0), 0);
-            document.getElementById('hSitemap').innerText = totalSitemapUrls ? totalSitemapUrls.toLocaleString('ru') : '—';
+            document.getElementById('hSitemap').innerText = sitemaps.reduce((s, m) => s + (m.urls || 0), 0).toLocaleString('ru') || '—';
             document.getElementById('sitemapList').innerHTML = sitemaps.map(m => `
                 <div class="bg-zinc-900 rounded-2xl px-5 py-3 text-sm flex items-center justify-between flex-wrap gap-2">
                     <span class="text-white/70 break-all">🗺️ ${m.url}</span>
                     <span class="text-white/50">URL: ${(m.urls||0).toLocaleString('ru')} · Ошибки: ${m.errors||0}</span>
-                </div>
-            `).join('');
+                </div>`).join('');
 
-            // --- Поиск ---
-            const queries = data.queries || [];
-            const totalShows = queries.reduce((s, q) => s + (q.shows || 0), 0);
-            const totalClicks = queries.reduce((s, q) => s + (q.clicks || 0), 0);
-            const avgCtr = totalShows ? (totalClicks / totalShows * 100).toFixed(2) : '0';
-            document.getElementById('mShows').innerText = totalShows.toLocaleString('ru');
-            document.getElementById('mClicks').innerText = totalClicks.toLocaleString('ru');
-            document.getElementById('mCtr').innerText = avgCtr + '%';
+            // --- Поиск с выбором даты ---
+            HISTORY = data.history || [];
+            if (HISTORY.length) {
+                document.getElementById('dateControls').classList.remove('hidden');
+                const minD = HISTORY[0].date, maxD = HISTORY[HISTORY.length - 1].date;
+                ['dateFrom', 'dateTo'].forEach(id => {
+                    const el = document.getElementById(id);
+                    el.min = minD; el.max = maxD;
+                });
+                setPreset(30);
+            } else {
+                document.getElementById('dateControls').classList.add('hidden');
+                const queries = data.queries || [];
+                const shows = queries.reduce((s, q) => s + (q.shows || 0), 0);
+                const clicks = queries.reduce((s, q) => s + (q.clicks || 0), 0);
+                document.getElementById('mShows').innerText = shows.toLocaleString('ru');
+                document.getElementById('mClicks').innerText = clicks.toLocaleString('ru');
+                document.getElementById('mCtr').innerText = (shows ? (clicks / shows * 100).toFixed(2) : '0') + '%';
+            }
             document.getElementById('mSqi').innerText = data.sqi ?? '—';
 
             // --- Метрика ---
@@ -173,16 +213,15 @@
             }
 
             // --- Таблица запросов ---
-            const tbody = document.getElementById('queriesTable');
-            tbody.innerHTML = queries.map(q => `
+            const queries = data.queries || [];
+            document.getElementById('queriesTable').innerHTML = queries.map(q => `
                 <tr>
                     <td class="py-3">${q.query}</td>
                     <td class="text-right font-mono">${(q.shows || 0).toLocaleString('ru')}</td>
                     <td class="text-right font-mono">${(q.clicks || 0).toLocaleString('ru')}</td>
                     <td class="text-right">${q.ctr}%</td>
                     <td class="text-right font-semibold">${q.position}</td>
-                </tr>
-            `).join('') || '<tr><td class="py-3 text-white/40">Пока нет данных по запросам</td></tr>';
+                </tr>`).join('') || '<tr><td class="py-3 text-white/40">Пока нет данных</td></tr>';
         }
 
         loadData();

@@ -10,197 +10,170 @@
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
-  .date-input { background:#27272a; border:1px solid #3f3f46; border-radius:10px; padding:6px 10px; color:#fff; font-size:13px; }
-  .preset-btn { background:#27272a; border:1px solid #3f3f46; border-radius:10px; padding:6px 12px; font-size:13px; transition:.15s; }
+  .date-input { background:#27272a; border:1px solid #3f3f46; border-radius:10px; padding:7px 12px; color:#fff; font-size:13px; }
+  .preset-btn { background:#27272a; border:1px solid #3f3f46; border-radius:10px; padding:7px 12px; font-size:13px; transition:.15s; }
   .preset-btn:hover { background:#3f3f46; }
+  .preset-btn.active { background:#FFCC00; color:#000; border-color:#FFCC00; font-weight:600; }
+  .cal-day { padding:7px 0; border-radius:8px; cursor:pointer; background:transparent; border:none; color:#e4e4e7; font-size:13px; }
+  .cal-day:hover { background:#3f3f46; }
+  .cal-day.in-range { background:rgba(37,99,235,0.25); border-radius:0; }
+  .cal-day.sel-edge { background:#2563eb !important; color:#fff !important; border-radius:8px; }
 </style>
 </head>
 <body class="bg-zinc-950 text-white min-h-screen">
-<div class="max-w-6xl mx-auto px-4 py-8">
 
-  <!-- HEADER -->
-  <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
-    <div class="flex items-center gap-3">
-      <div class="text-4xl">🕷️</div>
-      <div>
-        <h1 id="siteName" class="text-2xl font-bold">—</h1>
-        <div class="text-white/40 text-sm">Обновлено: <span id="updated">—</span></div>
-      </div>
-    </div>
-    <button onclick="loadData()" class="bg-yellow-400 text-black font-semibold rounded-2xl px-5 py-2.5 hover:bg-yellow-300 transition">
-      🔄 Обновить
-    </button>
-  </div>
-
-  <div id="status" class="hidden bg-red-500/10 text-red-300 rounded-2xl p-4 mb-6"></div>
-
-  <!-- ============ 1. ЯНДЕКС.МЕТРИКА (первый блок) ============ -->
-  <div id="metrikaBlock" class="hidden mb-8">
-    <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
-      <h2 class="text-lg font-semibold">📊 Яндекс.Метрика <span id="mPeriodLabel" class="text-white/40 text-sm font-normal"></span></h2>
-      <div id="mDateControls" class="flex items-center gap-2 flex-wrap">
-        <button onclick="setMetrikaPreset(7)" class="preset-btn">7 дней</button>
-        <button onclick="setMetrikaPreset(30)" class="preset-btn">30 дней</button>
-        <button onclick="setMetrikaPreset(90)" class="preset-btn">90 дней</button>
-        <input type="date" id="mDateFrom" onchange="applyMetrikaRange()" class="date-input">
-        <input type="date" id="mDateTo" onchange="applyMetrikaRange()" class="date-input">
-      </div>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Визиты</div><div id="mVisits" class="text-3xl font-semibold mt-2">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Посетители</div><div id="mUsers" class="text-3xl font-semibold mt-2">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Просмотры</div><div id="mViews" class="text-3xl font-semibold mt-2">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Отказы</div><div id="mBounce" class="text-3xl font-semibold mt-2">—</div></div>
-    </div>
-    <div id="metrikaChartCard" class="bg-zinc-900 rounded-3xl p-6 mb-8">
-      <div class="text-sm text-white/60 mb-3">📈 Поисковый трафик по дням</div>
-      <canvas id="chartMetrika" height="90"></canvas>
-    </div>
-  </div>
-
-  <!-- ============ 2. ЗДОРОВЬЕ САЙТА ============ -->
-  <div id="healthBlock" class="hidden mb-8">
-    <h2 class="text-lg font-semibold mb-3">🚦 Здоровье сайта</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔴 Фатальные</div><div id="hFatal" class="text-3xl font-semibold mt-2">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🟡 Возможные</div><div id="hPossible" class="text-3xl font-semibold mt-2">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔵 Рекомендации</div><div id="hRec" class="text-3xl font-semibold mt-2">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🗺️ Sitemap</div><div id="hSitemap" class="text-3xl font-semibold mt-2">—</div></div>
-    </div>
-    <div class="grid md:grid-cols-2 gap-4">
-      <div class="bg-zinc-900 rounded-3xl p-6">
-        <div class="text-sm text-white/60 mb-2">Проблемы диагностики</div>
-        <div id="problemsList"></div>
-      </div>
-      <div class="bg-zinc-900 rounded-3xl p-6">
-        <div class="text-sm text-white/60 mb-2">Файлы Sitemap</div>
-        <div id="sitemapList"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============ 3. ПОИСК (показы / клики / CTR / ИКС) ============ -->
-  <div class="mb-8">
-    <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
-      <h2 class="text-lg font-semibold">🔍 Поиск <span id="periodLabel" class="text-white/40 text-sm font-normal"></span></h2>
-      <div id="dateControls" class="flex items-center gap-2 flex-wrap">
-        <button onclick="setPreset(7)" class="preset-btn">7 дней</button>
-        <button onclick="setPreset(30)" class="preset-btn">30 дней</button>
-        <button onclick="setPreset(90)" class="preset-btn">90 дней</button>
-        <input type="date" id="dateFrom" onchange="applyDateRange()" class="date-input">
-        <input type="date" id="dateTo" onchange="applyDateRange()" class="date-input">
-      </div>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Показы</div><div id="mShows" class="text-3xl font-semibold mt-2">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Клики</div><div id="mClicks" class="text-3xl font-semibold mt-2">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">CTR</div><div id="mCtr" class="text-3xl font-semibold mt-2">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">ИКС</div><div id="mSqi" class="text-3xl font-semibold mt-2">—</div></div>
-    </div>
-  </div>
-
-  <!-- ============ 4. ДИНАМИКА ВО ВРЕМЕНИ ============ -->
-  <div class="grid md:grid-cols-2 gap-4 mb-8">
-    <div class="bg-zinc-900 rounded-3xl p-6">
-      <div class="text-sm text-white/60 mb-3">Показы и клики</div>
-      <canvas id="chartTraffic" height="100"></canvas>
-    </div>
-    <div class="bg-zinc-900 rounded-3xl p-6">
-      <div class="text-sm text-white/60 mb-3">Страницы: в поиске и исключённые</div>
-      <canvas id="chartIndex" height="100"></canvas>
-    </div>
-  </div>
-
-  <!-- ============ 5. ПРИЧИНЫ ИСКЛЮЧЕНИЯ ============ -->
-  <div class="mb-8">
-    <h2 class="text-lg font-semibold mb-3">🚫 Причины исключения страниц</h2>
-    <div id="excludedReasons" class="grid md:grid-cols-2 gap-4"></div>
-  </div>
-
-  <!-- ============ 6. УГЛУБЛЁННАЯ АНАЛИТИКА ЗАПРОСОВ ============ -->
-  <div id="queryAnalyticsBlock" class="hidden mb-8">
-    <h2 class="text-lg font-semibold mb-3">🎯 Углублённая аналитика запросов</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">ТОП-3</div><div id="posTop3" class="text-3xl font-semibold mt-2 text-green-400">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Позиции 4–10</div><div id="posTop410" class="text-3xl font-semibold mt-2 text-yellow-400">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Позиции 11–50</div><div id="posTop1150" class="text-3xl font-semibold mt-2 text-orange-400">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">50+</div><div id="posTop50" class="text-3xl font-semibold mt-2 text-red-400">—</div></div>
-    </div>
-    <div class="grid md:grid-cols-2 gap-4 mb-4">
-      <div class="bg-zinc-900 rounded-3xl p-6">
-        <div class="text-sm text-white/60 mb-3">Группировка по интентам</div>
-        <div class="flex items-center gap-6">
-          <div class="w-40"><canvas id="chartIntents"></canvas></div>
-          <div id="intentLegend" class="text-sm space-y-2"></div>
+  <!-- ============ STICKY БЛОК ВЫБОРА ДАТ ============ -->
+  <div class="sticky top-0 z-40 bg-zinc-950/90 backdrop-blur border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4 flex-wrap">
+      <div class="flex items-center gap-3">
+        <div class="text-3xl">🕷️</div>
+        <div>
+          <h1 id="siteName" class="text-lg font-bold leading-tight">—</h1>
+          <div class="text-white/40 text-xs">Обновлено: <span id="updated">—</span></div>
         </div>
       </div>
-      <div class="bg-zinc-900 rounded-3xl p-6">
-        <div class="text-sm text-white/60 mb-3">💡 Запросы-возможности (высокие показы, низкий CTR, позиция 4–10)</div>
-        <div id="oppList" class="max-h-56 overflow-y-auto"></div>
-      </div>
-    </div>
-    <div class="grid md:grid-cols-2 gap-4">
-      <div class="bg-zinc-900 rounded-3xl p-6">
-        <div class="text-sm text-white/60 mb-3">🟢 Новые запросы <span id="newCount" class="text-green-400 font-semibold"></span></div>
-        <div id="newList" class="max-h-48 overflow-y-auto space-y-1"></div>
-      </div>
-      <div class="bg-zinc-900 rounded-3xl p-6">
-        <div class="text-sm text-white/60 mb-3">🔴 Потерянные запросы <span id="lostCount" class="text-red-400 font-semibold"></span></div>
-        <div id="lostList" class="max-h-48 overflow-y-auto space-y-1"></div>
+      <div class="flex items-end gap-3 flex-wrap relative">
+        <div class="flex gap-2 items-center">
+          <button id="p7" onclick="setGlobalPreset(7)" class="preset-btn">7 дней</button>
+          <button id="p30" onclick="setGlobalPreset(30)" class="preset-btn">30 дней</button>
+          <button id="p90" onclick="setGlobalPreset(90)" class="preset-btn">90 дней</button>
+        </div>
+        <div>
+          <div class="text-white/40 text-xs mb-1">Дата начала отчёта</div>
+          <input readonly id="dpStart" onclick="openCal('start', event)" class="date-input w-32 cursor-pointer" placeholder="—">
+        </div>
+        <div>
+          <div class="text-white/40 text-xs mb-1">Дата конца отчёта</div>
+          <input readonly id="dpEnd" onclick="openCal('end', event)" class="date-input w-32 cursor-pointer" placeholder="—">
+        </div>
+        <button onclick="loadData()" title="Перезагрузить данные" class="bg-yellow-400 text-black font-semibold rounded-xl px-4 py-2 hover:bg-yellow-300 transition text-sm">🔄</button>
+
+        <!-- Поп-ап календаря -->
+        <div id="calPopup" class="hidden absolute top-full right-0 mt-2 z-50 bg-zinc-900 border border-white/10 rounded-2xl p-4 shadow-2xl" style="width:340px; max-height:440px; overflow-y:auto;">
+          <div id="calMonths"></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ============ 7. ССЫЛОЧНЫЙ ПРОФИЛЬ ============ -->
-  <div id="linkBlock" class="hidden mb-8">
-    <h2 class="text-lg font-semibold mb-3">🔗 Ссылочный профиль</h2>
-    <div class="grid grid-cols-3 gap-4 mb-4">
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Всего ссылок</div><div id="linkTotal" class="text-3xl font-semibold mt-2 text-purple-400">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Новые</div><div id="linkNew" class="text-3xl font-semibold mt-2 text-green-400">—</div></div>
-      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Потерянные</div><div id="linkBroken" class="text-3xl font-semibold mt-2 text-red-400">—</div></div>
-    </div>
-    <div class="bg-zinc-900 rounded-3xl p-6 mb-4">
-      <div class="text-sm text-white/60 mb-3">Динамика количества внешних ссылок</div>
-      <canvas id="chartLinks" height="90"></canvas>
-    </div>
-    <div class="grid md:grid-cols-2 gap-4">
-      <div class="bg-zinc-900 rounded-3xl p-6">
-        <div class="text-sm text-white/60 mb-3">🟢 Новые ссылки</div>
-        <div id="newLinksList" class="max-h-48 overflow-y-auto space-y-1"></div>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+
+    <div id="status" class="hidden bg-red-500/10 text-red-300 rounded-2xl p-4 mb-6"></div>
+
+    <!-- ============ 1. ЯНДЕКС.МЕТРИКА ============ -->
+    <div id="metrikaBlock" class="hidden mb-8">
+      <h2 class="text-lg font-semibold mb-3">📊 Яндекс.Метрика <span class="periodLabel text-white/40 text-sm font-normal"></span></h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Визиты</div><div id="mVisits" class="text-3xl font-semibold mt-2">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Посетители</div><div id="mUsers" class="text-3xl font-semibold mt-2">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Просмотры</div><div id="mViews" class="text-3xl font-semibold mt-2">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Отказы</div><div id="mBounce" class="text-3xl font-semibold mt-2">—</div></div>
       </div>
-      <div class="bg-zinc-900 rounded-3xl p-6">
-        <div class="text-sm text-white/60 mb-3">🔴 Потерянные / битые ссылки</div>
-        <div id="brokenLinksList" class="max-h-48 overflow-y-auto space-y-1"></div>
+      <div id="metrikaChartCard" class="bg-zinc-900 rounded-3xl p-6">
+        <div class="text-sm text-white/60 mb-3">📈 Поисковый трафик по дням</div>
+        <canvas id="chartMetrika" height="90"></canvas>
       </div>
     </div>
-  </div>
 
-  <!-- ============ 8. ТОП ЗАПРОСОВ ============ -->
-  <div class="bg-zinc-900 rounded-3xl p-6 mb-8">
-    <h2 class="text-lg font-semibold mb-4">📋 Топ запросов</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead class="text-white/40">
-          <tr>
-            <th class="text-left pb-2 pr-4">Запрос</th>
-            <th class="text-right pb-2 px-4">Показы</th>
-            <th class="text-right pb-2 px-4">Клики</th>
-            <th class="text-right pb-2 px-4">CTR</th>
-            <th class="text-right pb-2 pl-4">Позиция</th>
-          </tr>
-        </thead>
-        <tbody id="queriesTable"></tbody>
-      </table>
+    <!-- ============ 2. ЗДОРОВЬЕ САЙТА ============ -->
+    <div id="healthBlock" class="hidden mb-8">
+      <h2 class="text-lg font-semibold mb-3">🚦 Здоровье сайта</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔴 Фатальные</div><div id="hFatal" class="text-3xl font-semibold mt-2">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🟡 Возможные</div><div id="hPossible" class="text-3xl font-semibold mt-2">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔵 Рекомендации</div><div id="hRec" class="text-3xl font-semibold mt-2">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🗺️ Sitemap</div><div id="hSitemap" class="text-3xl font-semibold mt-2">—</div></div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-sm text-white/60 mb-2">Проблемы диагностики</div><div id="problemsList"></div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-sm text-white/60 mb-2">Файлы Sitemap</div><div id="sitemapList"></div></div>
+      </div>
     </div>
-  </div>
 
-  <div class="text-center text-white/30 text-xs pb-8">Данные: Яндекс.Вебмастер + Яндекс.Метрика · обновляется автоматически</div>
-</div>
+    <!-- ============ 3. ПОИСК ============ -->
+    <div class="mb-8">
+      <h2 class="text-lg font-semibold mb-3">🔍 Поиск <span class="periodLabel text-white/40 text-sm font-normal"></span></h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Показы</div><div id="mShows" class="text-3xl font-semibold mt-2">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Клики</div><div id="mClicks" class="text-3xl font-semibold mt-2">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">CTR</div><div id="mCtr" class="text-3xl font-semibold mt-2">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">ИКС</div><div id="mSqi" class="text-3xl font-semibold mt-2">—</div></div>
+      </div>
+    </div>
+
+    <!-- ============ 4. ДИНАМИКА ============ -->
+    <div class="grid md:grid-cols-2 gap-4 mb-8">
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-sm text-white/60 mb-3">Показы и клики</div><canvas id="chartTraffic" height="100"></canvas></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-sm text-white/60 mb-3">Страницы: в поиске и исключённые</div><canvas id="chartIndex" height="100"></canvas></div>
+    </div>
+
+    <!-- ============ 5. ПРИЧИНЫ ИСКЛЮЧЕНИЯ ============ -->
+    <div class="mb-8">
+      <h2 class="text-lg font-semibold mb-3">🚫 Причины исключения страниц</h2>
+      <div id="excludedReasons" class="grid md:grid-cols-2 gap-4"></div>
+    </div>
+
+    <!-- ============ 6. УГЛУБЛЁННАЯ АНАЛИТИКА ============ -->
+    <div id="queryAnalyticsBlock" class="hidden mb-8">
+      <h2 class="text-lg font-semibold mb-3">🎯 Углублённая аналитика запросов <span class="text-white/30 text-xs font-normal">(за период загрузки данных)</span></h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">ТОП-3</div><div id="posTop3" class="text-3xl font-semibold mt-2 text-green-400">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Позиции 4–10</div><div id="posTop410" class="text-3xl font-semibold mt-2 text-yellow-400">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Позиции 11–50</div><div id="posTop1150" class="text-3xl font-semibold mt-2 text-orange-400">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">50+</div><div id="posTop50" class="text-3xl font-semibold mt-2 text-red-400">—</div></div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <div class="bg-zinc-900 rounded-3xl p-6">
+          <div class="text-sm text-white/60 mb-3">Группировка по интентам</div>
+          <div class="flex items-center gap-6"><div class="w-40"><canvas id="chartIntents"></canvas></div><div id="intentLegend" class="text-sm space-y-2"></div></div>
+        </div>
+        <div class="bg-zinc-900 rounded-3xl p-6">
+          <div class="text-sm text-white/60 mb-3">💡 Запросы-возможности</div>
+          <div id="oppList" class="max-h-56 overflow-y-auto"></div>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-sm text-white/60 mb-3">🟢 Новые запросы <span id="newCount" class="text-green-400 font-semibold"></span></div><div id="newList" class="max-h-48 overflow-y-auto space-y-1"></div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-sm text-white/60 mb-3">🔴 Потерянные запросы <span id="lostCount" class="text-red-400 font-semibold"></span></div><div id="lostList" class="max-h-48 overflow-y-auto space-y-1"></div></div>
+      </div>
+    </div>
+
+    <!-- ============ 7. ССЫЛОЧНЫЙ ПРОФИЛЬ ============ -->
+    <div id="linkBlock" class="hidden mb-8">
+      <h2 class="text-lg font-semibold mb-3">🔗 Ссылочный профиль <span class="periodLabel text-white/40 text-sm font-normal"></span></h2>
+      <div class="grid grid-cols-3 gap-4 mb-4">
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Всего ссылок</div><div id="linkTotal" class="text-3xl font-semibold mt-2 text-purple-400">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Новые</div><div id="linkNew" class="text-3xl font-semibold mt-2 text-green-400">—</div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Потерянные</div><div id="linkBroken" class="text-3xl font-semibold mt-2 text-red-400">—</div></div>
+      </div>
+      <div class="bg-zinc-900 rounded-3xl p-6 mb-4"><div class="text-sm text-white/60 mb-3">Динамика количества внешних ссылок</div><canvas id="chartLinks" height="90"></canvas></div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-sm text-white/60 mb-3">🟢 Новые ссылки</div><div id="newLinksList" class="max-h-48 overflow-y-auto space-y-1"></div></div>
+        <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-sm text-white/60 mb-3">🔴 Потерянные / битые</div><div id="brokenLinksList" class="max-h-48 overflow-y-auto space-y-1"></div></div>
+      </div>
+    </div>
+
+    <!-- ============ 8. ТОП ЗАПРОСОВ ============ -->
+    <div class="bg-zinc-900 rounded-3xl p-6 mb-8">
+      <h2 class="text-lg font-semibold mb-4">📋 Топ запросов</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="text-white/40"><tr>
+            <th class="text-left pb-2 pr-4">Запрос</th><th class="text-right pb-2 px-4">Показы</th><th class="text-right pb-2 px-4">Клики</th><th class="text-right pb-2 px-4">CTR</th><th class="text-right pb-2 pl-4">Позиция</th>
+          </tr></thead>
+          <tbody id="queriesTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="text-center text-white/30 text-xs pb-8">Данные: Яндекс.Вебмастер + Яндекс.Метрика</div>
+  </div>
 
 <script>
   // ============ ГЛОБАЛЬНЫЕ ДАННЫЕ ============
-  let HISTORY = [], METRIKA_HISTORY = [], PAGES_IN = [], PAGES_EX = [];
+  let HISTORY = [], METRIKA_HISTORY = [], PAGES_IN = [], PAGES_EX = [], LINK_HISTORY = [];
   let chartTraffic = null, chartIndex = null, chartIntents = null, chartLinks = null, chartMetrika = null;
+  let gStart = null, gEnd = null, calField = 'start';
 
   const chartOpts = {
     responsive: true,
@@ -211,90 +184,135 @@
     }
   };
 
-  // Описания причин исключения
+  const MONTHS_RU = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  const WD = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+
   const REASON_INFO = {
-    CLEAN_PARAMS: { title: 'Очищенные GET-параметры (Clean-param)', desc: 'Страницы с параметрами в URL (utm, сортировки, фильтры), которые объединены с основной. Это нормально — дубли склеены. Проверь, что директива Clean-param в robots.txt настроена верно.' },
+    CLEAN_PARAMS: { title: 'Очищенные GET-параметры (Clean-param)', desc: 'Страницы с параметрами в URL (utm, сортировки, фильтры) объединены с основной. Это нормально — дубли склеены. Проверь директиву Clean-param в robots.txt.' },
     APPEARED_IN_SEARCH: { title: 'Появились в поиске', desc: 'Это НЕ исключение — страницы добавлены в поиск. 👍' },
-    ROBOTS_URL_ERROR: { title: 'Запрещено в robots.txt', desc: 'Страницы закрыты от индексации правилами robots.txt. Если они важны для SEO — открой их; если служебные (корзина, личный кабинет) — всё ок.' },
+    ROBOTS_URL_ERROR: { title: 'Запрещено в robots.txt', desc: 'Страницы закрыты от индексации. Если важны для SEO — открой; если служебные (корзина, кабинет) — всё ок.' },
     DUPLICATE: { title: 'Дубликат', desc: 'Контент совпадает с другой страницей. Настрой rel=canonical или 301-редирект на основную версию.' },
-    LOW_QUALITY: { title: 'Низкое качество', desc: 'Яндекс счёл страницу малополезной (мало текста, тонкий контент). Добавь уникальное описание, характеристики, отзывы.' },
-    NOINDEX: { title: 'Запрещено мета-тегом noindex', desc: 'Страница закрыта тегом <meta name="robots" content="noindex">. Убери тег, если страница нужна в поиске.' },
+    LOW_QUALITY: { title: 'Низкое качество', desc: 'Яндекс счёл страницу малополезной. Добавь уникальное описание, характеристики, отзывы.' },
+    NOINDEX: { title: 'Запрещено мета-тегом noindex', desc: 'Убери тег noindex, если страница нужна в поиске.' },
     NOT_CANONICAL: { title: 'Неканоническая', desc: 'Страница указывает на другую как каноническую — в поиск идёт каноническая версия.' },
     HTTP_ERROR: { title: 'Ошибка HTTP', desc: 'Сервер вернул ошибку (4xx/5xx). Проверь доступность страницы.' },
     REDIRECT: { title: 'Редирект', desc: 'Страница перенаправляет на другую — в поиске участвует конечный URL.' }
   };
-  // Коды, которые НЕ являются исключением
   const NOT_EXCLUSION = ['APPEARED_IN_SEARCH', 'SEARCHABLE', 'INDEXED'];
 
-  function sevIcon(s) {
-    return s === 'FATAL' ? '🔴' : s === 'CRITICAL' ? '🟠' : s === 'POSSIBLE_PROBLEM' ? '🟡' : '🔵';
-  }
+  function sevIcon(s) { return s === 'FATAL' ? '🔴' : s === 'CRITICAL' ? '🟠' : s === 'POSSIBLE_PROBLEM' ? '🟡' : '🔵'; }
   function n(v) { return (v || 0).toLocaleString('ru'); }
-
-  // ============ ЗАГРУЗКА ============
-  async function loadData() {
-    try {
-      const res = await fetch('data.json?v=' + Date.now());
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      render(data);
-    } catch (e) {
-      const s = document.getElementById('status');
-      s.innerHTML = '⚠️ Не удалось загрузить data.json. Запусти обновление в GitHub Actions. (' + e.message + ')';
-      s.classList.remove('hidden');
-    }
-  }
-
-  // ============ ПРЕСЕТЫ ДАТ ============
-  function isoMinus(days) { const d = new Date(); d.setDate(d.getDate() - days); return d.toISOString().slice(0, 10); }
+  function isoMinus(d) { const x = new Date(); x.setDate(x.getDate() - d); return x.toISOString().slice(0, 10); }
   function isoToday() { return new Date().toISOString().slice(0, 10); }
+  function fmtRu(ds) { if (!ds) return ''; const [y, m, d] = ds.split('-'); return `${d}.${m}.${y}`; }
 
-  function setPreset(days) {
-    document.getElementById('dateTo').value = isoToday();
-    document.getElementById('dateFrom').value = isoMinus(days);
-    applyDateRange();
+  // ============ КАЛЕНДАРЬ ============
+  function buildCalendar() {
+    const today = new Date();
+    const startM = new Date(today.getFullYear() - 1, today.getMonth(), 1);
+    let html = '';
+    for (let i = 0; i <= 12; i++) html += monthHtml(new Date(startM.getFullYear(), startM.getMonth() + i, 1));
+    document.getElementById('calMonths').innerHTML = html;
   }
-  function setMetrikaPreset(days) {
-    document.getElementById('mDateTo').value = isoToday();
-    document.getElementById('mDateFrom').value = isoMinus(days);
-    applyMetrikaRange();
+  function monthHtml(mDate) {
+    const y = mDate.getFullYear(), mo = mDate.getMonth();
+    const startWd = (new Date(y, mo, 1).getDay() + 6) % 7;
+    const days = new Date(y, mo + 1, 0).getDate();
+    let cells = '';
+    for (let i = 0; i < startWd; i++) cells += '<div></div>';
+    for (let d = 1; d <= days; d++) {
+      const ds = `${y}-${String(mo + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const wd = (new Date(y, mo, d).getDay() + 6) % 7;
+      cells += `<button data-date="${ds}" onclick="pickDate('${ds}', event)" class="cal-day ${wd >= 5 ? 'text-red-400' : ''}">${d}</button>`;
+    }
+    return `<div class="mb-4">
+      <div class="text-white/80 font-medium mb-2 text-center">${MONTHS_RU[mo]} ${y}</div>
+      <div class="grid grid-cols-7 gap-1 text-center text-xs text-white/30 mb-1">${WD.map(w => `<div>${w}</div>`).join('')}</div>
+      <div class="grid grid-cols-7 gap-1 text-center">${cells}</div>
+    </div>`;
   }
+  function openCal(field, e) {
+    if (e) e.stopPropagation();
+    calField = field;
+    const p = document.getElementById('calPopup');
+    p.classList.remove('hidden');
+    buildCalendar();
+    highlightCal();
+    p.scrollTop = p.scrollHeight; // показать текущий месяц
+  }
+  function closeCal() { document.getElementById('calPopup').classList.add('hidden'); }
+  function highlightCal() {
+    document.querySelectorAll('.cal-day').forEach(b => {
+      b.classList.remove('sel-edge', 'in-range');
+      const ds = b.dataset.date;
+      if (ds === gStart || ds === gEnd) b.classList.add('sel-edge');
+      else if (gStart && gEnd && ds > gStart && ds < gEnd) b.classList.add('in-range');
+    });
+  }
+  function pickDate(ds, e) {
+    if (e) e.stopPropagation();
+    if (calField === 'start' || (gStart && gEnd)) {
+      gStart = ds; gEnd = null; calField = 'end';
+    } else {
+      if (ds < gStart) { gEnd = gStart; gStart = ds; } else { gEnd = ds; }
+      calField = 'start';
+    }
+    updateDpInputs();
+    highlightCal();
+    setActivePreset(null);
+    if (gStart && gEnd) { applyGlobalRange(); closeCal(); }
+  }
+  function updateDpInputs() {
+    document.getElementById('dpStart').value = fmtRu(gStart);
+    document.getElementById('dpEnd').value = fmtRu(gEnd);
+  }
+  function setActivePreset(id) {
+    ['p7', 'p30', 'p90'].forEach(x => document.getElementById(x).classList.toggle('active', x === id));
+  }
+  function setGlobalPreset(days) {
+    gStart = isoMinus(days); gEnd = isoToday(); calField = 'start';
+    updateDpInputs();
+    setActivePreset('p' + days);
+    applyGlobalRange();
+    closeCal();
+  }
+  document.addEventListener('click', e => {
+    const p = document.getElementById('calPopup');
+    if (!p.classList.contains('hidden') && !p.contains(e.target) &&
+        !e.target.closest('#dpStart') && !e.target.closest('#dpEnd')) closeCal();
+  });
 
-  // ============ ПОИСК: пересчёт по датам ============
-  function applyDateRange() {
-    if (!HISTORY.length) return;
-    const from = document.getElementById('dateFrom').value;
-    const to = document.getElementById('dateTo').value;
-    const inRange = HISTORY.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
-    const shows = inRange.reduce((s, d) => s + (d.shows || 0), 0);
-    const clicks = inRange.reduce((s, d) => s + (d.clicks || 0), 0);
-    document.getElementById('mShows').innerText = n(shows);
-    document.getElementById('mClicks').innerText = n(clicks);
-    document.getElementById('mCtr').innerText = shows ? (clicks / shows * 100).toFixed(2) + '%' : '0%';
-    document.getElementById('periodLabel').innerText = from && to ? `(${from} — ${to})` : '';
-    renderTrafficChart(inRange);
-    const pin = PAGES_IN.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
-    const pex = PAGES_EX.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
-    renderIndexChart(pin, pex);
-  }
+  // ============ ПРИМЕНИТЬ ДИАПАЗОН КО ВСЕМУ ============
+  function applyGlobalRange() {
+    const from = gStart, to = gEnd;
+    const inRange = arr => arr.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
 
-  // ============ МЕТРИКА: пересчёт по датам ============
-  function applyMetrikaRange() {
-    if (!METRIKA_HISTORY.length) return;
-    const from = document.getElementById('mDateFrom').value;
-    const to = document.getElementById('mDateTo').value;
-    const inRange = METRIKA_HISTORY.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
-    const visits = inRange.reduce((s, d) => s + (d.visits || 0), 0);
-    const users = inRange.reduce((s, d) => s + (d.users || 0), 0);
-    const views = inRange.reduce((s, d) => s + (d.pageviews || 0), 0);
-    const bounceW = inRange.reduce((s, d) => s + (d.bounceRate || 0) * (d.visits || 0), 0);
-    const bounce = visits ? (bounceW / visits).toFixed(1) : '0';
-    document.getElementById('mVisits').innerText = n(visits);
-    document.getElementById('mUsers').innerText = n(users);
-    document.getElementById('mViews').innerText = n(views);
-    document.getElementById('mBounce').innerText = bounce + '%';
-    document.getElementById('mPeriodLabel').innerText = from && to ? `(${from} — ${to})` : '';
-    renderMetrikaChart(inRange);
+    if (METRIKA_HISTORY.length) {
+      const r = inRange(METRIKA_HISTORY);
+      const visits = r.reduce((s, d) => s + (d.visits || 0), 0);
+      const users = r.reduce((s, d) => s + (d.users || 0), 0);
+      const views = r.reduce((s, d) => s + (d.pageviews || 0), 0);
+      const bw = r.reduce((s, d) => s + (d.bounceRate || 0) * (d.visits || 0), 0);
+      document.getElementById('mVisits').innerText = n(visits);
+      document.getElementById('mUsers').innerText = n(users);
+      document.getElementById('mViews').innerText = n(views);
+      document.getElementById('mBounce').innerText = (visits ? (bw / visits).toFixed(1) : '0') + '%';
+      renderMetrikaChart(r);
+    }
+    if (HISTORY.length) {
+      const r = inRange(HISTORY);
+      const shows = r.reduce((s, d) => s + (d.shows || 0), 0);
+      const clicks = r.reduce((s, d) => s + (d.clicks || 0), 0);
+      document.getElementById('mShows').innerText = n(shows);
+      document.getElementById('mClicks').innerText = n(clicks);
+      document.getElementById('mCtr').innerText = shows ? (clicks / shows * 100).toFixed(2) + '%' : '0%';
+      renderTrafficChart(r);
+    }
+    renderIndexChart(inRange(PAGES_IN), inRange(PAGES_EX));
+    if (LINK_HISTORY.length) renderLinkChart(inRange(LINK_HISTORY));
+
+    const lbl = from && to ? `(${fmtRu(from)} — ${fmtRu(to)})` : '';
+    document.querySelectorAll('.periodLabel').forEach(el => el.innerText = lbl);
   }
 
   // ============ ГРАФИКИ ============
@@ -302,66 +320,53 @@
     if (chartMetrika) chartMetrika.destroy();
     chartMetrika = new Chart(document.getElementById('chartMetrika'), {
       type: 'line',
-      data: {
-        labels: days.map(d => d.date.slice(5)),
-        datasets: [
-          { label: 'Из поиска', data: days.map(d => d.search_visits || 0), borderColor: '#FFCC00', backgroundColor: 'rgba(255,204,0,0.15)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 },
-          { label: 'Все визиты', data: days.map(d => d.visits || 0), borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.05)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 }
-        ]
-      },
-      options: chartOpts
+      data: { labels: days.map(d => d.date.slice(5)), datasets: [
+        { label: 'Из поиска', data: days.map(d => d.search_visits || 0), borderColor: '#FFCC00', backgroundColor: 'rgba(255,204,0,0.15)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 },
+        { label: 'Все визиты', data: days.map(d => d.visits || 0), borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.05)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 }
+      ] }, options: chartOpts
     });
   }
-
   function renderTrafficChart(days) {
     if (chartTraffic) chartTraffic.destroy();
     chartTraffic = new Chart(document.getElementById('chartTraffic'), {
       type: 'line',
-      data: {
-        labels: days.map(d => d.date.slice(5)),
-        datasets: [
-          { label: 'Показы', data: days.map(d => d.shows || 0), borderColor: '#FFCC00', backgroundColor: 'rgba(255,204,0,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2, yAxisID: 'y' },
-          { label: 'Клики', data: days.map(d => d.clicks || 0), borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2, yAxisID: 'y' }
-        ]
-      },
-      options: chartOpts
+      data: { labels: days.map(d => d.date.slice(5)), datasets: [
+        { label: 'Показы', data: days.map(d => d.shows || 0), borderColor: '#FFCC00', backgroundColor: 'rgba(255,204,0,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 },
+        { label: 'Клики', data: days.map(d => d.clicks || 0), borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 }
+      ] }, options: chartOpts
     });
   }
-
   function renderIndexChart(pin, pex) {
     if (chartIndex) chartIndex.destroy();
     const exMap = {}; pex.forEach(d => exMap[d.date] = d.value);
     chartIndex = new Chart(document.getElementById('chartIndex'), {
       type: 'line',
-      data: {
-        labels: pin.map(d => d.date.slice(5)),
-        datasets: [
-          { label: 'В поиске', data: pin.map(d => d.value || 0), borderColor: '#4ade80', backgroundColor: 'rgba(74,222,128,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 },
-          { label: 'Исключено', data: pin.map(d => exMap[d.date] || 0), borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 }
-        ]
-      },
-      options: chartOpts
+      data: { labels: pin.map(d => d.date.slice(5)), datasets: [
+        { label: 'В поиске', data: pin.map(d => d.value || 0), borderColor: '#4ade80', backgroundColor: 'rgba(74,222,128,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 },
+        { label: 'Исключено', data: pin.map(d => exMap[d.date] || 0), borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 }
+      ] }, options: chartOpts
+    });
+  }
+  function renderLinkChart(days) {
+    if (chartLinks) chartLinks.destroy();
+    chartLinks = new Chart(document.getElementById('chartLinks'), {
+      type: 'line',
+      data: { labels: days.map(d => d.date.slice(5)), datasets: [
+        { label: 'Внешние ссылки', data: days.map(d => d.value || 0), borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.15)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2 }
+      ] }, options: chartOpts
     });
   }
 
-  // ============ ПРИЧИНЫ ИСКЛЮЧЕНИЯ ============
+  // ============ СТАТИЧНЫЕ БЛОКИ ============
   function renderExcludedReasons(reasons) {
     const el = document.getElementById('excludedReasons');
     const filtered = (reasons || []).filter(r => !NOT_EXCLUSION.includes(r.reason));
     if (!filtered.length) { el.innerHTML = '<div class="text-white/40">Исключённых страниц не найдено 🎉</div>'; return; }
     el.innerHTML = filtered.map(r => {
       const info = REASON_INFO[r.reason] || { title: r.reason_ru || r.reason, desc: '' };
-      return `<div class="bg-zinc-900 rounded-3xl p-5">
-        <div class="flex items-center justify-between mb-1">
-          <div class="font-medium">${info.title}</div>
-          <div class="text-2xl font-bold text-red-400">${r.count}</div>
-        </div>
-        <div class="text-white/50 text-sm leading-relaxed">${info.desc}</div>
-      </div>`;
+      return `<div class="bg-zinc-900 rounded-3xl p-5"><div class="flex items-center justify-between mb-1"><div class="font-medium">${info.title}</div><div class="text-2xl font-bold text-red-400">${r.count}</div></div><div class="text-white/50 text-sm leading-relaxed">${info.desc}</div></div>`;
     }).join('');
   }
-
-  // ============ УГЛУБЛЁННАЯ АНАЛИТИКА ============
   function renderQueryAnalytics(qa) {
     document.getElementById('queryAnalyticsBlock').classList.remove('hidden');
     const b = qa.position_buckets || {};
@@ -369,21 +374,15 @@
     document.getElementById('posTop410').innerText = b.top4_10 ?? 0;
     document.getElementById('posTop1150').innerText = b.top11_50 ?? 0;
     document.getElementById('posTop50').innerText = b.top50plus ?? 0;
-
     const opp = qa.opportunities || [];
     document.getElementById('oppList').innerHTML = opp.length
-      ? opp.slice(0, 15).map(o => `<div class="flex justify-between gap-3 text-sm border-t border-white/5 py-2">
-          <span class="truncate">${o.query}</span>
-          <span class="text-white/50 whitespace-nowrap">${n(o.shows)} пок. · CTR ${(o.ctr || 0).toFixed(1)}% · поз. ${(o.position || 0).toFixed(1)}</span>
-        </div>`).join('')
+      ? opp.slice(0, 15).map(o => `<div class="flex justify-between gap-3 text-sm border-t border-white/5 py-2"><span class="truncate">${o.query}</span><span class="text-white/50 whitespace-nowrap">${n(o.shows)} пок. · CTR ${(o.ctr || 0).toFixed(1)}% · поз. ${(o.position || 0).toFixed(1)}</span></div>`).join('')
       : '<div class="text-white/40 text-sm">Нет подходящих запросов</div>';
-
     document.getElementById('newCount').innerText = '(' + (qa.new_count ?? 0) + ')';
     document.getElementById('lostCount').innerText = '(' + (qa.lost_count ?? 0) + ')';
     const fmtList = arr => (arr || []).slice(0, 20).map(q => `<div class="text-sm text-white/70 truncate">${typeof q === 'string' ? q : q.query}</div>`).join('') || '<div class="text-white/40 text-sm">—</div>';
     document.getElementById('newList').innerHTML = fmtList(qa.new_queries);
     document.getElementById('lostList').innerHTML = fmtList(qa.lost_queries);
-
     const it = qa.intents || {};
     const com = it.commercial?.count || 0, inf = it.informational?.count || 0, oth = it.other?.count || 0;
     if (chartIntents) chartIntents.destroy();
@@ -397,57 +396,48 @@
       <div><span class="inline-block w-3 h-3 rounded-full mr-2" style="background:#60a5fa"></span>Информационные — <b>${inf}</b></div>
       <div><span class="inline-block w-3 h-3 rounded-full mr-2" style="background:#71717a"></span>Прочие — <b>${oth}</b></div>`;
   }
-
-  // ============ ССЫЛОЧНЫЙ ПРОФИЛЬ ============
   function renderLinkProfile(lp) {
     document.getElementById('linkBlock').classList.remove('hidden');
     document.getElementById('linkTotal').innerText = n(lp.total_count);
     document.getElementById('linkNew').innerText = lp.new_count ?? 0;
     document.getElementById('linkBroken').innerText = lp.broken_count ?? 0;
-    const hist = lp.history || [];
-    if (chartLinks) chartLinks.destroy();
-    chartLinks = new Chart(document.getElementById('chartLinks'), {
-      type: 'line',
-      data: { labels: hist.map(d => d.date.slice(5)), datasets: [{ label: 'Внешние ссылки', data: hist.map(d => d.value || 0), borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.15)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2 }] },
-      options: chartOpts
-    });
+    LINK_HISTORY = lp.history || [];
     const fmt = arr => (arr || []).slice(0, 15).map(l => `<div class="text-sm text-white/70 truncate">${l.source || l}</div>`).join('') || '<div class="text-white/40 text-sm">—</div>';
     document.getElementById('newLinksList').innerHTML = fmt(lp.new_links);
     document.getElementById('brokenLinksList').innerHTML = fmt(lp.broken_links);
   }
-
-  // ============ ТОП ЗАПРОСОВ ============
   function renderQueriesTable(queries) {
     const tbody = document.getElementById('queriesTable');
     if (!queries.length) { tbody.innerHTML = '<tr><td colspan="5" class="text-white/40 py-4 text-center">Нет данных</td></tr>'; return; }
-    tbody.innerHTML = queries.map(q => `
-      <tr class="border-t border-white/5">
-        <td class="py-3 pr-4">${q.query}</td>
-        <td class="py-3 px-4 text-right">${n(q.shows)}</td>
-        <td class="py-3 px-4 text-right">${n(q.clicks)}</td>
-        <td class="py-3 px-4 text-right">${(q.ctr || 0).toFixed(2)}%</td>
-        <td class="py-3 pl-4 text-right">${(q.position || 0).toFixed(1)}</td>
-      </tr>`).join('');
+    tbody.innerHTML = queries.map(q => `<tr class="border-t border-white/5"><td class="py-3 pr-4">${q.query}</td><td class="py-3 px-4 text-right">${n(q.shows)}</td><td class="py-3 px-4 text-right">${n(q.clicks)}</td><td class="py-3 px-4 text-right">${(q.ctr || 0).toFixed(2)}%</td><td class="py-3 pl-4 text-right">${(q.position || 0).toFixed(1)}</td></tr>`).join('');
   }
 
-  // ============ ГЛАВНЫЙ РЕНДЕР ============
+  // ============ ЗАГРУЗКА И РЕНДЕР ============
+  async function loadData() {
+    try {
+      const res = await fetch('data.json?v=' + Date.now());
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      render(await res.json());
+    } catch (e) {
+      const s = document.getElementById('status');
+      s.innerHTML = '⚠️ Не удалось загрузить data.json. Запусти обновление в GitHub Actions. (' + e.message + ')';
+      s.classList.remove('hidden');
+    }
+  }
   function render(data) {
     document.getElementById('status').classList.add('hidden');
     document.getElementById('siteName').innerText = data.site || 'SEO Дашборд';
     document.getElementById('updated').innerText = data.updated ? new Date(data.updated).toLocaleString('ru') : '—';
     document.getElementById('mSqi').innerText = data.sqi ?? '—';
 
-    // 1. Метрика
+    // Метрика
     if (data.metrika_history && data.metrika_history.length) {
       METRIKA_HISTORY = data.metrika_history;
       document.getElementById('metrikaBlock').classList.remove('hidden');
-      document.getElementById('mDateControls').classList.remove('hidden');
       document.getElementById('metrikaChartCard').classList.remove('hidden');
-      setMetrikaPreset(30);
     } else if (data.metrika) {
       METRIKA_HISTORY = [];
       document.getElementById('metrikaBlock').classList.remove('hidden');
-      document.getElementById('mDateControls').classList.add('hidden');
       document.getElementById('metrikaChartCard').classList.add('hidden');
       const m = data.metrika;
       document.getElementById('mVisits').innerText = n(m.visits);
@@ -456,7 +446,7 @@
       document.getElementById('mBounce').innerText = (m.bounceRate ?? '—') + '%';
     }
 
-    // 2. Здоровье сайта
+    // Здоровье
     const health = data.health;
     if (health) {
       document.getElementById('healthBlock').classList.remove('hidden');
@@ -475,23 +465,19 @@
       ? sm.map(s => `<div class="flex justify-between gap-3 text-sm py-1.5 border-t border-white/5"><span class="truncate">${s.url}</span><span class="text-white/50 whitespace-nowrap">${n(s.urls)} URL${s.errors ? ` · <span class="text-red-400">${s.errors} ош.</span>` : ''}</span></div>`).join('')
       : '<div class="text-white/40">Нет sitemap</div>';
 
-    // 3-4. Поиск + динамика
+    // Серии для глобального диапазона
     HISTORY = data.history || [];
     PAGES_IN = data.pages_in_search || [];
     PAGES_EX = data.pages_excluded || [];
-    if (HISTORY.length) setPreset(30);
 
-    // 5. Причины исключения
+    // Статичные блоки
     renderExcludedReasons(data.excluded_reasons);
-
-    // 6. Углублённая аналитика
     if (data.query_analytics) renderQueryAnalytics(data.query_analytics);
-
-    // 7. Ссылочный профиль
     if (data.link_profile) renderLinkProfile(data.link_profile);
-
-    // 8. Топ запросов
     renderQueriesTable(data.queries || []);
+
+    // Применяем период по умолчанию (30 дней) ко всему
+    setGlobalPreset(30);
   }
 
   loadData();

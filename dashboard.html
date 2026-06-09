@@ -113,6 +113,28 @@
             </div>
         </div>
 
+        <!-- ССЫЛОЧНЫЙ ПРОФИЛЬ -->
+        <h2 class="text-white/50 text-sm font-medium mb-3">🔗 Ссылочный профиль</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔗 Всего внешних ссылок</div><div id="linkTotal" class="text-3xl font-semibold mt-2 text-purple-400">—</div></div>
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🆕 Новые ссылки</div><div id="linkNew" class="text-3xl font-semibold mt-2 text-green-400">—</div></div>
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">⚠️ Потерянные / битые</div><div id="linkBroken" class="text-3xl font-semibold mt-2 text-red-400">—</div></div>
+        </div>
+        <div class="bg-zinc-900 rounded-3xl p-6 mb-4">
+            <div class="text-sm text-white/60 mb-3">Динамика внешних ссылок</div>
+            <canvas id="chartLinks" height="120"></canvas>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
+            <div class="bg-zinc-900 rounded-3xl p-6">
+                <div class="text-sm text-white/60 mb-3">🆕 Новые ссылки (кто ссылается)</div>
+                <div id="newLinksList" class="space-y-2"></div>
+            </div>
+            <div class="bg-zinc-900 rounded-3xl p-6">
+                <div class="text-sm text-white/60 mb-3">⚠️ Потерянные / битые ссылки</div>
+                <div id="brokenLinksList" class="space-y-2"></div>
+            </div>
+        </div>
+
         <!-- МЕТРИКА -->
         <div id="metrikaBlock" class="hidden">
             <h2 class="text-white/50 text-sm font-medium mb-3">📊 Метрика (за 30 дней)</h2>
@@ -146,7 +168,7 @@
 
     <script>
         let HISTORY = [];
-        let chartTraffic = null, chartIndex = null, chartIntents = null;
+        let chartTraffic = null, chartIndex = null, chartIntents = null, chartLinks = null;
         const chartOpts = {
             responsive: true,
             interaction: { intersect: false, mode: 'index' },
@@ -283,7 +305,6 @@
             document.getElementById('posTop1150').innerText = b.top11_50 ?? '—';
             document.getElementById('posTop50').innerText = b.top50plus ?? '—';
 
-            // интенты
             const it = qa.intents || {};
             const comm = it.commercial || { count: 0, shows: 0, clicks: 0 };
             const info = it.informational || { count: 0, shows: 0, clicks: 0 };
@@ -302,7 +323,6 @@
             document.getElementById('intentLegend').innerHTML =
                 row('#FFCC00', 'Коммерческие', comm) + row('#60a5fa', 'Информационные', info) + row('#71717a', 'Прочие', oth);
 
-            // возможности
             const opps = qa.opportunities || [];
             document.getElementById('oppList').innerHTML = opps.length ? opps.map(q => `
                 <div class="flex items-center justify-between gap-3 text-sm border-b border-white/5 pb-2">
@@ -310,7 +330,6 @@
                     <span class="text-white/50 whitespace-nowrap text-xs">${q.shows.toLocaleString('ru')} пок. · CTR ${q.ctr}% · поз. ${q.position}</span>
                 </div>`).join('') : '<div class="text-white/40 text-sm">Нет подходящих запросов</div>';
 
-            // новые / потерянные
             const newQ = qa.new_queries || [];
             const lostQ = qa.lost_queries || [];
             document.getElementById('newCount').innerText = qa.new_count ? `(${qa.new_count})` : '';
@@ -318,6 +337,30 @@
             const li = q => `<div class="flex items-center justify-between gap-3 text-sm border-b border-white/5 pb-2"><span class="truncate">${q.query}</span><span class="text-white/40 whitespace-nowrap text-xs">${q.shows.toLocaleString('ru')} пок.</span></div>`;
             document.getElementById('newList').innerHTML = newQ.length ? newQ.map(li).join('') : '<div class="text-white/40 text-sm">Нет данных</div>';
             document.getElementById('lostList').innerHTML = lostQ.length ? lostQ.map(li).join('') : '<div class="text-white/40 text-sm">Нет данных</div>';
+        }
+
+        function renderLinkProfile(lp) {
+            lp = lp || {};
+            document.getElementById('linkTotal').innerText = (lp.total_count ?? 0).toLocaleString('ru');
+            document.getElementById('linkNew').innerText = (lp.new_count ?? 0).toLocaleString('ru');
+            document.getElementById('linkBroken').innerText = (lp.broken_count ?? 0).toLocaleString('ru');
+
+            const hist = lp.history || [];
+            if (chartLinks) chartLinks.destroy();
+            chartLinks = new Chart(document.getElementById('chartLinks'), {
+                type: 'line',
+                data: {
+                    labels: hist.map(d => d.date.slice(5)),
+                    datasets: [{ label: 'Внешние ссылки', data: hist.map(d => d.value), borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.12)', tension: 0.3, fill: true, pointRadius: 0 }]
+                },
+                options: chartOpts
+            });
+
+            const linkRow = l => `<div class="flex items-center justify-between gap-3 text-sm border-b border-white/5 pb-2"><span class="truncate text-white/70">${l.source || '—'}</span><span class="text-white/40 whitespace-nowrap text-xs">${l.date || ''}</span></div>`;
+            const nl = lp.new_links || [];
+            const bl = lp.broken_links || [];
+            document.getElementById('newLinksList').innerHTML = nl.length ? nl.map(linkRow).join('') : '<div class="text-white/40 text-sm">Нет данных</div>';
+            document.getElementById('brokenLinksList').innerHTML = bl.length ? bl.map(linkRow).join('') : '<div class="text-white/40 text-sm">Нет данных</div>';
         }
 
         function render(data) {
@@ -389,6 +432,9 @@
 
             // --- Углублённая аналитика запросов ---
             renderQueryAnalytics(data.query_analytics);
+
+            // --- Ссылочный профиль ---
+            renderLinkProfile(data.link_profile);
 
             // --- Метрика ---
             const m = data.metrika || {};

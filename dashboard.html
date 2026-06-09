@@ -1,510 +1,500 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дашборд • Яндекс.Вебмастер</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .spinning { animation: spin 0.8s linear infinite; display: inline-block; }
-        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.6; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Дашборд</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+  .date-input { background:#27272a; border:1px solid #3f3f46; border-radius:10px; padding:6px 10px; color:#fff; font-size:13px; }
+  .preset-btn { background:#27272a; border:1px solid #3f3f46; border-radius:10px; padding:6px 12px; font-size:13px; transition:.15s; }
+  .preset-btn:hover { background:#3f3f46; }
+</style>
 </head>
 <body class="bg-zinc-950 text-white min-h-screen">
-    <div class="border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between flex-wrap gap-4">
-            <div class="flex items-center gap-x-3">
-                <div class="w-10 h-10 bg-yellow-400 rounded-2xl flex items-center justify-center text-2xl">🕷️</div>
-                <div>
-                    <div class="text-2xl font-semibold" id="siteName">Вебмастер</div>
-                    <div class="text-xs text-white/40" id="updated">загрузка…</div>
-                </div>
-            </div>
-            <button onclick="loadData()" class="flex items-center gap-x-2 px-4 py-2 text-sm bg-yellow-400 text-black font-medium rounded-2xl hover:bg-yellow-300 transition-colors">
-                <span id="refreshIcon">🔄</span> Обновить
-            </button>
-        </div>
+<div class="max-w-6xl mx-auto px-4 py-8">
+
+  <!-- HEADER -->
+  <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
+    <div class="flex items-center gap-3">
+      <div class="text-4xl">🕷️</div>
+      <div>
+        <h1 id="siteName" class="text-2xl font-bold">—</h1>
+        <div class="text-white/40 text-sm">Обновлено: <span id="updated">—</span></div>
+      </div>
     </div>
+    <button onclick="loadData()" class="bg-yellow-400 text-black font-semibold rounded-2xl px-5 py-2.5 hover:bg-yellow-300 transition">
+      🔄 Обновить
+    </button>
+  </div>
 
-    <div class="max-w-7xl mx-auto px-6 py-8">
-        <div id="status" class="hidden mb-6 p-4 bg-red-500/10 text-red-400 rounded-2xl text-sm"></div>
+  <div id="status" class="hidden bg-red-500/10 text-red-300 rounded-2xl p-4 mb-6"></div>
 
-        <!-- МЕТРИКА (первый блок) -->
-        <div id="metrikaBlock" class="hidden">
-            <div class="flex items-center justify-between flex-wrap gap-3 mb-3">
-                <h2 class="text-white/50 text-sm font-medium">📊 Метрика <span id="mPeriodLabel" class="text-white/30"></span></h2>
-                <div id="mDateControls" class="hidden flex items-center gap-2 flex-wrap">
-                    <input type="date" id="mDateFrom" onchange="applyMetrikaRange()" class="bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-sm">
-                    <span class="text-white/30">—</span>
-                    <input type="date" id="mDateTo" onchange="applyMetrikaRange()" class="bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-sm">
-                    <button onclick="setMetrikaPreset(7)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">7 дн</button>
-                    <button onclick="setMetrikaPreset(30)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">30 дн</button>
-                    <button onclick="setMetrikaPreset(90)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">90 дн</button>
-                </div>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Визиты</div><div id="mVisits" class="text-3xl font-semibold mt-2">—</div></div>
-                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Посетители</div><div id="mUsers" class="text-3xl font-semibold mt-2">—</div></div>
-                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Просмотры</div><div id="mViews" class="text-3xl font-semibold mt-2">—</div></div>
-                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Отказы</div><div id="mBounce" class="text-3xl font-semibold mt-2">—</div></div>
-            </div>
-        </div>
-
-        <!-- ЗДОРОВЬЕ САЙТА -->
-        <h2 class="text-white/50 text-sm font-medium mb-3">🚦 Здоровье сайта</h2>
-        <div id="healthBanner" class="mb-4 p-4 rounded-2xl text-sm font-medium bg-zinc-900">Проверяем…</div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔴 Критические</div><div id="hFatal" class="text-3xl font-semibold mt-2">—</div></div>
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🟡 Возможные</div><div id="hPossible" class="text-3xl font-semibold mt-2">—</div></div>
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔵 Рекомендации</div><div id="hRec" class="text-3xl font-semibold mt-2">—</div></div>
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🗺️ Sitemap (URL)</div><div id="hSitemap" class="text-3xl font-semibold mt-2">—</div></div>
-        </div>
-        <div id="problemsList" class="space-y-2 mb-3"></div>
-        <div id="sitemapList" class="space-y-2 mb-8"></div>
-
-        <!-- ПОИСК + ВЫБОР ДАТЫ -->
-        <div class="flex items-center justify-between flex-wrap gap-3 mb-3">
-            <h2 class="text-white/50 text-sm font-medium">🔍 Поиск <span id="periodLabel" class="text-white/30"></span></h2>
-            <div id="dateControls" class="hidden flex items-center gap-2 flex-wrap">
-                <input type="date" id="dateFrom" onchange="applyDateRange()" class="bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-sm">
-                <span class="text-white/30">—</span>
-                <input type="date" id="dateTo" onchange="applyDateRange()" class="bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-sm">
-                <button onclick="setPreset(7)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">7 дн</button>
-                <button onclick="setPreset(30)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">30 дн</button>
-                <button onclick="setPreset(90)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">90 дн</button>
-            </div>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Показы</div><div id="mShows" class="text-3xl font-semibold mt-2">—</div></div>
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Клики</div><div id="mClicks" class="text-3xl font-semibold mt-2">—</div></div>
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Средний CTR</div><div id="mCtr" class="text-3xl font-semibold mt-2">—</div></div>
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">ИКС сайта</div><div id="mSqi" class="text-3xl font-semibold mt-2">—</div></div>
-        </div>
-
-        <!-- ДИНАМИКА ВО ВРЕМЕНИ -->
-        <h2 class="text-white/50 text-sm font-medium mb-3">📉 Динамика во времени (90 дней)</h2>
-        <div class="grid md:grid-cols-2 gap-4 mb-4">
-            <div class="bg-zinc-900 rounded-3xl p-6">
-                <div class="text-sm text-white/60 mb-3">Показы и клики по дням</div>
-                <canvas id="chartTraffic" height="130"></canvas>
-            </div>
-            <div class="bg-zinc-900 rounded-3xl p-6">
-                <div class="text-sm text-white/60 mb-3">Страницы: в поиске и исключённые</div>
-                <canvas id="chartIndex" height="130"></canvas>
-            </div>
-        </div>
-        <div class="bg-zinc-900 rounded-3xl p-6 mb-8">
-            <div class="text-sm text-white/60 mb-4">🚫 Причины исключения страниц (по выборке)</div>
-            <div id="excludedReasons" class="space-y-3"></div>
-        </div>
-
-        <!-- УГЛУБЛЁННАЯ АНАЛИТИКА ЗАПРОСОВ -->
-        <h2 class="text-white/50 text-sm font-medium mb-3">🔬 Углублённая аналитика запросов</h2>
-        <div class="text-sm text-white/60 mb-2">Распределение по позициям</div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🥇 ТОП‑3 (1–3)</div><div id="posTop3" class="text-3xl font-semibold mt-2 text-green-400">—</div></div>
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔟 Позиция 4–10</div><div id="posTop410" class="text-3xl font-semibold mt-2 text-yellow-400">—</div></div>
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">📄 Позиция 11–50</div><div id="posTop1150" class="text-3xl font-semibold mt-2 text-orange-400">—</div></div>
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">📉 За ТОП‑50</div><div id="posTop50" class="text-3xl font-semibold mt-2 text-red-400">—</div></div>
-        </div>
-        <div class="grid md:grid-cols-2 gap-4 mb-6">
-            <div class="bg-zinc-900 rounded-3xl p-6">
-                <div class="text-sm text-white/60 mb-4">🎯 Группировка по интентам</div>
-                <div class="flex items-center gap-6 flex-wrap">
-                    <div style="width:150px"><canvas id="chartIntents"></canvas></div>
-                    <div id="intentLegend" class="text-sm space-y-3 flex-1 min-w-[200px]"></div>
-                </div>
-            </div>
-            <div class="bg-zinc-900 rounded-3xl p-6">
-                <div class="text-sm text-white/60 mb-1">💎 Запросы‑возможности</div>
-                <div class="text-xs text-white/40 mb-4">Высокие показы + низкий CTR + позиция 4–10 → «дешёвый» рост кликов</div>
-                <div id="oppList" class="space-y-2"></div>
-            </div>
-        </div>
-        <div class="grid md:grid-cols-2 gap-4 mb-8">
-            <div class="bg-zinc-900 rounded-3xl p-6">
-                <div class="text-sm text-white/60 mb-3">🆕 Новые запросы <span id="newCount" class="text-green-400"></span></div>
-                <div id="newList" class="space-y-2"></div>
-            </div>
-            <div class="bg-zinc-900 rounded-3xl p-6">
-                <div class="text-sm text-white/60 mb-3">⚠️ Потерянные запросы <span id="lostCount" class="text-red-400"></span></div>
-                <div id="lostList" class="space-y-2"></div>
-            </div>
-        </div>
-
-        <!-- ССЫЛОЧНЫЙ ПРОФИЛЬ -->
-        <h2 class="text-white/50 text-sm font-medium mb-3">🔗 Ссылочный профиль</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔗 Всего внешних ссылок</div><div id="linkTotal" class="text-3xl font-semibold mt-2 text-purple-400">—</div></div>
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🆕 Новые ссылки</div><div id="linkNew" class="text-3xl font-semibold mt-2 text-green-400">—</div></div>
-            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">⚠️ Потерянные / битые</div><div id="linkBroken" class="text-3xl font-semibold mt-2 text-red-400">—</div></div>
-        </div>
-        <div class="bg-zinc-900 rounded-3xl p-6 mb-4">
-            <div class="text-sm text-white/60 mb-3">Динамика внешних ссылок</div>
-            <canvas id="chartLinks" height="120"></canvas>
-        </div>
-        <div class="grid md:grid-cols-2 gap-4 mb-8">
-            <div class="bg-zinc-900 rounded-3xl p-6">
-                <div class="text-sm text-white/60 mb-3">🆕 Новые ссылки (кто ссылается)</div>
-                <div id="newLinksList" class="space-y-2"></div>
-            </div>
-            <div class="bg-zinc-900 rounded-3xl p-6">
-                <div class="text-sm text-white/60 mb-3">⚠️ Потерянные / битые ссылки</div>
-                <div id="brokenLinksList" class="space-y-2"></div>
-            </div>
-        </div>
-
-        <!-- ТОП ЗАПРОСОВ -->
-        <h2 class="text-white/50 text-sm font-medium mb-3">📈 Топ запросов (за 30 дней)</h2>
-        <div class="bg-zinc-900 border border-white/10 rounded-3xl p-7">
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead class="text-white/50">
-                        <tr class="border-b border-white/10">
-                            <th class="text-left pb-3">Запрос</th>
-                            <th class="text-right pb-3">Показы</th>
-                            <th class="text-right pb-3">Клики</th>
-                            <th class="text-right pb-3">CTR</th>
-                            <th class="text-right pb-3">Позиция</th>
-                        </tr>
-                    </thead>
-                    <tbody id="queriesTable" class="divide-y divide-white/10"></tbody>
-                </table>
-            </div>
-        </div>
+  <!-- ============ 1. ЯНДЕКС.МЕТРИКА (первый блок) ============ -->
+  <div id="metrikaBlock" class="hidden mb-8">
+    <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+      <h2 class="text-lg font-semibold">📊 Яндекс.Метрика <span id="mPeriodLabel" class="text-white/40 text-sm font-normal"></span></h2>
+      <div id="mDateControls" class="flex items-center gap-2 flex-wrap">
+        <button onclick="setMetrikaPreset(7)" class="preset-btn">7 дней</button>
+        <button onclick="setMetrikaPreset(30)" class="preset-btn">30 дней</button>
+        <button onclick="setMetrikaPreset(90)" class="preset-btn">90 дней</button>
+        <input type="date" id="mDateFrom" onchange="applyMetrikaRange()" class="date-input">
+        <input type="date" id="mDateTo" onchange="applyMetrikaRange()" class="date-input">
+      </div>
     </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Визиты</div><div id="mVisits" class="text-3xl font-semibold mt-2">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Посетители</div><div id="mUsers" class="text-3xl font-semibold mt-2">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Просмотры</div><div id="mViews" class="text-3xl font-semibold mt-2">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Отказы</div><div id="mBounce" class="text-3xl font-semibold mt-2">—</div></div>
+    </div>
+    <div id="metrikaChartCard" class="bg-zinc-900 rounded-3xl p-6 mb-8">
+      <div class="text-sm text-white/60 mb-3">📈 Поисковый трафик по дням</div>
+      <canvas id="chartMetrika" height="90"></canvas>
+    </div>
+  </div>
 
-    <script>
-        let HISTORY = [];
-        let METRIKA_HISTORY = [];
-        let chartTraffic = null, chartIndex = null, chartIntents = null, chartLinks = null;
-        const chartOpts = {
-            responsive: true,
-            interaction: { intersect: false, mode: 'index' },
-            plugins: { legend: { labels: { color: 'rgba(255,255,255,0.7)', boxWidth: 12 } } },
-            scales: {
-                x: { ticks: { color: 'rgba(255,255,255,0.4)', maxTicksLimit: 8 }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                y: { ticks: { color: 'rgba(255,255,255,0.4)' }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
-            }
-        };
+  <!-- ============ 2. ЗДОРОВЬЕ САЙТА ============ -->
+  <div id="healthBlock" class="hidden mb-8">
+    <h2 class="text-lg font-semibold mb-3">🚦 Здоровье сайта</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔴 Фатальные</div><div id="hFatal" class="text-3xl font-semibold mt-2">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🟡 Возможные</div><div id="hPossible" class="text-3xl font-semibold mt-2">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔵 Рекомендации</div><div id="hRec" class="text-3xl font-semibold mt-2">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🗺️ Sitemap</div><div id="hSitemap" class="text-3xl font-semibold mt-2">—</div></div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="bg-zinc-900 rounded-3xl p-6">
+        <div class="text-sm text-white/60 mb-2">Проблемы диагностики</div>
+        <div id="problemsList"></div>
+      </div>
+      <div class="bg-zinc-900 rounded-3xl p-6">
+        <div class="text-sm text-white/60 mb-2">Файлы Sitemap</div>
+        <div id="sitemapList"></div>
+      </div>
+    </div>
+  </div>
 
-        const REASON_INFO = {
-            CLEAN_PARAMS: { title: "Очистка параметров (Clean-param)", desc: "Страница со служебными параметрами в URL (?utm=, ?sort=, ?from= и т.п.) склеена с основным адресом по директиве Clean-param. Обычно это нормально — так не плодятся дубли. ⚠️ Проверь, что под правило не попали важные страницы фильтров/каталога." },
-            ROBOTS_URL_ERROR: { title: "Ошибка при загрузке страницы", desc: "Робот не смог корректно получить страницу: ошибка сервера, таймаут, редирект или ограничение доступа. ⚠️ Проверь код ответа (должен быть 200), скорость сервера и правила robots.txt." },
-            DUPLICATE: { title: "Дубликат", desc: "Содержимое повторяет другую страницу сайта — в поиске остаётся одна версия. ✅ Настрой rel=canonical на основную страницу или склей дубли." },
-            DUPLICATE_DESCRIPTION: { title: "Дубликат описания", desc: "У страницы description/контент совпадает с другой. ✅ Сделай мета-теги и текст уникальными." },
-            LOW_QUALITY: { title: "Низкое качество", desc: "Алгоритм счёл страницу малополезной: мало уникального текста, «тонкий» или шаблонный контент. ✅ Усиль контент: уникальный текст, польза, ответы на запросы пользователя." },
-            INSUFFICIENT_QUALITY: { title: "Недостаточно качественная", desc: "Странице не хватает ценности для попадания в поиск. ✅ Добавь уникальный экспертный контент, структуру, ответы на вопросы." },
-            NOT_CANONICAL: { title: "Неканоническая", desc: "Страница через rel=canonical указывает на другой основной адрес, поэтому в поиск идёт каноническая версия. ✅ Норма, если canonical настроен верно." },
-            HOST_ERROR: { title: "Ошибка сервера", desc: "Сайт или страница были недоступны во время обхода (ошибки 5xx, недоступность хоста). ⚠️ Проверь стабильность и скорость хостинга." },
-            HTTP_ERROR: { title: "Ошибка HTTP", desc: "Страница вернула ошибку (например, 404 или 5xx). ⚠️ Восстанови страницу или настрой 301-редирект на актуальную." },
-            DISALLOWED_BY_USER: { title: "Запрещено в robots.txt", desc: "Страница закрыта от индексации директивой Disallow в robots.txt. ✅ Если так задумано — ок; иначе убери запрет." },
-            DISALLOWED_IN_ROBOTS: { title: "Запрещено в robots.txt", desc: "Доступ к странице запрещён правилами robots.txt. ✅ Проверь, что не закрыты нужные разделы." },
-            NO_INDEX: { title: "Запрет meta noindex", desc: "На странице стоит meta noindex или заголовок X-Robots-Tag: noindex. ⚠️ Убери, если страница должна индексироваться." },
-            NOINDEX: { title: "Запрет meta noindex", desc: "Индексация запрещена через meta-тег robots. ⚠️ Сними запрет для нужных страниц." },
-            REDIRECT_NOTSEARCHABLE: { title: "Редирект", desc: "Страница перенаправляет на другой адрес, поэтому сама в поиск не попадает. ✅ Норма для переездов и склейки." },
-            REDIRECT: { title: "Редирект", desc: "Адрес перенаправляет на другую страницу. ✅ Норма, если редирект задуман." },
-            PARSER_ERROR: { title: "Ошибка обработки", desc: "Робот не смог разобрать содержимое (некорректный HTML или тяжёлый JS-рендеринг). ⚠️ Проверь вёрстку и доступность контента без JavaScript." },
-            NOT_MAIN_MIRROR: { title: "Не главное зеркало", desc: "Это неосновная версия сайта (www / без www, http / https). ✅ Убедись, что выбрано правильное главное зеркало." }
-        };
-        const NOT_EXCLUSION = ["APPEARED_IN_SEARCH", "WAS_FOUND_IN_SEARCH", "FOUND_IN_SEARCH"];
+  <!-- ============ 3. ПОИСК (показы / клики / CTR / ИКС) ============ -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+      <h2 class="text-lg font-semibold">🔍 Поиск <span id="periodLabel" class="text-white/40 text-sm font-normal"></span></h2>
+      <div id="dateControls" class="flex items-center gap-2 flex-wrap">
+        <button onclick="setPreset(7)" class="preset-btn">7 дней</button>
+        <button onclick="setPreset(30)" class="preset-btn">30 дней</button>
+        <button onclick="setPreset(90)" class="preset-btn">90 дней</button>
+        <input type="date" id="dateFrom" onchange="applyDateRange()" class="date-input">
+        <input type="date" id="dateTo" onchange="applyDateRange()" class="date-input">
+      </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Показы</div><div id="mShows" class="text-3xl font-semibold mt-2">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Клики</div><div id="mClicks" class="text-3xl font-semibold mt-2">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">CTR</div><div id="mCtr" class="text-3xl font-semibold mt-2">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">ИКС</div><div id="mSqi" class="text-3xl font-semibold mt-2">—</div></div>
+    </div>
+  </div>
 
-        async function loadData() {
-            const icon = document.getElementById('refreshIcon');
-            const status = document.getElementById('status');
-            icon.classList.add('spinning');
-            status.classList.add('hidden');
-            try {
-                const res = await fetch('data.json?v=' + Date.now());
-                if (!res.ok) throw new Error('data.json не найден');
-                render(await res.json());
-            } catch (e) {
-                status.classList.remove('hidden');
-                status.innerText = 'Не удалось загрузить данные: ' + e.message;
-            } finally {
-                icon.classList.remove('spinning');
-            }
-        }
+  <!-- ============ 4. ДИНАМИКА ВО ВРЕМЕНИ ============ -->
+  <div class="grid md:grid-cols-2 gap-4 mb-8">
+    <div class="bg-zinc-900 rounded-3xl p-6">
+      <div class="text-sm text-white/60 mb-3">Показы и клики</div>
+      <canvas id="chartTraffic" height="100"></canvas>
+    </div>
+    <div class="bg-zinc-900 rounded-3xl p-6">
+      <div class="text-sm text-white/60 mb-3">Страницы: в поиске и исключённые</div>
+      <canvas id="chartIndex" height="100"></canvas>
+    </div>
+  </div>
 
-        // --- Поиск: дата ---
-        function setPreset(days) {
-            if (!HISTORY.length) return;
-            const last = HISTORY[HISTORY.length - 1].date;
-            const fromDate = new Date(last);
-            fromDate.setDate(fromDate.getDate() - (days - 1));
-            document.getElementById('dateTo').value = last;
-            document.getElementById('dateFrom').value = fromDate.toISOString().slice(0, 10);
-            applyDateRange();
-        }
-        function applyDateRange() {
-            if (!HISTORY.length) return;
-            const from = document.getElementById('dateFrom').value;
-            const to = document.getElementById('dateTo').value;
-            const inRange = HISTORY.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
-            const shows = inRange.reduce((s, d) => s + (d.shows || 0), 0);
-            const clicks = inRange.reduce((s, d) => s + (d.clicks || 0), 0);
-            const ctr = shows ? (clicks / shows * 100).toFixed(2) : '0';
-            document.getElementById('mShows').innerText = shows.toLocaleString('ru');
-            document.getElementById('mClicks').innerText = clicks.toLocaleString('ru');
-            document.getElementById('mCtr').innerText = ctr + '%';
-            document.getElementById('periodLabel').innerText = from && to ? `(${from} — ${to})` : '';
-        }
+  <!-- ============ 5. ПРИЧИНЫ ИСКЛЮЧЕНИЯ ============ -->
+  <div class="mb-8">
+    <h2 class="text-lg font-semibold mb-3">🚫 Причины исключения страниц</h2>
+    <div id="excludedReasons" class="grid md:grid-cols-2 gap-4"></div>
+  </div>
 
-        // --- Метрика: дата ---
-        function setMetrikaPreset(days) {
-            if (!METRIKA_HISTORY.length) return;
-            const last = METRIKA_HISTORY[METRIKA_HISTORY.length - 1].date;
-            const fromDate = new Date(last);
-            fromDate.setDate(fromDate.getDate() - (days - 1));
-            document.getElementById('mDateTo').value = last;
-            document.getElementById('mDateFrom').value = fromDate.toISOString().slice(0, 10);
-            applyMetrikaRange();
-        }
-        function applyMetrikaRange() {
-            if (!METRIKA_HISTORY.length) return;
-            const from = document.getElementById('mDateFrom').value;
-            const to = document.getElementById('mDateTo').value;
-            const inRange = METRIKA_HISTORY.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
-            const visits = inRange.reduce((s, d) => s + (d.visits || 0), 0);
-            const users = inRange.reduce((s, d) => s + (d.users || 0), 0);
-            const views = inRange.reduce((s, d) => s + (d.pageviews || 0), 0);
-            const bounceW = inRange.reduce((s, d) => s + (d.bounceRate || 0) * (d.visits || 0), 0);
-            const bounce = visits ? (bounceW / visits).toFixed(1) : '0';
-            document.getElementById('mVisits').innerText = visits.toLocaleString('ru');
-            document.getElementById('mUsers').innerText = users.toLocaleString('ru');
-            document.getElementById('mViews').innerText = views.toLocaleString('ru');
-            document.getElementById('mBounce').innerText = bounce + '%';
-            document.getElementById('mPeriodLabel').innerText = from && to ? `(${from} — ${to})` : '';
-        }
+  <!-- ============ 6. УГЛУБЛЁННАЯ АНАЛИТИКА ЗАПРОСОВ ============ -->
+  <div id="queryAnalyticsBlock" class="hidden mb-8">
+    <h2 class="text-lg font-semibold mb-3">🎯 Углублённая аналитика запросов</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">ТОП-3</div><div id="posTop3" class="text-3xl font-semibold mt-2 text-green-400">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Позиции 4–10</div><div id="posTop410" class="text-3xl font-semibold mt-2 text-yellow-400">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Позиции 11–50</div><div id="posTop1150" class="text-3xl font-semibold mt-2 text-orange-400">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">50+</div><div id="posTop50" class="text-3xl font-semibold mt-2 text-red-400">—</div></div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4 mb-4">
+      <div class="bg-zinc-900 rounded-3xl p-6">
+        <div class="text-sm text-white/60 mb-3">Группировка по интентам</div>
+        <div class="flex items-center gap-6">
+          <div class="w-40"><canvas id="chartIntents"></canvas></div>
+          <div id="intentLegend" class="text-sm space-y-2"></div>
+        </div>
+      </div>
+      <div class="bg-zinc-900 rounded-3xl p-6">
+        <div class="text-sm text-white/60 mb-3">💡 Запросы-возможности (высокие показы, низкий CTR, позиция 4–10)</div>
+        <div id="oppList" class="max-h-56 overflow-y-auto"></div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="bg-zinc-900 rounded-3xl p-6">
+        <div class="text-sm text-white/60 mb-3">🟢 Новые запросы <span id="newCount" class="text-green-400 font-semibold"></span></div>
+        <div id="newList" class="max-h-48 overflow-y-auto space-y-1"></div>
+      </div>
+      <div class="bg-zinc-900 rounded-3xl p-6">
+        <div class="text-sm text-white/60 mb-3">🔴 Потерянные запросы <span id="lostCount" class="text-red-400 font-semibold"></span></div>
+        <div id="lostList" class="max-h-48 overflow-y-auto space-y-1"></div>
+      </div>
+    </div>
+  </div>
 
-        function renderTrafficChart(hist) {
-            if (chartTraffic) chartTraffic.destroy();
-            chartTraffic = new Chart(document.getElementById('chartTraffic'), {
-                type: 'line',
-                data: {
-                    labels: hist.map(d => d.date.slice(5)),
-                    datasets: [
-                        { label: 'Показы', data: hist.map(d => d.shows), borderColor: '#FFCC00', backgroundColor: 'rgba(255,204,0,0.1)', tension: 0.3, fill: true, pointRadius: 0 },
-                        { label: 'Клики', data: hist.map(d => d.clicks), borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.1)', tension: 0.3, fill: true, pointRadius: 0 }
-                    ]
-                },
-                options: chartOpts
-            });
-        }
+  <!-- ============ 7. ССЫЛОЧНЫЙ ПРОФИЛЬ ============ -->
+  <div id="linkBlock" class="hidden mb-8">
+    <h2 class="text-lg font-semibold mb-3">🔗 Ссылочный профиль</h2>
+    <div class="grid grid-cols-3 gap-4 mb-4">
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Всего ссылок</div><div id="linkTotal" class="text-3xl font-semibold mt-2 text-purple-400">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Новые</div><div id="linkNew" class="text-3xl font-semibold mt-2 text-green-400">—</div></div>
+      <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Потерянные</div><div id="linkBroken" class="text-3xl font-semibold mt-2 text-red-400">—</div></div>
+    </div>
+    <div class="bg-zinc-900 rounded-3xl p-6 mb-4">
+      <div class="text-sm text-white/60 mb-3">Динамика количества внешних ссылок</div>
+      <canvas id="chartLinks" height="90"></canvas>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="bg-zinc-900 rounded-3xl p-6">
+        <div class="text-sm text-white/60 mb-3">🟢 Новые ссылки</div>
+        <div id="newLinksList" class="max-h-48 overflow-y-auto space-y-1"></div>
+      </div>
+      <div class="bg-zinc-900 rounded-3xl p-6">
+        <div class="text-sm text-white/60 mb-3">🔴 Потерянные / битые ссылки</div>
+        <div id="brokenLinksList" class="max-h-48 overflow-y-auto space-y-1"></div>
+      </div>
+    </div>
+  </div>
 
-        function renderIndexChart(inSearch, excluded) {
-            if (chartIndex) chartIndex.destroy();
-            const byDate = {};
-            inSearch.forEach(d => { byDate[d.date] = byDate[d.date] || {}; byDate[d.date].inS = d.value; });
-            excluded.forEach(d => { byDate[d.date] = byDate[d.date] || {}; byDate[d.date].ex = d.value; });
-            const dates = Object.keys(byDate).sort();
-            chartIndex = new Chart(document.getElementById('chartIndex'), {
-                type: 'line',
-                data: {
-                    labels: dates.map(d => d.slice(5)),
-                    datasets: [
-                        { label: 'В поиске', data: dates.map(d => byDate[d].inS ?? null), borderColor: '#4ade80', backgroundColor: 'rgba(74,222,128,0.1)', tension: 0.3, fill: true, pointRadius: 0, spanGaps: true },
-                        { label: 'Исключено', data: dates.map(d => byDate[d].ex ?? null), borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,0.1)', tension: 0.3, fill: true, pointRadius: 0, spanGaps: true }
-                    ]
-                },
-                options: chartOpts
-            });
-        }
+  <!-- ============ 8. ТОП ЗАПРОСОВ ============ -->
+  <div class="bg-zinc-900 rounded-3xl p-6 mb-8">
+    <h2 class="text-lg font-semibold mb-4">📋 Топ запросов</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="text-white/40">
+          <tr>
+            <th class="text-left pb-2 pr-4">Запрос</th>
+            <th class="text-right pb-2 px-4">Показы</th>
+            <th class="text-right pb-2 px-4">Клики</th>
+            <th class="text-right pb-2 px-4">CTR</th>
+            <th class="text-right pb-2 pl-4">Позиция</th>
+          </tr>
+        </thead>
+        <tbody id="queriesTable"></tbody>
+      </table>
+    </div>
+  </div>
 
-        function renderExcludedReasons(reasons) {
-            const el = document.getElementById('excludedReasons');
-            const real = (reasons || []).filter(r => !NOT_EXCLUSION.includes(r.reason));
-            if (!real.length) {
-                el.innerHTML = '<div class="text-white/40 text-sm">Исключённых страниц не обнаружено 🎉 Яндекс в основном добавляет страницы в поиск — это хороший знак.</div>';
-                return;
-            }
-            const max = Math.max(...real.map(r => r.count));
-            el.innerHTML = real.map(r => {
-                const info = REASON_INFO[r.reason] || { title: r.reason_ru || r.reason, desc: "" };
-                return `
-                <div class="border border-white/5 rounded-2xl p-4">
-                    <div class="flex justify-between items-center text-sm mb-2">
-                        <span class="font-medium">${info.title}</span>
-                        <span class="text-white/50 bg-white/5 px-2 py-0.5 rounded-full text-xs">${r.count}</span>
-                    </div>
-                    <div class="h-2 bg-white/5 rounded-full overflow-hidden mb-3"><div class="h-full bg-red-400/70 rounded-full" style="width:${Math.round(r.count / max * 100)}%"></div></div>
-                    ${info.desc ? `<div class="text-xs text-white/45 leading-relaxed">${info.desc}</div>` : ''}
-                </div>`;
-            }).join('');
-        }
+  <div class="text-center text-white/30 text-xs pb-8">Данные: Яндекс.Вебмастер + Яндекс.Метрика · обновляется автоматически</div>
+</div>
 
-        function renderQueryAnalytics(qa) {
-            qa = qa || {};
-            const b = qa.position_buckets || {};
-            document.getElementById('posTop3').innerText = b.top3 ?? '—';
-            document.getElementById('posTop410').innerText = b.top4_10 ?? '—';
-            document.getElementById('posTop1150').innerText = b.top11_50 ?? '—';
-            document.getElementById('posTop50').innerText = b.top50plus ?? '—';
+<script>
+  // ============ ГЛОБАЛЬНЫЕ ДАННЫЕ ============
+  let HISTORY = [], METRIKA_HISTORY = [], PAGES_IN = [], PAGES_EX = [];
+  let chartTraffic = null, chartIndex = null, chartIntents = null, chartLinks = null, chartMetrika = null;
 
-            const it = qa.intents || {};
-            const comm = it.commercial || { count: 0, shows: 0, clicks: 0 };
-            const info = it.informational || { count: 0, shows: 0, clicks: 0 };
-            const oth = it.other || { count: 0, shows: 0, clicks: 0 };
-            const totalC = (comm.count + info.count + oth.count) || 1;
-            if (chartIntents) chartIntents.destroy();
-            chartIntents = new Chart(document.getElementById('chartIntents'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['Коммерческие', 'Информационные', 'Прочие'],
-                    datasets: [{ data: [comm.count, info.count, oth.count], backgroundColor: ['#FFCC00', '#60a5fa', '#71717a'], borderWidth: 0 }]
-                },
-                options: { plugins: { legend: { display: false } }, cutout: '62%' }
-            });
-            const row = (color, name, o) => `<div class="flex items-center justify-between gap-2"><span><span class="inline-block w-3 h-3 rounded-full mr-2 align-middle" style="background:${color}"></span>${name}</span><span class="text-white/50 text-xs">${o.count} (${Math.round(o.count / totalC * 100)}%) · ${o.clicks.toLocaleString('ru')} кл.</span></div>`;
-            document.getElementById('intentLegend').innerHTML =
-                row('#FFCC00', 'Коммерческие', comm) + row('#60a5fa', 'Информационные', info) + row('#71717a', 'Прочие', oth);
+  const chartOpts = {
+    responsive: true,
+    plugins: { legend: { labels: { color: '#a1a1aa', boxWidth: 12, padding: 14 } } },
+    scales: {
+      x: { ticks: { color: '#71717a', maxTicksLimit: 12 }, grid: { color: 'rgba(255,255,255,0.05)' } },
+      y: { ticks: { color: '#71717a' }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
+    }
+  };
 
-            const opps = qa.opportunities || [];
-            document.getElementById('oppList').innerHTML = opps.length ? opps.map(q => `
-                <div class="flex items-center justify-between gap-3 text-sm border-b border-white/5 pb-2">
-                    <span class="truncate">${q.query}</span>
-                    <span class="text-white/50 whitespace-nowrap text-xs">${q.shows.toLocaleString('ru')} пок. · CTR ${q.ctr}% · поз. ${q.position}</span>
-                </div>`).join('') : '<div class="text-white/40 text-sm">Нет подходящих запросов</div>';
+  // Описания причин исключения
+  const REASON_INFO = {
+    CLEAN_PARAMS: { title: 'Очищенные GET-параметры (Clean-param)', desc: 'Страницы с параметрами в URL (utm, сортировки, фильтры), которые объединены с основной. Это нормально — дубли склеены. Проверь, что директива Clean-param в robots.txt настроена верно.' },
+    APPEARED_IN_SEARCH: { title: 'Появились в поиске', desc: 'Это НЕ исключение — страницы добавлены в поиск. 👍' },
+    ROBOTS_URL_ERROR: { title: 'Запрещено в robots.txt', desc: 'Страницы закрыты от индексации правилами robots.txt. Если они важны для SEO — открой их; если служебные (корзина, личный кабинет) — всё ок.' },
+    DUPLICATE: { title: 'Дубликат', desc: 'Контент совпадает с другой страницей. Настрой rel=canonical или 301-редирект на основную версию.' },
+    LOW_QUALITY: { title: 'Низкое качество', desc: 'Яндекс счёл страницу малополезной (мало текста, тонкий контент). Добавь уникальное описание, характеристики, отзывы.' },
+    NOINDEX: { title: 'Запрещено мета-тегом noindex', desc: 'Страница закрыта тегом <meta name="robots" content="noindex">. Убери тег, если страница нужна в поиске.' },
+    NOT_CANONICAL: { title: 'Неканоническая', desc: 'Страница указывает на другую как каноническую — в поиск идёт каноническая версия.' },
+    HTTP_ERROR: { title: 'Ошибка HTTP', desc: 'Сервер вернул ошибку (4xx/5xx). Проверь доступность страницы.' },
+    REDIRECT: { title: 'Редирект', desc: 'Страница перенаправляет на другую — в поиске участвует конечный URL.' }
+  };
+  // Коды, которые НЕ являются исключением
+  const NOT_EXCLUSION = ['APPEARED_IN_SEARCH', 'SEARCHABLE', 'INDEXED'];
 
-            const newQ = qa.new_queries || [];
-            const lostQ = qa.lost_queries || [];
-            document.getElementById('newCount').innerText = qa.new_count ? `(${qa.new_count})` : '';
-            document.getElementById('lostCount').innerText = qa.lost_count ? `(${qa.lost_count})` : '';
-            const li = q => `<div class="flex items-center justify-between gap-3 text-sm border-b border-white/5 pb-2"><span class="truncate">${q.query}</span><span class="text-white/40 whitespace-nowrap text-xs">${q.shows.toLocaleString('ru')} пок.</span></div>`;
-            document.getElementById('newList').innerHTML = newQ.length ? newQ.map(li).join('') : '<div class="text-white/40 text-sm">Нет данных</div>';
-            document.getElementById('lostList').innerHTML = lostQ.length ? lostQ.map(li).join('') : '<div class="text-white/40 text-sm">Нет данных</div>';
-        }
+  function sevIcon(s) {
+    return s === 'FATAL' ? '🔴' : s === 'CRITICAL' ? '🟠' : s === 'POSSIBLE_PROBLEM' ? '🟡' : '🔵';
+  }
+  function n(v) { return (v || 0).toLocaleString('ru'); }
 
-        function renderLinkProfile(lp) {
-            lp = lp || {};
-            document.getElementById('linkTotal').innerText = (lp.total_count ?? 0).toLocaleString('ru');
-            document.getElementById('linkNew').innerText = (lp.new_count ?? 0).toLocaleString('ru');
-            document.getElementById('linkBroken').innerText = (lp.broken_count ?? 0).toLocaleString('ru');
+  // ============ ЗАГРУЗКА ============
+  async function loadData() {
+    try {
+      const res = await fetch('data.json?v=' + Date.now());
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      render(data);
+    } catch (e) {
+      const s = document.getElementById('status');
+      s.innerHTML = '⚠️ Не удалось загрузить data.json. Запусти обновление в GitHub Actions. (' + e.message + ')';
+      s.classList.remove('hidden');
+    }
+  }
 
-            const hist = lp.history || [];
-            if (chartLinks) chartLinks.destroy();
-            chartLinks = new Chart(document.getElementById('chartLinks'), {
-                type: 'line',
-                data: {
-                    labels: hist.map(d => d.date.slice(5)),
-                    datasets: [{ label: 'Внешние ссылки', data: hist.map(d => d.value), borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.12)', tension: 0.3, fill: true, pointRadius: 0 }]
-                },
-                options: chartOpts
-            });
+  // ============ ПРЕСЕТЫ ДАТ ============
+  function isoMinus(days) { const d = new Date(); d.setDate(d.getDate() - days); return d.toISOString().slice(0, 10); }
+  function isoToday() { return new Date().toISOString().slice(0, 10); }
 
-            const linkRow = l => `<div class="flex items-center justify-between gap-3 text-sm border-b border-white/5 pb-2"><span class="truncate text-white/70">${l.source || '—'}</span><span class="text-white/40 whitespace-nowrap text-xs">${l.date || ''}</span></div>`;
-            const nl = lp.new_links || [];
-            const bl = lp.broken_links || [];
-            document.getElementById('newLinksList').innerHTML = nl.length ? nl.map(linkRow).join('') : '<div class="text-white/40 text-sm">Нет данных</div>';
-            document.getElementById('brokenLinksList').innerHTML = bl.length ? bl.map(linkRow).join('') : '<div class="text-white/40 text-sm">Нет данных</div>';
-        }
+  function setPreset(days) {
+    document.getElementById('dateTo').value = isoToday();
+    document.getElementById('dateFrom').value = isoMinus(days);
+    applyDateRange();
+  }
+  function setMetrikaPreset(days) {
+    document.getElementById('mDateTo').value = isoToday();
+    document.getElementById('mDateFrom').value = isoMinus(days);
+    applyMetrikaRange();
+  }
 
-        function render(data) {
-            document.getElementById('siteName').innerText = data.site || 'Вебмастер';
-            document.getElementById('updated').innerText = 'Обновлено: ' + (data.updated || '—');
+  // ============ ПОИСК: пересчёт по датам ============
+  function applyDateRange() {
+    if (!HISTORY.length) return;
+    const from = document.getElementById('dateFrom').value;
+    const to = document.getElementById('dateTo').value;
+    const inRange = HISTORY.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
+    const shows = inRange.reduce((s, d) => s + (d.shows || 0), 0);
+    const clicks = inRange.reduce((s, d) => s + (d.clicks || 0), 0);
+    document.getElementById('mShows').innerText = n(shows);
+    document.getElementById('mClicks').innerText = n(clicks);
+    document.getElementById('mCtr').innerText = shows ? (clicks / shows * 100).toFixed(2) + '%' : '0%';
+    document.getElementById('periodLabel').innerText = from && to ? `(${from} — ${to})` : '';
+    renderTrafficChart(inRange);
+    const pin = PAGES_IN.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
+    const pex = PAGES_EX.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
+    renderIndexChart(pin, pex);
+  }
 
-            // --- Метрика (первый блок) ---
-            METRIKA_HISTORY = data.metrika_history || [];
-            const m = data.metrika || {};
-            if (METRIKA_HISTORY.length) {
-                document.getElementById('metrikaBlock').classList.remove('hidden');
-                document.getElementById('mDateControls').classList.remove('hidden');
-                const minD = METRIKA_HISTORY[0].date, maxD = METRIKA_HISTORY[METRIKA_HISTORY.length - 1].date;
-                ['mDateFrom', 'mDateTo'].forEach(id => { const el = document.getElementById(id); el.min = minD; el.max = maxD; });
-                setMetrikaPreset(30);
-            } else if (m && Object.keys(m).length > 0) {
-                document.getElementById('metrikaBlock').classList.remove('hidden');
-                document.getElementById('mDateControls').classList.add('hidden');
-                document.getElementById('mVisits').innerText = (m.visits || 0).toLocaleString('ru');
-                document.getElementById('mUsers').innerText = (m.users || 0).toLocaleString('ru');
-                document.getElementById('mViews').innerText = (m.pageviews || 0).toLocaleString('ru');
-                document.getElementById('mBounce').innerText = (m.bounceRate ?? '—') + '%';
-            }
+  // ============ МЕТРИКА: пересчёт по датам ============
+  function applyMetrikaRange() {
+    if (!METRIKA_HISTORY.length) return;
+    const from = document.getElementById('mDateFrom').value;
+    const to = document.getElementById('mDateTo').value;
+    const inRange = METRIKA_HISTORY.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
+    const visits = inRange.reduce((s, d) => s + (d.visits || 0), 0);
+    const users = inRange.reduce((s, d) => s + (d.users || 0), 0);
+    const views = inRange.reduce((s, d) => s + (d.pageviews || 0), 0);
+    const bounceW = inRange.reduce((s, d) => s + (d.bounceRate || 0) * (d.visits || 0), 0);
+    const bounce = visits ? (bounceW / visits).toFixed(1) : '0';
+    document.getElementById('mVisits').innerText = n(visits);
+    document.getElementById('mUsers').innerText = n(users);
+    document.getElementById('mViews').innerText = n(views);
+    document.getElementById('mBounce').innerText = bounce + '%';
+    document.getElementById('mPeriodLabel').innerText = from && to ? `(${from} — ${to})` : '';
+    renderMetrikaChart(inRange);
+  }
 
-            // --- Здоровье ---
-            const health = data.health || {};
-            const c = health.counts || {};
-            const fatal = (c.FATAL || 0) + (c.CRITICAL || 0);
-            const possible = c.POSSIBLE_PROBLEM || 0;
-            const rec = c.RECOMMENDATION || 0;
-            document.getElementById('hFatal').innerText = fatal;
-            document.getElementById('hPossible').innerText = possible;
-            document.getElementById('hRec').innerText = rec;
-            const banner = document.getElementById('healthBanner');
-            if (fatal > 0) {
-                banner.className = 'mb-4 p-4 rounded-2xl text-sm font-medium bg-red-500/15 text-red-300';
-                banner.innerText = '🔴 Есть критические проблемы — проверь срочно!';
-            } else if (possible > 0) {
-                banner.className = 'mb-4 p-4 rounded-2xl text-sm font-medium bg-yellow-500/15 text-yellow-300';
-                banner.innerText = '🟡 Есть возможные проблемы — стоит посмотреть.';
-            } else {
-                banner.className = 'mb-4 p-4 rounded-2xl text-sm font-medium bg-green-500/15 text-green-300';
-                banner.innerText = '✅ Критических проблем не обнаружено.';
-            }
-            const sevColor = {
-                FATAL: 'bg-red-500/15 text-red-300', CRITICAL: 'bg-red-500/15 text-red-300',
-                POSSIBLE_PROBLEM: 'bg-yellow-500/15 text-yellow-300', RECOMMENDATION: 'bg-blue-500/15 text-blue-300',
-            };
-            const problems = health.problems || [];
-            document.getElementById('problemsList').innerHTML = problems.length
-                ? problems.map(p => `
-                    <div class="flex items-center justify-between bg-zinc-900 rounded-2xl px-5 py-3 text-sm">
-                        <span>${p.title}</span>
-                        <span class="text-xs px-3 py-1 rounded-full ${sevColor[p.severity] || 'bg-white/10 text-white/60'}">${p.severity_ru || p.severity}</span>
-                    </div>`).join('')
-                : '<div class="text-white/40 text-sm">Активных проблем нет 🎉</div>';
-            const sitemaps = data.sitemaps || [];
-            document.getElementById('hSitemap').innerText = sitemaps.reduce((s, mp) => s + (mp.urls || 0), 0).toLocaleString('ru') || '—';
-            document.getElementById('sitemapList').innerHTML = sitemaps.map(mp => `
-                <div class="bg-zinc-900 rounded-2xl px-5 py-3 text-sm flex items-center justify-between flex-wrap gap-2">
-                    <span class="text-white/70 break-all">🗺️ ${mp.url}</span>
-                    <span class="text-white/50">URL: ${(mp.urls||0).toLocaleString('ru')} · Ошибки: ${mp.errors||0}</span>
-                </div>`).join('');
+  // ============ ГРАФИКИ ============
+  function renderMetrikaChart(days) {
+    if (chartMetrika) chartMetrika.destroy();
+    chartMetrika = new Chart(document.getElementById('chartMetrika'), {
+      type: 'line',
+      data: {
+        labels: days.map(d => d.date.slice(5)),
+        datasets: [
+          { label: 'Из поиска', data: days.map(d => d.search_visits || 0), borderColor: '#FFCC00', backgroundColor: 'rgba(255,204,0,0.15)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 },
+          { label: 'Все визиты', data: days.map(d => d.visits || 0), borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.05)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 }
+        ]
+      },
+      options: chartOpts
+    });
+  }
 
-            // --- Поиск + дата ---
-            HISTORY = data.history || [];
-            if (HISTORY.length) {
-                document.getElementById('dateControls').classList.remove('hidden');
-                const minD = HISTORY[0].date, maxD = HISTORY[HISTORY.length - 1].date;
-                ['dateFrom', 'dateTo'].forEach(id => { const el = document.getElementById(id); el.min = minD; el.max = maxD; });
-                setPreset(30);
-            } else {
-                document.getElementById('dateControls').classList.add('hidden');
-                const q = data.queries || [];
-                const shows = q.reduce((s, x) => s + (x.shows || 0), 0);
-                const clicks = q.reduce((s, x) => s + (x.clicks || 0), 0);
-                document.getElementById('mShows').innerText = shows.toLocaleString('ru');
-                document.getElementById('mClicks').innerText = clicks.toLocaleString('ru');
-                document.getElementById('mCtr').innerText = (shows ? (clicks / shows * 100).toFixed(2) : '0') + '%';
-            }
-            document.getElementById('mSqi').innerText = data.sqi ?? '—';
+  function renderTrafficChart(days) {
+    if (chartTraffic) chartTraffic.destroy();
+    chartTraffic = new Chart(document.getElementById('chartTraffic'), {
+      type: 'line',
+      data: {
+        labels: days.map(d => d.date.slice(5)),
+        datasets: [
+          { label: 'Показы', data: days.map(d => d.shows || 0), borderColor: '#FFCC00', backgroundColor: 'rgba(255,204,0,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2, yAxisID: 'y' },
+          { label: 'Клики', data: days.map(d => d.clicks || 0), borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2, yAxisID: 'y' }
+        ]
+      },
+      options: chartOpts
+    });
+  }
 
-            // --- Графики динамики ---
-            renderTrafficChart(HISTORY);
-            renderIndexChart(data.pages_in_search || [], data.pages_excluded || []);
-            renderExcludedReasons(data.excluded_reasons || []);
+  function renderIndexChart(pin, pex) {
+    if (chartIndex) chartIndex.destroy();
+    const exMap = {}; pex.forEach(d => exMap[d.date] = d.value);
+    chartIndex = new Chart(document.getElementById('chartIndex'), {
+      type: 'line',
+      data: {
+        labels: pin.map(d => d.date.slice(5)),
+        datasets: [
+          { label: 'В поиске', data: pin.map(d => d.value || 0), borderColor: '#4ade80', backgroundColor: 'rgba(74,222,128,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 },
+          { label: 'Исключено', data: pin.map(d => exMap[d.date] || 0), borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 }
+        ]
+      },
+      options: chartOpts
+    });
+  }
 
-            // --- Углублённая аналитика запросов ---
-            renderQueryAnalytics(data.query_analytics);
+  // ============ ПРИЧИНЫ ИСКЛЮЧЕНИЯ ============
+  function renderExcludedReasons(reasons) {
+    const el = document.getElementById('excludedReasons');
+    const filtered = (reasons || []).filter(r => !NOT_EXCLUSION.includes(r.reason));
+    if (!filtered.length) { el.innerHTML = '<div class="text-white/40">Исключённых страниц не найдено 🎉</div>'; return; }
+    el.innerHTML = filtered.map(r => {
+      const info = REASON_INFO[r.reason] || { title: r.reason_ru || r.reason, desc: '' };
+      return `<div class="bg-zinc-900 rounded-3xl p-5">
+        <div class="flex items-center justify-between mb-1">
+          <div class="font-medium">${info.title}</div>
+          <div class="text-2xl font-bold text-red-400">${r.count}</div>
+        </div>
+        <div class="text-white/50 text-sm leading-relaxed">${info.desc}</div>
+      </div>`;
+    }).join('');
+  }
 
-            // --- Ссылочный профиль ---
-            renderLinkProfile(data.link_profile);
+  // ============ УГЛУБЛЁННАЯ АНАЛИТИКА ============
+  function renderQueryAnalytics(qa) {
+    document.getElementById('queryAnalyticsBlock').classList.remove('hidden');
+    const b = qa.position_buckets || {};
+    document.getElementById('posTop3').innerText = b.top3 ?? 0;
+    document.getElementById('posTop410').innerText = b.top4_10 ?? 0;
+    document.getElementById('posTop1150').innerText = b.top11_50 ?? 0;
+    document.getElementById('posTop50').innerText = b.top50plus ?? 0;
 
-            // --- Таблица запросов ---
-            const queries = data.queries || [];
-            document.getElementById('queriesTable').innerHTML = queries.map(q => `
-                <tr>
-                    <td class="py-3">${q.query}</td>
-                    <td class="text-right font-mono">${(q.shows || 0).toLocaleString('ru')}</td>
-                    <td class="text-right font-mono">${(q.clicks || 0).toLocaleString('ru')}</td>
-                    <td class="text-right">${q.ctr}%</td>
-                    <td class="text-right font-semibold">${q.position}</td>
-                </tr>`).join('') || '<tr><td class="py-3 text-white/40">Пока нет данных</td></tr>';
-        }
+    const opp = qa.opportunities || [];
+    document.getElementById('oppList').innerHTML = opp.length
+      ? opp.slice(0, 15).map(o => `<div class="flex justify-between gap-3 text-sm border-t border-white/5 py-2">
+          <span class="truncate">${o.query}</span>
+          <span class="text-white/50 whitespace-nowrap">${n(o.shows)} пок. · CTR ${(o.ctr || 0).toFixed(1)}% · поз. ${(o.position || 0).toFixed(1)}</span>
+        </div>`).join('')
+      : '<div class="text-white/40 text-sm">Нет подходящих запросов</div>';
 
-        loadData();
-    </script>
+    document.getElementById('newCount').innerText = '(' + (qa.new_count ?? 0) + ')';
+    document.getElementById('lostCount').innerText = '(' + (qa.lost_count ?? 0) + ')';
+    const fmtList = arr => (arr || []).slice(0, 20).map(q => `<div class="text-sm text-white/70 truncate">${typeof q === 'string' ? q : q.query}</div>`).join('') || '<div class="text-white/40 text-sm">—</div>';
+    document.getElementById('newList').innerHTML = fmtList(qa.new_queries);
+    document.getElementById('lostList').innerHTML = fmtList(qa.lost_queries);
+
+    const it = qa.intents || {};
+    const com = it.commercial?.count || 0, inf = it.informational?.count || 0, oth = it.other?.count || 0;
+    if (chartIntents) chartIntents.destroy();
+    chartIntents = new Chart(document.getElementById('chartIntents'), {
+      type: 'doughnut',
+      data: { labels: ['Коммерческие', 'Информационные', 'Прочие'], datasets: [{ data: [com, inf, oth], backgroundColor: ['#FFCC00', '#60a5fa', '#71717a'], borderWidth: 0 }] },
+      options: { plugins: { legend: { display: false } }, cutout: '62%' }
+    });
+    document.getElementById('intentLegend').innerHTML = `
+      <div><span class="inline-block w-3 h-3 rounded-full mr-2" style="background:#FFCC00"></span>Коммерческие — <b>${com}</b></div>
+      <div><span class="inline-block w-3 h-3 rounded-full mr-2" style="background:#60a5fa"></span>Информационные — <b>${inf}</b></div>
+      <div><span class="inline-block w-3 h-3 rounded-full mr-2" style="background:#71717a"></span>Прочие — <b>${oth}</b></div>`;
+  }
+
+  // ============ ССЫЛОЧНЫЙ ПРОФИЛЬ ============
+  function renderLinkProfile(lp) {
+    document.getElementById('linkBlock').classList.remove('hidden');
+    document.getElementById('linkTotal').innerText = n(lp.total_count);
+    document.getElementById('linkNew').innerText = lp.new_count ?? 0;
+    document.getElementById('linkBroken').innerText = lp.broken_count ?? 0;
+    const hist = lp.history || [];
+    if (chartLinks) chartLinks.destroy();
+    chartLinks = new Chart(document.getElementById('chartLinks'), {
+      type: 'line',
+      data: { labels: hist.map(d => d.date.slice(5)), datasets: [{ label: 'Внешние ссылки', data: hist.map(d => d.value || 0), borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.15)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2 }] },
+      options: chartOpts
+    });
+    const fmt = arr => (arr || []).slice(0, 15).map(l => `<div class="text-sm text-white/70 truncate">${l.source || l}</div>`).join('') || '<div class="text-white/40 text-sm">—</div>';
+    document.getElementById('newLinksList').innerHTML = fmt(lp.new_links);
+    document.getElementById('brokenLinksList').innerHTML = fmt(lp.broken_links);
+  }
+
+  // ============ ТОП ЗАПРОСОВ ============
+  function renderQueriesTable(queries) {
+    const tbody = document.getElementById('queriesTable');
+    if (!queries.length) { tbody.innerHTML = '<tr><td colspan="5" class="text-white/40 py-4 text-center">Нет данных</td></tr>'; return; }
+    tbody.innerHTML = queries.map(q => `
+      <tr class="border-t border-white/5">
+        <td class="py-3 pr-4">${q.query}</td>
+        <td class="py-3 px-4 text-right">${n(q.shows)}</td>
+        <td class="py-3 px-4 text-right">${n(q.clicks)}</td>
+        <td class="py-3 px-4 text-right">${(q.ctr || 0).toFixed(2)}%</td>
+        <td class="py-3 pl-4 text-right">${(q.position || 0).toFixed(1)}</td>
+      </tr>`).join('');
+  }
+
+  // ============ ГЛАВНЫЙ РЕНДЕР ============
+  function render(data) {
+    document.getElementById('status').classList.add('hidden');
+    document.getElementById('siteName').innerText = data.site || 'SEO Дашборд';
+    document.getElementById('updated').innerText = data.updated ? new Date(data.updated).toLocaleString('ru') : '—';
+    document.getElementById('mSqi').innerText = data.sqi ?? '—';
+
+    // 1. Метрика
+    if (data.metrika_history && data.metrika_history.length) {
+      METRIKA_HISTORY = data.metrika_history;
+      document.getElementById('metrikaBlock').classList.remove('hidden');
+      document.getElementById('mDateControls').classList.remove('hidden');
+      document.getElementById('metrikaChartCard').classList.remove('hidden');
+      setMetrikaPreset(30);
+    } else if (data.metrika) {
+      METRIKA_HISTORY = [];
+      document.getElementById('metrikaBlock').classList.remove('hidden');
+      document.getElementById('mDateControls').classList.add('hidden');
+      document.getElementById('metrikaChartCard').classList.add('hidden');
+      const m = data.metrika;
+      document.getElementById('mVisits').innerText = n(m.visits);
+      document.getElementById('mUsers').innerText = n(m.users);
+      document.getElementById('mViews').innerText = n(m.pageviews);
+      document.getElementById('mBounce').innerText = (m.bounceRate ?? '—') + '%';
+    }
+
+    // 2. Здоровье сайта
+    const health = data.health;
+    if (health) {
+      document.getElementById('healthBlock').classList.remove('hidden');
+      const c = health.counts || {};
+      document.getElementById('hFatal').innerText = c.fatal ?? 0;
+      document.getElementById('hPossible').innerText = c.possible ?? 0;
+      document.getElementById('hRec').innerText = c.recommendation ?? 0;
+      const probs = health.problems || [];
+      document.getElementById('problemsList').innerHTML = probs.length
+        ? probs.map(p => `<div class="flex items-center gap-2 text-sm py-1.5 border-t border-white/5"><span>${sevIcon(p.severity)}</span><span class="flex-1">${p.title}</span><span class="text-white/40 text-xs">${p.severity_ru || ''}</span></div>`).join('')
+        : '<div class="text-white/40">Проблем не найдено 🎉</div>';
+    }
+    const sm = data.sitemaps || [];
+    document.getElementById('hSitemap').innerText = sm.length;
+    document.getElementById('sitemapList').innerHTML = sm.length
+      ? sm.map(s => `<div class="flex justify-between gap-3 text-sm py-1.5 border-t border-white/5"><span class="truncate">${s.url}</span><span class="text-white/50 whitespace-nowrap">${n(s.urls)} URL${s.errors ? ` · <span class="text-red-400">${s.errors} ош.</span>` : ''}</span></div>`).join('')
+      : '<div class="text-white/40">Нет sitemap</div>';
+
+    // 3-4. Поиск + динамика
+    HISTORY = data.history || [];
+    PAGES_IN = data.pages_in_search || [];
+    PAGES_EX = data.pages_excluded || [];
+    if (HISTORY.length) setPreset(30);
+
+    // 5. Причины исключения
+    renderExcludedReasons(data.excluded_reasons);
+
+    // 6. Углублённая аналитика
+    if (data.query_analytics) renderQueryAnalytics(data.query_analytics);
+
+    // 7. Ссылочный профиль
+    if (data.link_profile) renderLinkProfile(data.link_profile);
+
+    // 8. Топ запросов
+    renderQueriesTable(data.queries || []);
+  }
+
+  loadData();
+</script>
 </body>
 </html>

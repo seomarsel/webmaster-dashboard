@@ -28,6 +28,7 @@ def safe(fn, default):
 today = datetime.date.today()
 date_from = (today - datetime.timedelta(days=30)).isoformat()
 date_to = today.isoformat()
+date_from_90 = (today - datetime.timedelta(days=90)).isoformat()
 
 WM = "https://api.webmaster.yandex.net/v4"
 
@@ -42,7 +43,7 @@ host_id = host["host_id"]
 
 summary = safe(lambda: get(f"{WM}/user/{user_id}/hosts/{host_id}/summary"), {})
 
-# ============ ЗАПРОСЫ ============
+# ============ ЗАПРОСЫ (топ) ============
 queries_raw = safe(lambda: get(
     f"{WM}/user/{user_id}/hosts/{host_id}/search-queries/popular/",
     params={
@@ -67,12 +68,35 @@ for q in queries_raw.get("queries", []):
         "position": round(ind.get("AVG_SHOW_POSITION") or 0, 1),
     })
 
-# ============ ЗДОРОВЬЕ САЙТА (диагностика) ============
+# ============ ИСТОРИЯ ПО ДНЯМ (для выбора даты) ============
+history_raw = safe(lambda: get(
+    f"{WM}/user/{user_id}/hosts/{host_id}/search-queries/all/history/",
+    params={
+        "query_indicator": ["TOTAL_SHOWS", "TOTAL_CLICKS"],
+        "date_from": date_from_90,
+        "date_to": date_to,
+    },
+), {})
+print(f"📅 История, ключи ответа: {list(history_raw.keys())}")
+
+ind_hist = history_raw.get("indicators", {}) or {}
+hist = {}
+for pt in ind_hist.get("TOTAL_SHOWS", []):
+    d = (pt.get("date") or "")[:10]
+    if d:
+        hist.setdefault(d, {"shows": 0, "clicks": 0})
+        hist[d]["shows"] = pt.get("value") or 0
+for pt in ind_hist.get("TOTAL_CLICKS", []):
+    d = (pt.get("date") or "")[:10]
+    if d:
+        hist.setdefault(d, {"shows": 0, "clicks": 0})
+        hist[d]["clicks"] = pt.get("value") or 0
+history = [{"date": d, "shows": v["shows"], "clicks": v["clicks"]} for d, v in sorted(hist.items())]
+
+# ============ ЗДОРОВЬЕ САЙТА ============
 SEVERITY_RU = {
-    "FATAL": "Фатальная",
-    "CRITICAL": "Критическая",
-    "POSSIBLE_PROBLEM": "Возможная",
-    "RECOMMENDATION": "Рекомендация",
+    "FATAL": "Фатальная", "CRITICAL": "Критическая",
+    "POSSIBLE_PROBLEM": "Возможная", "RECOMMENDATION": "Рекомендация",
 }
 PROBLEM_RU = {
     "SITE_ERROR": "Ошибки на сайте",
@@ -91,7 +115,6 @@ PROBLEM_RU = {
     "DOCUMENTS_MISSING_DESCRIPTION": "Страницы без description",
     "DOCUMENTS_MISSING_TITLE": "Страницы без title",
     "NOT_MOBILE_FRIENDLY": "Нет мобильной версии",
-    "TOO_MANY_DOMAINS_ON_SEARCH": "Много поддоменов в поиске",
 }
 
 diag_raw = safe(lambda: get(f"{WM}/user/{user_id}/hosts/{host_id}/diagnostics/"), {})
@@ -99,14 +122,12 @@ print(f"🩺 Диагностика, ключи ответа: {list(diag_raw.key
 
 problems = []
 counts = {"FATAL": 0, "CRITICAL": 0, "POSSIBLE_PROBLEM": 0, "RECOMMENDATION": 0}
-
 problems_data = diag_raw.get("problems")
 items = []
 if isinstance(problems_data, dict):
     items = list(problems_data.items())
 elif isinstance(problems_data, list):
     items = [(p.get("type") or p.get("problem_type") or "", p) for p in problems_data if isinstance(p, dict)]
-
 for ptype, pdata in items:
     if not isinstance(pdata, dict):
         continue
@@ -161,6 +182,7 @@ result = {
     "site": SITE,
     "sqi": summary.get("sqi"),
     "queries": queries,
+    "history": history,
     "health": {"problems": problems, "counts": counts},
     "sitemaps": sitemaps,
     "metrika": metrika,
@@ -169,4 +191,4 @@ result = {
 with open("data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
-print(f"✅ Готово! Запросов: {len(queries)}, Проблем: {len(problems)}, Sitemap: {len(sitemaps)}")
+print(f"✅ Готово! Дней истории: {len(history)}, Запросов: {len(queries)}, Проблем: {len(problems)}")

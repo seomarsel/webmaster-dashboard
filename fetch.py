@@ -68,7 +68,7 @@ for q in queries_raw.get("queries", []):
         "position": round(ind.get("AVG_SHOW_POSITION") or 0, 1),
     })
 
-# ============ ИСТОРИЯ ПО ДНЯМ (для выбора даты) ============
+# ============ ИСТОРИЯ ПОКАЗОВ/КЛИКОВ ПО ДНЯМ ============
 history_raw = safe(lambda: get(
     f"{WM}/user/{user_id}/hosts/{host_id}/search-queries/all/history/",
     params={
@@ -77,7 +77,7 @@ history_raw = safe(lambda: get(
         "date_to": date_to,
     },
 ), {})
-print(f"📅 История, ключи ответа: {list(history_raw.keys())}")
+print(f"📅 История запросов, ключи: {list(history_raw.keys())}")
 
 ind_hist = history_raw.get("indicators", {}) or {}
 hist = {}
@@ -92,6 +92,53 @@ for pt in ind_hist.get("TOTAL_CLICKS", []):
         hist.setdefault(d, {"shows": 0, "clicks": 0})
         hist[d]["clicks"] = pt.get("value") or 0
 history = [{"date": d, "shows": v["shows"], "clicks": v["clicks"]} for d, v in sorted(hist.items())]
+
+# ============ ДИНАМИКА ИНДЕКСА: В ПОИСКЕ / ИСКЛЮЧЕНО ============
+def history_series(path):
+    raw = safe(lambda: get(
+        f"{WM}/user/{user_id}/hosts/{host_id}/{path}",
+        params={"date_from": date_from_90, "date_to": date_to},
+    ), {})
+    print(f"📈 {path} ключи: {list(raw.keys())}")
+    out = []
+    for pt in (raw.get("history") or []):
+        d = (pt.get("date") or "")[:10]
+        if d:
+            out.append({"date": d, "value": pt.get("value") or 0})
+    return out
+
+pages_in_search = history_series("search-urls/in-search/history/")
+pages_excluded = history_series("search-urls/excluded/history/")
+
+# причины исключения (по выборке URL)
+REASON_RU = {
+    "HTTP_ERROR": "Ошибка HTTP",
+    "REDIRECT": "Редирект",
+    "CLEAN_PARAM": "Clean-param",
+    "DISALLOWED_BY_USER": "Запрещено в robots.txt",
+    "DISALLOWED_BY_META": "Запрет в meta robots",
+    "NOINDEX": "noindex",
+    "DUPLICATE": "Дубликат",
+    "LOW_QUALITY": "Низкое качество",
+    "INSUFFICIENT_QUALITY": "Недостаточное качество",
+    "NOT_CANONICAL": "Неканоническая",
+    "PARSER_ERROR": "Ошибка обработки",
+    "NOT_MAIN_MIRROR": "Не главное зеркало",
+    "REDIRECT_NOTSEARCHABLE": "Редирект",
+}
+excluded_raw = safe(lambda: get(
+    f"{WM}/user/{user_id}/hosts/{host_id}/search-urls/excluded/samples/",
+    params={"limit": 100},
+), {})
+print(f"🚫 Исключённые, ключи: {list(excluded_raw.keys())}")
+reason_counts = {}
+for s in (excluded_raw.get("samples") or []):
+    reason = s.get("excluded_url_status") or s.get("status") or s.get("reason") or "OTHER"
+    reason_counts[reason] = reason_counts.get(reason, 0) + 1
+excluded_reasons = sorted(
+    [{"reason": k, "reason_ru": REASON_RU.get(k, k), "count": v} for k, v in reason_counts.items()],
+    key=lambda x: -x["count"],
+)
 
 # ============ ЗДОРОВЬЕ САЙТА ============
 SEVERITY_RU = {
@@ -116,19 +163,17 @@ PROBLEM_RU = {
     "DOCUMENTS_MISSING_TITLE": "Страницы без title",
     "NOT_MOBILE_FRIENDLY": "Нет мобильной версии",
 }
-
 diag_raw = safe(lambda: get(f"{WM}/user/{user_id}/hosts/{host_id}/diagnostics/"), {})
-print(f"🩺 Диагностика, ключи ответа: {list(diag_raw.keys())}")
-
+print(f"🩺 Диагностика, ключи: {list(diag_raw.keys())}")
 problems = []
 counts = {"FATAL": 0, "CRITICAL": 0, "POSSIBLE_PROBLEM": 0, "RECOMMENDATION": 0}
 problems_data = diag_raw.get("problems")
-items = []
+diag_items = []
 if isinstance(problems_data, dict):
-    items = list(problems_data.items())
+    diag_items = list(problems_data.items())
 elif isinstance(problems_data, list):
-    items = [(p.get("type") or p.get("problem_type") or "", p) for p in problems_data if isinstance(p, dict)]
-for ptype, pdata in items:
+    diag_items = [(p.get("type") or p.get("problem_type") or "", p) for p in problems_data if isinstance(p, dict)]
+for ptype, pdata in diag_items:
     if not isinstance(pdata, dict):
         continue
     state = str(pdata.get("state", "")).upper()
@@ -183,6 +228,9 @@ result = {
     "sqi": summary.get("sqi"),
     "queries": queries,
     "history": history,
+    "pages_in_search": pages_in_search,
+    "pages_excluded": pages_excluded,
+    "excluded_reasons": excluded_reasons,
     "health": {"problems": problems, "counts": counts},
     "sitemaps": sitemaps,
     "metrika": metrika,
@@ -191,4 +239,4 @@ result = {
 with open("data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
-print(f"✅ Готово! Дней истории: {len(history)}, Запросов: {len(queries)}, Проблем: {len(problems)}")
+print(f"✅ Готово! Дней: {len(history)}, В поиске точек: {len(pages_in_search)}, Причин исключения: {len(excluded_reasons)}")

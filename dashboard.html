@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Дашборд • Яндекс.Вебмастер</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @keyframes spin { to { transform: rotate(360deg); } }
         .spinning { animation: spin 0.8s linear infinite; display: inline-block; }
@@ -61,6 +62,23 @@
             <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">ИКС сайта</div><div id="mSqi" class="text-3xl font-semibold mt-2">—</div></div>
         </div>
 
+        <!-- ДИНАМИКА ВО ВРЕМЕНИ -->
+        <h2 class="text-white/50 text-sm font-medium mb-3">📉 Динамика во времени (90 дней)</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-zinc-900 rounded-3xl p-6">
+                <div class="text-sm text-white/60 mb-3">Показы и клики по дням</div>
+                <canvas id="chartTraffic" height="130"></canvas>
+            </div>
+            <div class="bg-zinc-900 rounded-3xl p-6">
+                <div class="text-sm text-white/60 mb-3">Страницы: в поиске и исключённые</div>
+                <canvas id="chartIndex" height="130"></canvas>
+            </div>
+        </div>
+        <div class="bg-zinc-900 rounded-3xl p-6 mb-8">
+            <div class="text-sm text-white/60 mb-3">🚫 Причины исключения страниц (по выборке)</div>
+            <div id="excludedReasons" class="space-y-3"></div>
+        </div>
+
         <!-- МЕТРИКА -->
         <div id="metrikaBlock" class="hidden">
             <h2 class="text-white/50 text-sm font-medium mb-3">📊 Метрика (за 30 дней)</h2>
@@ -94,6 +112,16 @@
 
     <script>
         let HISTORY = [];
+        let chartTraffic = null, chartIndex = null;
+        const chartOpts = {
+            responsive: true,
+            interaction: { intersect: false, mode: 'index' },
+            plugins: { legend: { labels: { color: 'rgba(255,255,255,0.7)', boxWidth: 12 } } },
+            scales: {
+                x: { ticks: { color: 'rgba(255,255,255,0.4)', maxTicksLimit: 8 }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                y: { ticks: { color: 'rgba(255,255,255,0.4)' }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
+            }
+        };
 
         async function loadData() {
             const icon = document.getElementById('refreshIcon');
@@ -115,8 +143,7 @@
         function setPreset(days) {
             if (!HISTORY.length) return;
             const last = HISTORY[HISTORY.length - 1].date;
-            const lastDate = new Date(last);
-            const fromDate = new Date(lastDate);
+            const fromDate = new Date(last);
             fromDate.setDate(fromDate.getDate() - (days - 1));
             document.getElementById('dateTo').value = last;
             document.getElementById('dateFrom').value = fromDate.toISOString().slice(0, 10);
@@ -137,11 +164,57 @@
             document.getElementById('periodLabel').innerText = from && to ? `(${from} — ${to})` : '';
         }
 
+        function renderTrafficChart(hist) {
+            if (chartTraffic) chartTraffic.destroy();
+            chartTraffic = new Chart(document.getElementById('chartTraffic'), {
+                type: 'line',
+                data: {
+                    labels: hist.map(d => d.date.slice(5)),
+                    datasets: [
+                        { label: 'Показы', data: hist.map(d => d.shows), borderColor: '#FFCC00', backgroundColor: 'rgba(255,204,0,0.1)', tension: 0.3, fill: true, pointRadius: 0 },
+                        { label: 'Клики', data: hist.map(d => d.clicks), borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.1)', tension: 0.3, fill: true, pointRadius: 0 }
+                    ]
+                },
+                options: chartOpts
+            });
+        }
+
+        function renderIndexChart(inSearch, excluded) {
+            if (chartIndex) chartIndex.destroy();
+            const byDate = {};
+            inSearch.forEach(d => { byDate[d.date] = byDate[d.date] || {}; byDate[d.date].inS = d.value; });
+            excluded.forEach(d => { byDate[d.date] = byDate[d.date] || {}; byDate[d.date].ex = d.value; });
+            const dates = Object.keys(byDate).sort();
+            chartIndex = new Chart(document.getElementById('chartIndex'), {
+                type: 'line',
+                data: {
+                    labels: dates.map(d => d.slice(5)),
+                    datasets: [
+                        { label: 'В поиске', data: dates.map(d => byDate[d].inS ?? null), borderColor: '#4ade80', backgroundColor: 'rgba(74,222,128,0.1)', tension: 0.3, fill: true, pointRadius: 0, spanGaps: true },
+                        { label: 'Исключено', data: dates.map(d => byDate[d].ex ?? null), borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,0.1)', tension: 0.3, fill: true, pointRadius: 0, spanGaps: true }
+                    ]
+                },
+                options: chartOpts
+            });
+        }
+
+        function renderExcludedReasons(reasons) {
+            const el = document.getElementById('excludedReasons');
+            if (!reasons.length) { el.innerHTML = '<div class="text-white/40 text-sm">Нет данных по исключённым страницам 🎉</div>'; return; }
+            const max = Math.max(...reasons.map(r => r.count));
+            el.innerHTML = reasons.map(r => `
+                <div>
+                    <div class="flex justify-between text-sm mb-1"><span>${r.reason_ru}</span><span class="text-white/50">${r.count}</span></div>
+                    <div class="h-2 bg-white/5 rounded-full overflow-hidden"><div class="h-full bg-red-400/70 rounded-full" style="width: ${Math.round(r.count / max * 100)}%"></div></div>
+                </div>
+            `).join('');
+        }
+
         function render(data) {
             document.getElementById('siteName').innerText = data.site || 'Вебмастер';
             document.getElementById('updated').innerText = 'Обновлено: ' + (data.updated || '—');
 
-            // --- Здоровье сайта ---
+            // --- Здоровье ---
             const health = data.health || {};
             const c = health.counts || {};
             const fatal = (c.FATAL || 0) + (c.CRITICAL || 0);
@@ -181,26 +254,28 @@
                     <span class="text-white/50">URL: ${(m.urls||0).toLocaleString('ru')} · Ошибки: ${m.errors||0}</span>
                 </div>`).join('');
 
-            // --- Поиск с выбором даты ---
+            // --- Поиск + дата ---
             HISTORY = data.history || [];
             if (HISTORY.length) {
                 document.getElementById('dateControls').classList.remove('hidden');
                 const minD = HISTORY[0].date, maxD = HISTORY[HISTORY.length - 1].date;
-                ['dateFrom', 'dateTo'].forEach(id => {
-                    const el = document.getElementById(id);
-                    el.min = minD; el.max = maxD;
-                });
+                ['dateFrom', 'dateTo'].forEach(id => { const el = document.getElementById(id); el.min = minD; el.max = maxD; });
                 setPreset(30);
             } else {
                 document.getElementById('dateControls').classList.add('hidden');
-                const queries = data.queries || [];
-                const shows = queries.reduce((s, q) => s + (q.shows || 0), 0);
-                const clicks = queries.reduce((s, q) => s + (q.clicks || 0), 0);
+                const q = data.queries || [];
+                const shows = q.reduce((s, x) => s + (x.shows || 0), 0);
+                const clicks = q.reduce((s, x) => s + (x.clicks || 0), 0);
                 document.getElementById('mShows').innerText = shows.toLocaleString('ru');
                 document.getElementById('mClicks').innerText = clicks.toLocaleString('ru');
                 document.getElementById('mCtr').innerText = (shows ? (clicks / shows * 100).toFixed(2) : '0') + '%';
             }
             document.getElementById('mSqi').innerText = data.sqi ?? '—';
+
+            // --- Графики динамики ---
+            renderTrafficChart(HISTORY);
+            renderIndexChart(data.pages_in_search || [], data.pages_excluded || []);
+            renderExcludedReasons(data.excluded_reasons || []);
 
             // --- Метрика ---
             const m = data.metrika || {};

@@ -29,7 +29,19 @@
     <div class="max-w-7xl mx-auto px-6 py-8">
         <div id="status" class="hidden mb-6 p-4 bg-red-500/10 text-red-400 rounded-2xl text-sm"></div>
 
-        <!-- Метрики Вебмастера -->
+        <!-- ЗДОРОВЬЕ САЙТА -->
+        <h2 class="text-white/50 text-sm font-medium mb-3">🚦 Здоровье сайта</h2>
+        <div id="healthBanner" class="mb-4 p-4 rounded-2xl text-sm font-medium bg-zinc-900">Проверяем…</div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔴 Критические</div><div id="hFatal" class="text-3xl font-semibold mt-2">—</div></div>
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🟡 Возможные</div><div id="hPossible" class="text-3xl font-semibold mt-2">—</div></div>
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔵 Рекомендации</div><div id="hRec" class="text-3xl font-semibold mt-2">—</div></div>
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🗺️ Sitemap (URL)</div><div id="hSitemap" class="text-3xl font-semibold mt-2">—</div></div>
+        </div>
+        <div id="problemsList" class="space-y-2 mb-3"></div>
+        <div id="sitemapList" class="space-y-2 mb-8"></div>
+
+        <!-- ПОИСК -->
         <h2 class="text-white/50 text-sm font-medium mb-3">🔍 Поиск (за 30 дней)</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Показы</div><div id="mShows" class="text-3xl font-semibold mt-2">—</div></div>
@@ -38,7 +50,7 @@
             <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">ИКС сайта</div><div id="mSqi" class="text-3xl font-semibold mt-2">—</div></div>
         </div>
 
-        <!-- Метрики Метрики (показываются, если есть данные) -->
+        <!-- МЕТРИКА -->
         <div id="metrikaBlock" class="hidden">
             <h2 class="text-white/50 text-sm font-medium mb-3">📊 Метрика (за 30 дней)</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -49,7 +61,7 @@
             </div>
         </div>
 
-        <!-- Таблица запросов -->
+        <!-- ЗАПРОСЫ -->
         <h2 class="text-white/50 text-sm font-medium mb-3">📈 Топ запросов</h2>
         <div class="bg-zinc-900 border border-white/10 rounded-3xl p-7">
             <div class="overflow-x-auto">
@@ -91,17 +103,66 @@
             document.getElementById('siteName').innerText = data.site || 'Вебмастер';
             document.getElementById('updated').innerText = 'Обновлено: ' + (data.updated || '—');
 
+            // --- Здоровье сайта ---
+            const health = data.health || {};
+            const c = health.counts || {};
+            const fatal = (c.FATAL || 0) + (c.CRITICAL || 0);
+            const possible = c.POSSIBLE_PROBLEM || 0;
+            const rec = c.RECOMMENDATION || 0;
+            document.getElementById('hFatal').innerText = fatal;
+            document.getElementById('hPossible').innerText = possible;
+            document.getElementById('hRec').innerText = rec;
+
+            const banner = document.getElementById('healthBanner');
+            if (fatal > 0) {
+                banner.className = 'mb-4 p-4 rounded-2xl text-sm font-medium bg-red-500/15 text-red-300';
+                banner.innerText = '🔴 Есть критические проблемы — проверь срочно!';
+            } else if (possible > 0) {
+                banner.className = 'mb-4 p-4 rounded-2xl text-sm font-medium bg-yellow-500/15 text-yellow-300';
+                banner.innerText = '🟡 Есть возможные проблемы — стоит посмотреть.';
+            } else {
+                banner.className = 'mb-4 p-4 rounded-2xl text-sm font-medium bg-green-500/15 text-green-300';
+                banner.innerText = '✅ Критических проблем не обнаружено.';
+            }
+
+            const sevColor = {
+                FATAL: 'bg-red-500/15 text-red-300',
+                CRITICAL: 'bg-red-500/15 text-red-300',
+                POSSIBLE_PROBLEM: 'bg-yellow-500/15 text-yellow-300',
+                RECOMMENDATION: 'bg-blue-500/15 text-blue-300',
+            };
+            const problems = health.problems || [];
+            document.getElementById('problemsList').innerHTML = problems.length
+                ? problems.map(p => `
+                    <div class="flex items-center justify-between bg-zinc-900 rounded-2xl px-5 py-3 text-sm">
+                        <span>${p.title}</span>
+                        <span class="text-xs px-3 py-1 rounded-full ${sevColor[p.severity] || 'bg-white/10 text-white/60'}">${p.severity_ru || p.severity}</span>
+                    </div>
+                `).join('')
+                : '<div class="text-white/40 text-sm">Активных проблем нет 🎉</div>';
+
+            // --- Sitemap ---
+            const sitemaps = data.sitemaps || [];
+            const totalSitemapUrls = sitemaps.reduce((s, m) => s + (m.urls || 0), 0);
+            document.getElementById('hSitemap').innerText = totalSitemapUrls ? totalSitemapUrls.toLocaleString('ru') : '—';
+            document.getElementById('sitemapList').innerHTML = sitemaps.map(m => `
+                <div class="bg-zinc-900 rounded-2xl px-5 py-3 text-sm flex items-center justify-between flex-wrap gap-2">
+                    <span class="text-white/70 break-all">🗺️ ${m.url}</span>
+                    <span class="text-white/50">URL: ${(m.urls||0).toLocaleString('ru')} · Ошибки: ${m.errors||0}</span>
+                </div>
+            `).join('');
+
+            // --- Поиск ---
             const queries = data.queries || [];
             const totalShows = queries.reduce((s, q) => s + (q.shows || 0), 0);
             const totalClicks = queries.reduce((s, q) => s + (q.clicks || 0), 0);
             const avgCtr = totalShows ? (totalClicks / totalShows * 100).toFixed(2) : '0';
-
             document.getElementById('mShows').innerText = totalShows.toLocaleString('ru');
             document.getElementById('mClicks').innerText = totalClicks.toLocaleString('ru');
             document.getElementById('mCtr').innerText = avgCtr + '%';
             document.getElementById('mSqi').innerText = data.sqi ?? '—';
 
-            // Метрика — показываем блок, только если есть данные
+            // --- Метрика ---
             const m = data.metrika || {};
             if (m && Object.keys(m).length > 0) {
                 document.getElementById('metrikaBlock').classList.remove('hidden');
@@ -111,6 +172,7 @@
                 document.getElementById('mBounce').innerText = (m.bounceRate ?? '—') + '%';
             }
 
+            // --- Таблица запросов ---
             const tbody = document.getElementById('queriesTable');
             tbody.innerHTML = queries.map(q => `
                 <tr>

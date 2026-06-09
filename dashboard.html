@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дашборд • Яндекс.Вебмастер</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinning { animation: spin 0.8s linear infinite; display: inline-block; }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white min-h-screen">
+    <div class="border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-x-3">
+                <div class="w-10 h-10 bg-yellow-400 rounded-2xl flex items-center justify-center text-2xl">🕷️</div>
+                <div>
+                    <div class="text-2xl font-semibold" id="siteName">Вебмастер</div>
+                    <div class="text-xs text-white/40" id="updated">загрузка…</div>
+                </div>
+            </div>
+            <button onclick="loadData()" class="flex items-center gap-x-2 px-4 py-2 text-sm bg-yellow-400 text-black font-medium rounded-2xl hover:bg-yellow-300 transition-colors">
+                <span id="refreshIcon">🔄</span> Обновить
+            </button>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <div id="status" class="hidden mb-6 p-4 bg-red-500/10 text-red-400 rounded-2xl text-sm"></div>
+
+        <!-- Метрики Вебмастера -->
+        <h2 class="text-white/50 text-sm font-medium mb-3">🔍 Поиск (за 30 дней)</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Показы</div><div id="mShows" class="text-3xl font-semibold mt-2">—</div></div>
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Клики</div><div id="mClicks" class="text-3xl font-semibold mt-2">—</div></div>
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Средний CTR</div><div id="mCtr" class="text-3xl font-semibold mt-2">—</div></div>
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">ИКС сайта</div><div id="mSqi" class="text-3xl font-semibold mt-2">—</div></div>
+        </div>
+
+        <!-- Метрики Метрики (показываются, если есть данные) -->
+        <div id="metrikaBlock" class="hidden">
+            <h2 class="text-white/50 text-sm font-medium mb-3">📊 Метрика (за 30 дней)</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Визиты</div><div id="mVisits" class="text-3xl font-semibold mt-2">—</div></div>
+                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Посетители</div><div id="mUsers" class="text-3xl font-semibold mt-2">—</div></div>
+                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Просмотры</div><div id="mViews" class="text-3xl font-semibold mt-2">—</div></div>
+                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Отказы</div><div id="mBounce" class="text-3xl font-semibold mt-2">—</div></div>
+            </div>
+        </div>
+
+        <!-- Таблица запросов -->
+        <h2 class="text-white/50 text-sm font-medium mb-3">📈 Топ запросов</h2>
+        <div class="bg-zinc-900 border border-white/10 rounded-3xl p-7">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="text-white/50">
+                        <tr class="border-b border-white/10">
+                            <th class="text-left pb-3">Запрос</th>
+                            <th class="text-right pb-3">Показы</th>
+                            <th class="text-right pb-3">Клики</th>
+                            <th class="text-right pb-3">CTR</th>
+                            <th class="text-right pb-3">Позиция</th>
+                        </tr>
+                    </thead>
+                    <tbody id="queriesTable" class="divide-y divide-white/10"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadData() {
+            const icon = document.getElementById('refreshIcon');
+            const status = document.getElementById('status');
+            icon.classList.add('spinning');
+            status.classList.add('hidden');
+            try {
+                const res = await fetch('data.json?v=' + Date.now());
+                if (!res.ok) throw new Error('data.json не найден');
+                render(await res.json());
+            } catch (e) {
+                status.classList.remove('hidden');
+                status.innerText = 'Не удалось загрузить данные: ' + e.message;
+            } finally {
+                icon.classList.remove('spinning');
+            }
+        }
+
+        function render(data) {
+            document.getElementById('siteName').innerText = data.site || 'Вебмастер';
+            document.getElementById('updated').innerText = 'Обновлено: ' + (data.updated || '—');
+
+            const queries = data.queries || [];
+            const totalShows = queries.reduce((s, q) => s + (q.shows || 0), 0);
+            const totalClicks = queries.reduce((s, q) => s + (q.clicks || 0), 0);
+            const avgCtr = totalShows ? (totalClicks / totalShows * 100).toFixed(2) : '0';
+
+            document.getElementById('mShows').innerText = totalShows.toLocaleString('ru');
+            document.getElementById('mClicks').innerText = totalClicks.toLocaleString('ru');
+            document.getElementById('mCtr').innerText = avgCtr + '%';
+            document.getElementById('mSqi').innerText = data.sqi ?? '—';
+
+            // Метрика — показываем блок, только если есть данные
+            const m = data.metrika || {};
+            if (m && Object.keys(m).length > 0) {
+                document.getElementById('metrikaBlock').classList.remove('hidden');
+                document.getElementById('mVisits').innerText = (m.visits || 0).toLocaleString('ru');
+                document.getElementById('mUsers').innerText = (m.users || 0).toLocaleString('ru');
+                document.getElementById('mViews').innerText = (m.pageviews || 0).toLocaleString('ru');
+                document.getElementById('mBounce').innerText = (m.bounceRate ?? '—') + '%';
+            }
+
+            const tbody = document.getElementById('queriesTable');
+            tbody.innerHTML = queries.map(q => `
+                <tr>
+                    <td class="py-3">${q.query}</td>
+                    <td class="text-right font-mono">${(q.shows || 0).toLocaleString('ru')}</td>
+                    <td class="text-right font-mono">${(q.clicks || 0).toLocaleString('ru')}</td>
+                    <td class="text-right">${q.ctr}%</td>
+                    <td class="text-right font-semibold">${q.position}</td>
+                </tr>
+            `).join('') || '<tr><td class="py-3 text-white/40">Пока нет данных по запросам</td></tr>';
+        }
+
+        loadData();
+    </script>
+</body>
+</html>

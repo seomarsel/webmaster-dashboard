@@ -77,8 +77,6 @@ history_raw = safe(lambda: get(
         "date_to": date_to,
     },
 ), {})
-print(f"📅 История запросов, ключи: {list(history_raw.keys())}")
-
 ind_hist = history_raw.get("indicators", {}) or {}
 hist = {}
 for pt in ind_hist.get("TOTAL_SHOWS", []):
@@ -93,12 +91,12 @@ for pt in ind_hist.get("TOTAL_CLICKS", []):
         hist[d]["clicks"] = pt.get("value") or 0
 history = [{"date": d, "shows": v["shows"], "clicks": v["clicks"]} for d, v in sorted(hist.items())]
 
-# ============ ДИНАМИКА ИНДЕКСА: В ПОИСКЕ / ИСКЛЮЧЕНО ============
-def history_series(path):
-    raw = safe(lambda: get(
-        f"{WM}/user/{user_id}/hosts/{host_id}/{path}",
-        params={"date_from": date_from_90, "date_to": date_to},
-    ), {})
+# ============ ДИНАМИКА ИНДЕКСА: СТРАНИЦЫ В ПОИСКЕ ============
+def history_series(path, params=None):
+    p = {"date_from": date_from_90, "date_to": date_to}
+    if params:
+        p.update(params)
+    raw = safe(lambda: get(f"{WM}/user/{user_id}/hosts/{host_id}/{path}", params=p), {})
     print(f"📈 {path} ключи: {list(raw.keys())}")
     out = []
     for pt in (raw.get("history") or []):
@@ -108,33 +106,70 @@ def history_series(path):
     return out
 
 pages_in_search = history_series("search-urls/in-search/history/")
-pages_excluded = history_series("search-urls/excluded/history/")
+pages_excluded = []  # отдельного /excluded/ нет — берём из событий (events) ниже
 
-# причины исключения (по выборке URL)
+# история событий (появились / исчезли из поиска)
+events_hist_raw = safe(lambda: get(
+    f"{WM}/user/{user_id}/hosts/{host_id}/search-urls/events/history/",
+    params={"date_from": date_from_90, "date_to": date_to},
+), {})
+print(f"📈 events/history ключи: {list(events_hist_raw.keys())}")
+for pt in (events_hist_raw.get("history") or []):
+    d = (pt.get("date") or "")[:10]
+    if not d:
+        continue
+    removed = (pt.get("removed_from_search_count")
+               or pt.get("removed_count")
+               or pt.get("DEL")
+               or pt.get("value") or 0)
+    pages_excluded.append({"date": d, "value": removed})
+
+# ============ ИСКЛЮЧЁННЫЕ: ПРИЧИНЫ (через события) ============
 REASON_RU = {
+    "WAS_REMOVED_FROM_SEARCH": "Удалена из поиска",
+    "REMOVED_FROM_SEARCH": "Удалена из поиска",
+    "WAS_FOUND_IN_SEARCH": "Добавлена в поиск",
     "HTTP_ERROR": "Ошибка HTTP",
     "REDIRECT": "Редирект",
     "CLEAN_PARAM": "Clean-param",
     "DISALLOWED_BY_USER": "Запрещено в robots.txt",
-    "DISALLOWED_BY_META": "Запрет в meta robots",
-    "NOINDEX": "noindex",
+    "DISALLOWED_IN_ROBOTS": "Запрещено в robots.txt",
+    "NOINDEX": "Запрет meta noindex",
     "DUPLICATE": "Дубликат",
     "LOW_QUALITY": "Низкое качество",
-    "INSUFFICIENT_QUALITY": "Недостаточное качество",
+    "INSUFFICIENT_QUALITY": "Недостаточно качественная",
     "NOT_CANONICAL": "Неканоническая",
     "PARSER_ERROR": "Ошибка обработки",
     "NOT_MAIN_MIRROR": "Не главное зеркало",
-    "REDIRECT_NOTSEARCHABLE": "Редирект",
+    "SITE_ERROR": "Ошибка сайта",
 }
-excluded_raw = safe(lambda: get(
-    f"{WM}/user/{user_id}/hosts/{host_id}/search-urls/excluded/samples/",
+
+def find_reason(s):
+    ev = s.get("event") if isinstance(s.get("event"), dict) else {}
+    cand = (s.get("excluded_url_status") or s.get("status") or s.get("reason")
+            or s.get("event_kind") or ev.get("event_kind") or ev.get("kind")
+            or ev.get("reason") or ev.get("status"))
+    if isinstance(cand, dict):
+        cand = cand.get("event_kind") or cand.get("kind") or cand.get("reason")
+    if not cand and isinstance(s.get("event"), str):
+        cand = s.get("event")
+    return cand or "OTHER"
+
+events_raw = safe(lambda: get(
+    f"{WM}/user/{user_id}/hosts/{host_id}/search-urls/events/samples/",
     params={"limit": 100},
 ), {})
-print(f"🚫 Исключённые, ключи: {list(excluded_raw.keys())}")
+print(f"🚫 events/samples ключи: {list(events_raw.keys())}")
+samples = events_raw.get("samples") or events_raw.get("events") or []
+if samples:
+    print(f"🚫 Пример события: {json.dumps(samples[0], ensure_ascii=False)[:500]}")
+
 reason_counts = {}
-for s in (excluded_raw.get("samples") or []):
-    reason = s.get("excluded_url_status") or s.get("status") or s.get("reason") or "OTHER"
-    reason_counts[reason] = reason_counts.get(reason, 0) + 1
+for s in samples:
+    if not isinstance(s, dict):
+        continue
+    r = find_reason(s)
+    reason_counts[r] = reason_counts.get(r, 0) + 1
 excluded_reasons = sorted(
     [{"reason": k, "reason_ru": REASON_RU.get(k, k), "count": v} for k, v in reason_counts.items()],
     key=lambda x: -x["count"],
@@ -239,4 +274,4 @@ result = {
 with open("data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
-print(f"✅ Готово! Дней: {len(history)}, В поиске точек: {len(pages_in_search)}, Причин исключения: {len(excluded_reasons)}")
+print(f"✅ Готово! Дней: {len(history)}, В поиске точек: {len(pages_in_search)}, Событий-причин: {len(excluded_reasons)}")

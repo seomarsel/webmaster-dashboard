@@ -37,6 +37,7 @@
           <button id="p7" onclick="setGlobalPreset(7)" class="preset-btn">7 дней</button>
           <button id="p30" onclick="setGlobalPreset(30)" class="preset-btn">30 дней</button>
           <button id="p90" onclick="setGlobalPreset(90)" class="preset-btn">90 дней</button>
+          <button id="pMonth" onclick="setMonthPreset()" class="preset-btn">Месяц</button>
         </div>
         <div>
           <div class="text-white/40 text-xs mb-1">Дата начала отчёта</div>
@@ -208,8 +209,9 @@
 
   function sevIcon(s) { return s === 'FATAL' ? '🔴' : s === 'CRITICAL' ? '🟠' : s === 'POSSIBLE_PROBLEM' ? '🟡' : '🔵'; }
   function n(v) { return (v || 0).toLocaleString('ru'); }
-  function isoMinus(d) { const x = new Date(); x.setDate(x.getDate() - d); return x.toISOString().slice(0, 10); }
-  function isoToday() { return new Date().toISOString().slice(0, 10); }
+  function isoLocal(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+  function isoMinus(days) { const x = new Date(); x.setDate(x.getDate() - days); return isoLocal(x); }
+  function isoToday() { return isoLocal(new Date()); }
   function fmtRu(ds) { if (!ds) return ''; const [y, m, d] = ds.split('-'); return `${d}.${m}.${y}`; }
 
   // ============ КАЛЕНДАРЬ ============
@@ -291,13 +293,28 @@
     highlightCal();
     if (gStart && gEnd) applyGlobalRange();
   }
+  // ---- Пресеты периода ----
   function setActivePreset(id) {
-    ['p7', 'p30', 'p90'].forEach(x => document.getElementById(x).classList.toggle('active', x === id));
+    ['p7', 'p30', 'p90', 'pMonth'].forEach(x => document.getElementById(x).classList.toggle('active', x === id));
   }
   function setGlobalPreset(days) {
     gStart = isoMinus(days); gEnd = isoToday(); calField = 'start';
     updateDpInputs();
     setActivePreset('p' + days);
+    highlightCal();
+    applyGlobalRange();
+    closeCal();
+  }
+  function setMonthPreset() {
+    const today = new Date();
+    const lastPrev = new Date(today.getFullYear(), today.getMonth(), 0);       // последний день прошлого месяца
+    const firstPrev = new Date(lastPrev.getFullYear(), lastPrev.getMonth(), 1); // первый день прошлого месяца
+    gStart = isoLocal(firstPrev);
+    gEnd = isoLocal(lastPrev);
+    calField = 'start';
+    updateDpInputs();
+    setActivePreset('pMonth');
+    highlightCal();
     applyGlobalRange();
     closeCal();
   }

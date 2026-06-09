@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T17:53",
+  "updated": "2026-06-09T18:08",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
@@ -74,6 +74,320 @@
       "position": 10.0
     }
   ],
+  "query_analytics": {
+    "total_queries": 500,
+    "position_buckets": {
+      "top3": 108,
+      "top4_10": 303,
+      "top11_50": 89,
+      "top50plus": 0
+    },
+    "opportunities": [
+      {
+        "query": "российская тактическая одежда",
+        "shows": 58.0,
+        "clicks": 1.0,
+        "ctr": 1.72,
+        "position": 6.9
+      },
+      {
+        "query": "российский производитель туристической одежды",
+        "shows": 48.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 4.3
+      },
+      {
+        "query": "производители тактической одежды",
+        "shows": 47.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 8.1
+      },
+      {
+        "query": "ranger green",
+        "shows": 37.0,
+        "clicks": 1.0,
+        "ctr": 2.7,
+        "position": 6.0
+      },
+      {
+        "query": "штаны тактические купить",
+        "shows": 35.0,
+        "clicks": 1.0,
+        "ctr": 2.86,
+        "position": 10.0
+      },
+      {
+        "query": "купить штаны тактические",
+        "shows": 32.0,
+        "clicks": 1.0,
+        "ctr": 3.12,
+        "position": 9.5
+      },
+      {
+        "query": "тактические брюки academygear.ru",
+        "shows": 16.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 5.9
+      },
+      {
+        "query": "футболка олива",
+        "shows": 16.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.5
+      },
+      {
+        "query": "gear ru",
+        "shows": 15.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 6.5
+      },
+      {
+        "query": "купить тактические штаны мужские",
+        "shows": 15.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 9.1
+      }
+    ],
+    "new_count": 383,
+    "new_queries": [
+      {
+        "query": "тактические брюки academygear.ru",
+        "shows": 16.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 5.9
+      },
+      {
+        "query": "футболка олива",
+        "shows": 16.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.5
+      },
+      {
+        "query": "gear ru",
+        "shows": 15.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 6.5
+      },
+      {
+        "query": "купить тактические штаны мужские",
+        "shows": 15.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 9.1
+      },
+      {
+        "query": "купить тактические брюки",
+        "shows": 13.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 14.4
+      },
+      {
+        "query": "ranger green цвет",
+        "shows": 11.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.7
+      },
+      {
+        "query": "мужские тактические брюки",
+        "shows": 11.0,
+        "clicks": 1.0,
+        "ctr": 9.09,
+        "position": 12.8
+      },
+      {
+        "query": "сайт тактической одежды",
+        "shows": 11.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 6.2
+      },
+      {
+        "query": "милгир официальный сайт",
+        "shows": 9.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 9.2
+      },
+      {
+        "query": "купить штаны тактические мужские academygear.ru",
+        "shows": 9.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 6.6
+      },
+      {
+        "query": "штаны тактические мужские купить",
+        "shows": 9.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 13.7
+      },
+      {
+        "query": "военные магазины уфа",
+        "shows": 8.0,
+        "clicks": 1.0,
+        "ctr": 12.5,
+        "position": 9.4
+      },
+      {
+        "query": "штаны черные тактические academygear.ru",
+        "shows": 8.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 5.9
+      },
+      {
+        "query": "полевая рубашка",
+        "shows": 8.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 8.9
+      },
+      {
+        "query": "тактические брюки койот",
+        "shows": 8.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.0
+      }
+    ],
+    "lost_count": 383,
+    "lost_queries": [
+      {
+        "query": "тактическая одежда российского производства",
+        "shows": 7.0,
+        "clicks": 1.0,
+        "ctr": 14.29,
+        "position": 6.7
+      },
+      {
+        "query": "магазин егерь ставрополь каталог товаров и цены официальный сайт",
+        "shows": 7.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 19.1
+      },
+      {
+        "query": "игар-2-11-58 цена купить",
+        "shows": 6.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 9.2
+      },
+      {
+        "query": "производители тактического снаряжения в россии",
+        "shows": 6.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 8.8
+      },
+      {
+        "query": "igear shop",
+        "shows": 5.0,
+        "clicks": 4.0,
+        "ctr": 80.0,
+        "position": 1.4
+      },
+      {
+        "query": "igar",
+        "shows": 5.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 4.6
+      },
+      {
+        "query": "штаны койот",
+        "shows": 5.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 8.4
+      },
+      {
+        "query": "куртка апекс",
+        "shows": 5.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 8.2
+      },
+      {
+        "query": "айгир шоп ру",
+        "shows": 4.0,
+        "clicks": 1.0,
+        "ctr": 25.0,
+        "position": 2.5
+      },
+      {
+        "query": "игар 2-11-58 цена купить",
+        "shows": 4.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 8.0
+      },
+      {
+        "query": "geayr.ru",
+        "shows": 4.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 9.0
+      },
+      {
+        "query": "aigear 25 tactical",
+        "shows": 4.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.5
+      },
+      {
+        "query": "военное обмундирование уфа",
+        "shows": 4.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 11.0
+      },
+      {
+        "query": "милитари уфа каталог товаров",
+        "shows": 4.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 4.2
+      },
+      {
+        "query": "тактические брюки idogear g5",
+        "shows": 4.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 12.5
+      }
+    ],
+    "intents": {
+      "commercial": {
+        "count": 87,
+        "shows": 392.0,
+        "clicks": 16.0
+      },
+      "informational": {
+        "count": 8,
+        "shows": 24.0,
+        "clicks": 4.0
+      },
+      "other": {
+        "count": 405,
+        "shows": 2022.0,
+        "clicks": 337.0
+      }
+    }
+  },
   "history": [
     {
       "date": "2026-03-11",
@@ -842,7 +1156,7 @@
   "excluded_reasons": [
     {
       "reason": "CLEAN_PARAMS",
-      "reason_ru": "Очистка параметров (Clean-param)",
+      "reason_ru": "CLEAN_PARAMS",
       "count": 22
     },
     {
@@ -852,20 +1166,20 @@
     },
     {
       "reason": "DUPLICATE",
-      "reason_ru": "Дубликат",
+      "reason_ru": "DUPLICATE",
       "count": 1
     },
     {
       "reason": "LOW_QUALITY",
-      "reason_ru": "Низкое качество",
+      "reason_ru": "LOW_QUALITY",
       "count": 1
     }
   ],
   "health": {
     "problems": [
       {
-        "code": "ERROR_IN_ROBOTS_TXT",
-        "title": "ERROR_IN_ROBOTS_TXT",
+        "code": "DOCUMENTS_MISSING_TITLE",
+        "title": "Страницы без title",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
@@ -876,14 +1190,14 @@
         "severity_ru": "Возможная"
       },
       {
-        "code": "DOCUMENTS_MISSING_TITLE",
-        "title": "Страницы без title",
+        "code": "DUPLICATE_CONTENT_ATTRS",
+        "title": "DUPLICATE_CONTENT_ATTRS",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
       {
-        "code": "DUPLICATE_CONTENT_ATTRS",
-        "title": "DUPLICATE_CONTENT_ATTRS",
+        "code": "ERROR_IN_ROBOTS_TXT",
+        "title": "ERROR_IN_ROBOTS_TXT",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       }

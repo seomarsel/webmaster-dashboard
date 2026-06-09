@@ -79,6 +79,40 @@
             <div id="excludedReasons" class="space-y-3"></div>
         </div>
 
+        <!-- УГЛУБЛЁННАЯ АНАЛИТИКА ЗАПРОСОВ -->
+        <h2 class="text-white/50 text-sm font-medium mb-3">🔬 Углублённая аналитика запросов</h2>
+        <div class="text-sm text-white/60 mb-2">Распределение по позициям</div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🥇 ТОП‑3 (1–3)</div><div id="posTop3" class="text-3xl font-semibold mt-2 text-green-400">—</div></div>
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">🔟 Позиция 4–10</div><div id="posTop410" class="text-3xl font-semibold mt-2 text-yellow-400">—</div></div>
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">📄 Позиция 11–50</div><div id="posTop1150" class="text-3xl font-semibold mt-2 text-orange-400">—</div></div>
+            <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">📉 За ТОП‑50</div><div id="posTop50" class="text-3xl font-semibold mt-2 text-red-400">—</div></div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-zinc-900 rounded-3xl p-6">
+                <div class="text-sm text-white/60 mb-4">🎯 Группировка по интентам</div>
+                <div class="flex items-center gap-6 flex-wrap">
+                    <div style="width:150px"><canvas id="chartIntents"></canvas></div>
+                    <div id="intentLegend" class="text-sm space-y-3 flex-1 min-w-[200px]"></div>
+                </div>
+            </div>
+            <div class="bg-zinc-900 rounded-3xl p-6">
+                <div class="text-sm text-white/60 mb-1">💎 Запросы‑возможности</div>
+                <div class="text-xs text-white/40 mb-4">Высокие показы + низкий CTR + позиция 4–10 → «дешёвый» рост кликов</div>
+                <div id="oppList" class="space-y-2"></div>
+            </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
+            <div class="bg-zinc-900 rounded-3xl p-6">
+                <div class="text-sm text-white/60 mb-3">🆕 Новые запросы <span id="newCount" class="text-green-400"></span></div>
+                <div id="newList" class="space-y-2"></div>
+            </div>
+            <div class="bg-zinc-900 rounded-3xl p-6">
+                <div class="text-sm text-white/60 mb-3">⚠️ Потерянные запросы <span id="lostCount" class="text-red-400"></span></div>
+                <div id="lostList" class="space-y-2"></div>
+            </div>
+        </div>
+
         <!-- МЕТРИКА -->
         <div id="metrikaBlock" class="hidden">
             <h2 class="text-white/50 text-sm font-medium mb-3">📊 Метрика (за 30 дней)</h2>
@@ -90,7 +124,7 @@
             </div>
         </div>
 
-        <!-- ЗАПРОСЫ -->
+        <!-- ТОП ЗАПРОСОВ -->
         <h2 class="text-white/50 text-sm font-medium mb-3">📈 Топ запросов (за 30 дней)</h2>
         <div class="bg-zinc-900 border border-white/10 rounded-3xl p-7">
             <div class="overflow-x-auto">
@@ -112,7 +146,7 @@
 
     <script>
         let HISTORY = [];
-        let chartTraffic = null, chartIndex = null;
+        let chartTraffic = null, chartIndex = null, chartIntents = null;
         const chartOpts = {
             responsive: true,
             interaction: { intersect: false, mode: 'index' },
@@ -123,7 +157,6 @@
             }
         };
 
-        // Подробные пояснения причин исключения
         const REASON_INFO = {
             CLEAN_PARAMS: { title: "Очистка параметров (Clean-param)", desc: "Страница со служебными параметрами в URL (?utm=, ?sort=, ?from= и т.п.) склеена с основным адресом по директиве Clean-param. Обычно это нормально — так не плодятся дубли. ⚠️ Проверь, что под правило не попали важные страницы фильтров/каталога." },
             ROBOTS_URL_ERROR: { title: "Ошибка при загрузке страницы", desc: "Робот не смог корректно получить страницу: ошибка сервера, таймаут, редирект или ограничение доступа. ⚠️ Проверь код ответа (должен быть 200), скорость сервера и правила robots.txt." },
@@ -143,7 +176,6 @@
             PARSER_ERROR: { title: "Ошибка обработки", desc: "Робот не смог разобрать содержимое (некорректный HTML или тяжёлый JS-рендеринг). ⚠️ Проверь вёрстку и доступность контента без JavaScript." },
             NOT_MAIN_MIRROR: { title: "Не главное зеркало", desc: "Это неосновная версия сайта (www / без www, http / https). ✅ Убедись, что выбрано правильное главное зеркало." }
         };
-        // Это НЕ исключения — страницы, наоборот, добавлены в поиск
         const NOT_EXCLUSION = ["APPEARED_IN_SEARCH", "WAS_FOUND_IN_SEARCH", "FOUND_IN_SEARCH"];
 
         async function loadData() {
@@ -243,6 +275,51 @@
             }).join('');
         }
 
+        function renderQueryAnalytics(qa) {
+            qa = qa || {};
+            const b = qa.position_buckets || {};
+            document.getElementById('posTop3').innerText = b.top3 ?? '—';
+            document.getElementById('posTop410').innerText = b.top4_10 ?? '—';
+            document.getElementById('posTop1150').innerText = b.top11_50 ?? '—';
+            document.getElementById('posTop50').innerText = b.top50plus ?? '—';
+
+            // интенты
+            const it = qa.intents || {};
+            const comm = it.commercial || { count: 0, shows: 0, clicks: 0 };
+            const info = it.informational || { count: 0, shows: 0, clicks: 0 };
+            const oth = it.other || { count: 0, shows: 0, clicks: 0 };
+            const totalC = (comm.count + info.count + oth.count) || 1;
+            if (chartIntents) chartIntents.destroy();
+            chartIntents = new Chart(document.getElementById('chartIntents'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Коммерческие', 'Информационные', 'Прочие'],
+                    datasets: [{ data: [comm.count, info.count, oth.count], backgroundColor: ['#FFCC00', '#60a5fa', '#71717a'], borderWidth: 0 }]
+                },
+                options: { plugins: { legend: { display: false } }, cutout: '62%' }
+            });
+            const row = (color, name, o) => `<div class="flex items-center justify-between gap-2"><span><span class="inline-block w-3 h-3 rounded-full mr-2 align-middle" style="background:${color}"></span>${name}</span><span class="text-white/50 text-xs">${o.count} (${Math.round(o.count / totalC * 100)}%) · ${o.clicks.toLocaleString('ru')} кл.</span></div>`;
+            document.getElementById('intentLegend').innerHTML =
+                row('#FFCC00', 'Коммерческие', comm) + row('#60a5fa', 'Информационные', info) + row('#71717a', 'Прочие', oth);
+
+            // возможности
+            const opps = qa.opportunities || [];
+            document.getElementById('oppList').innerHTML = opps.length ? opps.map(q => `
+                <div class="flex items-center justify-between gap-3 text-sm border-b border-white/5 pb-2">
+                    <span class="truncate">${q.query}</span>
+                    <span class="text-white/50 whitespace-nowrap text-xs">${q.shows.toLocaleString('ru')} пок. · CTR ${q.ctr}% · поз. ${q.position}</span>
+                </div>`).join('') : '<div class="text-white/40 text-sm">Нет подходящих запросов</div>';
+
+            // новые / потерянные
+            const newQ = qa.new_queries || [];
+            const lostQ = qa.lost_queries || [];
+            document.getElementById('newCount').innerText = qa.new_count ? `(${qa.new_count})` : '';
+            document.getElementById('lostCount').innerText = qa.lost_count ? `(${qa.lost_count})` : '';
+            const li = q => `<div class="flex items-center justify-between gap-3 text-sm border-b border-white/5 pb-2"><span class="truncate">${q.query}</span><span class="text-white/40 whitespace-nowrap text-xs">${q.shows.toLocaleString('ru')} пок.</span></div>`;
+            document.getElementById('newList').innerHTML = newQ.length ? newQ.map(li).join('') : '<div class="text-white/40 text-sm">Нет данных</div>';
+            document.getElementById('lostList').innerHTML = lostQ.length ? lostQ.map(li).join('') : '<div class="text-white/40 text-sm">Нет данных</div>';
+        }
+
         function render(data) {
             document.getElementById('siteName').innerText = data.site || 'Вебмастер';
             document.getElementById('updated').innerText = 'Обновлено: ' + (data.updated || '—');
@@ -309,6 +386,9 @@
             renderTrafficChart(HISTORY);
             renderIndexChart(data.pages_in_search || [], data.pages_excluded || []);
             renderExcludedReasons(data.excluded_reasons || []);
+
+            // --- Углублённая аналитика запросов ---
+            renderQueryAnalytics(data.query_analytics);
 
             // --- Метрика ---
             const m = data.metrika || {};

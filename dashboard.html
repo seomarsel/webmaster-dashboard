@@ -40,11 +40,17 @@
         </div>
         <div>
           <div class="text-white/40 text-xs mb-1">Дата начала отчёта</div>
-          <input readonly id="dpStart" onclick="openCal('start', event)" class="date-input w-32 cursor-pointer" placeholder="—">
+          <div class="flex gap-1">
+            <input id="dpStart" onchange="onManualDate('start', this.value)" onkeydown="if(event.key==='Enter'){this.blur();}" inputmode="numeric" class="date-input w-28" placeholder="дд.мм.гггг">
+            <button onclick="openCal('start', event)" class="preset-btn px-2" title="Открыть календарь">📅</button>
+          </div>
         </div>
         <div>
           <div class="text-white/40 text-xs mb-1">Дата конца отчёта</div>
-          <input readonly id="dpEnd" onclick="openCal('end', event)" class="date-input w-32 cursor-pointer" placeholder="—">
+          <div class="flex gap-1">
+            <input id="dpEnd" onchange="onManualDate('end', this.value)" onkeydown="if(event.key==='Enter'){this.blur();}" inputmode="numeric" class="date-input w-28" placeholder="дд.мм.гггг">
+            <button onclick="openCal('end', event)" class="preset-btn px-2" title="Открыть календарь">📅</button>
+          </div>
         </div>
         <button onclick="loadData()" title="Перезагрузить данные" class="bg-yellow-400 text-black font-semibold rounded-xl px-4 py-2 hover:bg-yellow-300 transition text-sm">🔄</button>
 
@@ -265,6 +271,25 @@
   function updateDpInputs() {
     document.getElementById('dpStart').value = fmtRu(gStart);
     document.getElementById('dpEnd').value = fmtRu(gEnd);
+  }
+  // ---- Ручной ввод дат ----
+  function parseRu(s) {
+    const m = (s || '').trim().match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{4})$/);
+    if (!m) return null;
+    const d = +m[1], mo = +m[2], y = +m[3];
+    const dt = new Date(y, mo - 1, d);
+    if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d) return null;
+    return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  }
+  function onManualDate(field, val) {
+    const iso = parseRu(val);
+    if (!iso) { updateDpInputs(); return; } // некорректный ввод — вернём прежнее
+    if (field === 'start') gStart = iso; else gEnd = iso;
+    if (gStart && gEnd && gStart > gEnd) { const t = gStart; gStart = gEnd; gEnd = t; } // переставим, если перепутаны
+    updateDpInputs();
+    setActivePreset(null);
+    highlightCal();
+    if (gStart && gEnd) applyGlobalRange();
   }
   function setActivePreset(id) {
     ['p7', 'p30', 'p90'].forEach(x => document.getElementById(x).classList.toggle('active', x === id));

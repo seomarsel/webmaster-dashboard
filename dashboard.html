@@ -31,6 +31,27 @@
     <div class="max-w-7xl mx-auto px-6 py-8">
         <div id="status" class="hidden mb-6 p-4 bg-red-500/10 text-red-400 rounded-2xl text-sm"></div>
 
+        <!-- МЕТРИКА (первый блок) -->
+        <div id="metrikaBlock" class="hidden">
+            <div class="flex items-center justify-between flex-wrap gap-3 mb-3">
+                <h2 class="text-white/50 text-sm font-medium">📊 Метрика <span id="mPeriodLabel" class="text-white/30"></span></h2>
+                <div id="mDateControls" class="hidden flex items-center gap-2 flex-wrap">
+                    <input type="date" id="mDateFrom" onchange="applyMetrikaRange()" class="bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-sm">
+                    <span class="text-white/30">—</span>
+                    <input type="date" id="mDateTo" onchange="applyMetrikaRange()" class="bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 text-sm">
+                    <button onclick="setMetrikaPreset(7)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">7 дн</button>
+                    <button onclick="setMetrikaPreset(30)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">30 дн</button>
+                    <button onclick="setMetrikaPreset(90)" class="px-3 py-1.5 text-xs bg-zinc-800 rounded-lg hover:bg-zinc-700">90 дн</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Визиты</div><div id="mVisits" class="text-3xl font-semibold mt-2">—</div></div>
+                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Посетители</div><div id="mUsers" class="text-3xl font-semibold mt-2">—</div></div>
+                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Просмотры</div><div id="mViews" class="text-3xl font-semibold mt-2">—</div></div>
+                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Отказы</div><div id="mBounce" class="text-3xl font-semibold mt-2">—</div></div>
+            </div>
+        </div>
+
         <!-- ЗДОРОВЬЕ САЙТА -->
         <h2 class="text-white/50 text-sm font-medium mb-3">🚦 Здоровье сайта</h2>
         <div id="healthBanner" class="mb-4 p-4 rounded-2xl text-sm font-medium bg-zinc-900">Проверяем…</div>
@@ -135,17 +156,6 @@
             </div>
         </div>
 
-        <!-- МЕТРИКА -->
-        <div id="metrikaBlock" class="hidden">
-            <h2 class="text-white/50 text-sm font-medium mb-3">📊 Метрика (за 30 дней)</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Визиты</div><div id="mVisits" class="text-3xl font-semibold mt-2">—</div></div>
-                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Посетители</div><div id="mUsers" class="text-3xl font-semibold mt-2">—</div></div>
-                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Просмотры</div><div id="mViews" class="text-3xl font-semibold mt-2">—</div></div>
-                <div class="bg-zinc-900 rounded-3xl p-6"><div class="text-white/50 text-sm">Отказы</div><div id="mBounce" class="text-3xl font-semibold mt-2">—</div></div>
-            </div>
-        </div>
-
         <!-- ТОП ЗАПРОСОВ -->
         <h2 class="text-white/50 text-sm font-medium mb-3">📈 Топ запросов (за 30 дней)</h2>
         <div class="bg-zinc-900 border border-white/10 rounded-3xl p-7">
@@ -168,6 +178,7 @@
 
     <script>
         let HISTORY = [];
+        let METRIKA_HISTORY = [];
         let chartTraffic = null, chartIndex = null, chartIntents = null, chartLinks = null;
         const chartOpts = {
             responsive: true,
@@ -217,6 +228,7 @@
             }
         }
 
+        // --- Поиск: дата ---
         function setPreset(days) {
             if (!HISTORY.length) return;
             const last = HISTORY[HISTORY.length - 1].date;
@@ -226,7 +238,6 @@
             document.getElementById('dateFrom').value = fromDate.toISOString().slice(0, 10);
             applyDateRange();
         }
-
         function applyDateRange() {
             if (!HISTORY.length) return;
             const from = document.getElementById('dateFrom').value;
@@ -239,6 +250,33 @@
             document.getElementById('mClicks').innerText = clicks.toLocaleString('ru');
             document.getElementById('mCtr').innerText = ctr + '%';
             document.getElementById('periodLabel').innerText = from && to ? `(${from} — ${to})` : '';
+        }
+
+        // --- Метрика: дата ---
+        function setMetrikaPreset(days) {
+            if (!METRIKA_HISTORY.length) return;
+            const last = METRIKA_HISTORY[METRIKA_HISTORY.length - 1].date;
+            const fromDate = new Date(last);
+            fromDate.setDate(fromDate.getDate() - (days - 1));
+            document.getElementById('mDateTo').value = last;
+            document.getElementById('mDateFrom').value = fromDate.toISOString().slice(0, 10);
+            applyMetrikaRange();
+        }
+        function applyMetrikaRange() {
+            if (!METRIKA_HISTORY.length) return;
+            const from = document.getElementById('mDateFrom').value;
+            const to = document.getElementById('mDateTo').value;
+            const inRange = METRIKA_HISTORY.filter(d => (!from || d.date >= from) && (!to || d.date <= to));
+            const visits = inRange.reduce((s, d) => s + (d.visits || 0), 0);
+            const users = inRange.reduce((s, d) => s + (d.users || 0), 0);
+            const views = inRange.reduce((s, d) => s + (d.pageviews || 0), 0);
+            const bounceW = inRange.reduce((s, d) => s + (d.bounceRate || 0) * (d.visits || 0), 0);
+            const bounce = visits ? (bounceW / visits).toFixed(1) : '0';
+            document.getElementById('mVisits').innerText = visits.toLocaleString('ru');
+            document.getElementById('mUsers').innerText = users.toLocaleString('ru');
+            document.getElementById('mViews').innerText = views.toLocaleString('ru');
+            document.getElementById('mBounce').innerText = bounce + '%';
+            document.getElementById('mPeriodLabel').innerText = from && to ? `(${from} — ${to})` : '';
         }
 
         function renderTrafficChart(hist) {
@@ -367,6 +405,24 @@
             document.getElementById('siteName').innerText = data.site || 'Вебмастер';
             document.getElementById('updated').innerText = 'Обновлено: ' + (data.updated || '—');
 
+            // --- Метрика (первый блок) ---
+            METRIKA_HISTORY = data.metrika_history || [];
+            const m = data.metrika || {};
+            if (METRIKA_HISTORY.length) {
+                document.getElementById('metrikaBlock').classList.remove('hidden');
+                document.getElementById('mDateControls').classList.remove('hidden');
+                const minD = METRIKA_HISTORY[0].date, maxD = METRIKA_HISTORY[METRIKA_HISTORY.length - 1].date;
+                ['mDateFrom', 'mDateTo'].forEach(id => { const el = document.getElementById(id); el.min = minD; el.max = maxD; });
+                setMetrikaPreset(30);
+            } else if (m && Object.keys(m).length > 0) {
+                document.getElementById('metrikaBlock').classList.remove('hidden');
+                document.getElementById('mDateControls').classList.add('hidden');
+                document.getElementById('mVisits').innerText = (m.visits || 0).toLocaleString('ru');
+                document.getElementById('mUsers').innerText = (m.users || 0).toLocaleString('ru');
+                document.getElementById('mViews').innerText = (m.pageviews || 0).toLocaleString('ru');
+                document.getElementById('mBounce').innerText = (m.bounceRate ?? '—') + '%';
+            }
+
             // --- Здоровье ---
             const health = data.health || {};
             const c = health.counts || {};
@@ -400,11 +456,11 @@
                     </div>`).join('')
                 : '<div class="text-white/40 text-sm">Активных проблем нет 🎉</div>';
             const sitemaps = data.sitemaps || [];
-            document.getElementById('hSitemap').innerText = sitemaps.reduce((s, m) => s + (m.urls || 0), 0).toLocaleString('ru') || '—';
-            document.getElementById('sitemapList').innerHTML = sitemaps.map(m => `
+            document.getElementById('hSitemap').innerText = sitemaps.reduce((s, mp) => s + (mp.urls || 0), 0).toLocaleString('ru') || '—';
+            document.getElementById('sitemapList').innerHTML = sitemaps.map(mp => `
                 <div class="bg-zinc-900 rounded-2xl px-5 py-3 text-sm flex items-center justify-between flex-wrap gap-2">
-                    <span class="text-white/70 break-all">🗺️ ${m.url}</span>
-                    <span class="text-white/50">URL: ${(m.urls||0).toLocaleString('ru')} · Ошибки: ${m.errors||0}</span>
+                    <span class="text-white/70 break-all">🗺️ ${mp.url}</span>
+                    <span class="text-white/50">URL: ${(mp.urls||0).toLocaleString('ru')} · Ошибки: ${mp.errors||0}</span>
                 </div>`).join('');
 
             // --- Поиск + дата ---
@@ -435,16 +491,6 @@
 
             // --- Ссылочный профиль ---
             renderLinkProfile(data.link_profile);
-
-            // --- Метрика ---
-            const m = data.metrika || {};
-            if (m && Object.keys(m).length > 0) {
-                document.getElementById('metrikaBlock').classList.remove('hidden');
-                document.getElementById('mVisits').innerText = (m.visits || 0).toLocaleString('ru');
-                document.getElementById('mUsers').innerText = (m.users || 0).toLocaleString('ru');
-                document.getElementById('mViews').innerText = (m.pageviews || 0).toLocaleString('ru');
-                document.getElementById('mBounce').innerText = (m.bounceRate ?? '—') + '%';
-            }
 
             // --- Таблица запросов ---
             const queries = data.queries || [];

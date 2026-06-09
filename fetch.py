@@ -28,6 +28,8 @@ def safe(fn, default):
 today = datetime.date.today()
 date_from = (today - datetime.timedelta(days=30)).isoformat()
 date_to = today.isoformat()
+prev_from = (today - datetime.timedelta(days=60)).isoformat()
+prev_to = (today - datetime.timedelta(days=30)).isoformat()
 date_from_90 = (today - datetime.timedelta(days=90)).isoformat()
 
 WM = "https://api.webmaster.yandex.net/v4"
@@ -43,30 +45,104 @@ host_id = host["host_id"]
 
 summary = safe(lambda: get(f"{WM}/user/{user_id}/hosts/{host_id}/summary"), {})
 
-# ============ ЗАПРОСЫ (топ) ============
-queries_raw = safe(lambda: get(
-    f"{WM}/user/{user_id}/hosts/{host_id}/search-queries/popular/",
-    params={
-        "order_by": "TOTAL_SHOWS",
-        "query_indicator": ["TOTAL_SHOWS", "TOTAL_CLICKS", "AVG_SHOW_POSITION"],
-        "date_from": date_from,
-        "date_to": date_to,
-        "limit": 10,
-    },
-), {"queries": []})
+# ============ ЗАПРОСЫ ============
+def fetch_queries(df, dt, limit=500):
+    raw = safe(lambda: get(
+        f"{WM}/user/{user_id}/hosts/{host_id}/search-queries/popular/",
+        params={
+            "order_by": "TOTAL_SHOWS",
+            "query_indicator": ["TOTAL_SHOWS", "TOTAL_CLICKS", "AVG_SHOW_POSITION"],
+            "date_from": df,
+            "date_to": dt,
+            "limit": limit,
+        },
+    ), {"queries": []})
+    out = []
+    for q in raw.get("queries", []):
+        ind = q.get("indicators", {})
+        shows = ind.get("TOTAL_SHOWS") or 0
+        clicks = ind.get("TOTAL_CLICKS") or 0
+        pos = ind.get("AVG_SHOW_POSITION") or 0
+        out.append({
+            "query": q.get("query_text", ""),
+            "shows": shows,
+            "clicks": clicks,
+            "ctr": round(clicks / shows * 100, 2) if shows else 0,
+            "position": round(pos, 1),
+        })
+    return out
 
-queries = []
-for q in queries_raw.get("queries", []):
-    ind = q.get("indicators", {})
-    shows = ind.get("TOTAL_SHOWS") or 0
-    clicks = ind.get("TOTAL_CLICKS") or 0
-    queries.append({
-        "query": q.get("query_text", ""),
-        "shows": shows,
-        "clicks": clicks,
-        "ctr": round(clicks / shows * 100, 2) if shows else 0,
-        "position": round(ind.get("AVG_SHOW_POSITION") or 0, 1),
-    })
+all_q = fetch_queries(date_from, date_to, 500)
+queries = all_q[:10] if all_q else fetch_queries(date_from, date_to, 10)
+prev_q = fetch_queries(prev_from, prev_to, 500)
+print(f"🔢 Запросов: текущих {len(all_q)}, прошлый период {len(prev_q)}")
+
+# --- распределение по позициям ---
+position_buckets = {"top3": 0, "top4_10": 0, "top11_50": 0, "top50plus": 0}
+for q in all_q:
+    p = q["position"]
+    if p <= 0:
+        continue
+    if p <= 3:
+        position_buckets["top3"] += 1
+    elif p <= 10:
+        position_buckets["top4_10"] += 1
+    elif p <= 50:
+        position_buckets["top11_50"] += 1
+    else:
+        position_buckets["top50plus"] += 1
+
+# --- запросы-возможности (высокие показы + низкий CTR + позиция 4–10) ---
+opp_pool = []
+for q in all_q:
+    if 4 <= q["position"] <= 10 and q["shows"] > 0:
+        score = q["shows"] * (1 - q["ctr"] / 100.0)
+        opp_pool.append((score, q))
+opportunities = [q for _, q in sorted(opp_pool, key=lambda x: -x[0])[:10]]
+
+# --- новые / потерянные запросы ---
+cur_set = {q["query"] for q in all_q if q["query"]}
+prev_set = {q["query"] for q in prev_q if q["query"]}
+new_q = sorted([q for q in all_q if q["query"] and q["query"] not in prev_set], key=lambda x: -x["shows"])
+lost_q = sorted([q for q in prev_q if q["query"] and q["query"] not in cur_set], key=lambda x: -x["shows"])
+
+# --- группировка по интентам ---
+COMMERCIAL = ["купить", "куплю", "цена", "цены", "стоимость", "сколько стоит", "заказать",
+              "заказ ", "доставка", "магазин", "опт", "оптом", "недорог", "дешев",
+              "прайс", "каталог", "продаж", "скидк", "в наличии", "купить в"]
+INFO = [" как ", " что ", " чем ", " зачем ", " почему ", " какой", " какая", " какие",
+        " какое", "для чего", "можно ли", "отзыв", "инструкц", "своими руками", "рейтинг",
+        "сравнен", " лучш", "что такое", "чем отлич", " нужно ли"]
+
+def classify(text):
+    t = " " + text.lower().replace("ё", "е") + " "
+    if any(w in t for w in COMMERCIAL):
+        return "commercial"
+    if any(w in t for w in INFO):
+        return "informational"
+    return "other"
+
+intents = {
+    "commercial": {"count": 0, "shows": 0, "clicks": 0},
+    "informational": {"count": 0, "shows": 0, "clicks": 0},
+    "other": {"count": 0, "shows": 0, "clicks": 0},
+}
+for q in all_q:
+    g = classify(q["query"])
+    intents[g]["count"] += 1
+    intents[g]["shows"] += q["shows"]
+    intents[g]["clicks"] += q["clicks"]
+
+query_analytics = {
+    "total_queries": len(all_q),
+    "position_buckets": position_buckets,
+    "opportunities": opportunities,
+    "new_count": len(new_q),
+    "new_queries": new_q[:15],
+    "lost_count": len(lost_q),
+    "lost_queries": lost_q[:15],
+    "intents": intents,
+}
 
 # ============ ИСТОРИЯ ПОКАЗОВ/КЛИКОВ ПО ДНЯМ ============
 history_raw = safe(lambda: get(
@@ -107,7 +183,6 @@ def history_series(path, params=None):
 
 pages_in_search = history_series("search-urls/in-search/history/")
 
-# История событий (динамика удалённых из поиска по дням)
 events_hist_raw = safe(lambda: get(
     f"{WM}/user/{user_id}/hosts/{host_id}/search-urls/events/history/",
     params={"date_from": date_from_90, "date_to": date_to},
@@ -122,46 +197,18 @@ if removed_key:
         if d:
             pages_excluded.append({"date": d, "value": abs(pt.get("value") or 0)})
 
-# ============ ИСКЛЮЧЁННЫЕ СТРАНИЦЫ: ПРИЧИНЫ (по выборке событий) ============
-EXCLUDED_REASON_RU = {
-    "NOT_CANONICAL": "Неканоническая",
-    "DUPLICATE": "Дубликат",
-    "DUPLICATE_DESCRIPTION": "Дубликат описания",
-    "HOST_ERROR": "Ошибка сервера",
-    "HTTP_ERROR": "Ошибка HTTP",
-    "CLEAN_PARAMS": "Очистка параметров (Clean-param)",
-    "DISALLOWED_BY_USER": "Запрещено в robots.txt",
-    "DISALLOWED_IN_ROBOTS": "Запрещено в robots.txt",
-    "NO_INDEX": "Запрет meta noindex",
-    "NOINDEX": "Запрет meta noindex",
-    "PARSER_ERROR": "Ошибка обработки",
-    "LOW_QUALITY": "Низкое качество",
-    "INSUFFICIENT_QUALITY": "Недостаточно качественная",
-    "REDIRECT_NOTSEARCHABLE": "Редирект",
-    "REDIRECT": "Редирект",
-    "ROBOTS_TXT_ERROR": "Ошибка robots.txt",
-    "NOT_MAIN_MIRROR": "Не главное зеркало",
-}
-
+# ============ ИСКЛЮЧЁННЫЕ СТРАНИЦЫ: ПРИЧИНЫ ============
 events_raw = safe(lambda: get(
     f"{WM}/user/{user_id}/hosts/{host_id}/search-urls/events/samples/",
     params={"limit": 100},
 ), {})
-print(f"🚫 events/samples ключи: {list(events_raw.keys())}")
 samples = events_raw.get("samples") or events_raw.get("events") or []
-if samples:
-    print(f"🚫 Пример события: {json.dumps(samples[0], ensure_ascii=False)[:500]}")
-
-# распределение всех типов событий (для отладки)
-kind_counts = {}
-for s in samples:
-    if isinstance(s, dict):
-        k = str(s.get("event") or "OTHER")
-        kind_counts[k] = kind_counts.get(k, 0) + 1
-print(f"🚫 События по типам: {kind_counts}")
+NOT_EXCLUSION = ("APPEARED_IN_SEARCH", "WAS_FOUND_IN_SEARCH", "FOUND_IN_SEARCH")
 
 def is_excluded(s):
     ev = str(s.get("event") or "").upper()
+    if ev in NOT_EXCLUSION:
+        return bool(s.get("excluded_url_status") or s.get("bad_http_status"))
     if s.get("excluded_url_status") or s.get("bad_http_status"):
         return True
     return any(w in ev for w in ("REMOV", "EXCLUD", "DISAPPEAR"))
@@ -173,13 +220,6 @@ def excl_reason(s):
         return f"HTTP {s['bad_http_status']}"
     return "REMOVED"
 
-def reason_ru(code):
-    if code == "REMOVED":
-        return "Удалена из поиска"
-    if code.startswith("HTTP "):
-        return f"Ошибка {code}"
-    return EXCLUDED_REASON_RU.get(code, code)
-
 reason_counts = {}
 for s in samples:
     if not isinstance(s, dict) or not is_excluded(s):
@@ -187,7 +227,7 @@ for s in samples:
     r = excl_reason(s)
     reason_counts[r] = reason_counts.get(r, 0) + 1
 excluded_reasons = sorted(
-    [{"reason": k, "reason_ru": reason_ru(k), "count": v} for k, v in reason_counts.items()],
+    [{"reason": k, "reason_ru": k, "count": v} for k, v in reason_counts.items()],
     key=lambda x: -x["count"],
 )
 
@@ -215,7 +255,6 @@ PROBLEM_RU = {
     "NOT_MOBILE_FRIENDLY": "Нет мобильной версии",
 }
 diag_raw = safe(lambda: get(f"{WM}/user/{user_id}/hosts/{host_id}/diagnostics/"), {})
-print(f"🩺 Диагностика, ключи: {list(diag_raw.keys())}")
 problems = []
 counts = {"FATAL": 0, "CRITICAL": 0, "POSSIBLE_PROBLEM": 0, "RECOMMENDATION": 0}
 problems_data = diag_raw.get("problems")
@@ -278,6 +317,7 @@ result = {
     "site": SITE,
     "sqi": summary.get("sqi"),
     "queries": queries,
+    "query_analytics": query_analytics,
     "history": history,
     "pages_in_search": pages_in_search,
     "pages_excluded": pages_excluded,
@@ -290,4 +330,4 @@ result = {
 with open("data.json", "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
 
-print(f"✅ Готово! Дней: {len(history)}, В поиске: {len(pages_in_search)}, Исключено точек: {len(pages_excluded)}, Причин: {len(excluded_reasons)}")
+print(f"✅ Готово! Запросов: {len(all_q)}, Новых: {len(new_q)}, Потерянных: {len(lost_q)}, Возможностей: {len(opportunities)}")

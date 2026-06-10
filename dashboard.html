@@ -182,12 +182,33 @@
   let chartTraffic = null, chartIndex = null, chartIntents = null, chartLinks = null, chartMetrika = null;
   let gStart = null, gEnd = null, calField = 'start';
 
+  // ============ ОБЩИЙ СТИЛЬ ГРАФИКОВ ============
   const chartOpts = {
     responsive: true,
-    plugins: { legend: { labels: { color: '#a1a1aa', boxWidth: 12, padding: 14 } } },
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { labels: { color: '#a1a1aa', boxWidth: 24, padding: 16, usePointStyle: true, pointStyle: 'line' } },
+      tooltip: {
+        backgroundColor: '#18181b',
+        borderColor: 'rgba(255,255,255,0.12)',
+        borderWidth: 1,
+        titleColor: '#fff',
+        bodyColor: '#d4d4d8',
+        padding: 12,
+        cornerRadius: 12,
+        usePointStyle: true,
+        boxPadding: 6,
+        titleFont: { size: 13, weight: '600' },
+        bodyFont: { size: 13 }
+      }
+    },
     scales: {
-      x: { ticks: { color: '#71717a', maxTicksLimit: 12 }, grid: { color: 'rgba(255,255,255,0.05)' } },
-      y: { ticks: { color: '#71717a' }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
+      x: { ticks: { color: '#71717a', maxTicksLimit: 12 }, grid: { color: 'rgba(255,255,255,0.05)' }, border: { display: false } },
+      y: { ticks: { color: '#71717a' }, grid: { color: 'rgba(255,255,255,0.05)' }, border: { display: false }, beginAtZero: true }
+    },
+    elements: {
+      line: { tension: 0.35, borderWidth: 2 },
+      point: { radius: 0, hoverRadius: 6, hitRadius: 14, hoverBorderWidth: 0 }
     }
   };
 
@@ -363,8 +384,8 @@
     chartMetrika = new Chart(document.getElementById('chartMetrika'), {
       type: 'line',
       data: { labels: days.map(d => d.date.slice(5)), datasets: [
-        { label: 'Из поиска', data: days.map(d => d.search_visits || 0), borderColor: '#FFCC00', backgroundColor: 'rgba(255,204,0,0.15)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 },
-        { label: 'Все визиты', data: days.map(d => d.visits || 0), borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.05)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 }
+        { label: 'Из поиска', data: days.map(d => d.search_visits || 0), borderColor: '#FFCC00', backgroundColor: '#FFCC00', pointHoverBackgroundColor: '#FFCC00', fill: false },
+        { label: 'Все визиты', data: days.map(d => d.visits || 0), borderColor: '#60a5fa', backgroundColor: '#60a5fa', pointHoverBackgroundColor: '#60a5fa', fill: false }
       ] }, options: chartOpts
     });
   }
@@ -373,8 +394,8 @@
     chartTraffic = new Chart(document.getElementById('chartTraffic'), {
       type: 'line',
       data: { labels: days.map(d => d.date.slice(5)), datasets: [
-        { label: 'Показы', data: days.map(d => d.shows || 0), borderColor: '#FFCC00', backgroundColor: 'rgba(255,204,0,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 },
-        { label: 'Клики', data: days.map(d => d.clicks || 0), borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 }
+        { label: 'Показы', data: days.map(d => d.shows || 0), borderColor: '#FFCC00', backgroundColor: '#FFCC00', pointHoverBackgroundColor: '#FFCC00', fill: false },
+        { label: 'Клики', data: days.map(d => d.clicks || 0), borderColor: '#60a5fa', backgroundColor: '#60a5fa', pointHoverBackgroundColor: '#60a5fa', fill: false }
       ] }, options: chartOpts
     });
   }
@@ -384,8 +405,8 @@
     chartIndex = new Chart(document.getElementById('chartIndex'), {
       type: 'line',
       data: { labels: pin.map(d => d.date.slice(5)), datasets: [
-        { label: 'В поиске', data: pin.map(d => d.value || 0), borderColor: '#4ade80', backgroundColor: 'rgba(74,222,128,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 },
-        { label: 'Исключено', data: pin.map(d => exMap[d.date] || 0), borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,0.1)', tension: 0.3, fill: true, pointRadius: 0, borderWidth: 2 }
+        { label: 'В поиске', data: pin.map(d => d.value || 0), borderColor: '#4ade80', backgroundColor: '#4ade80', pointHoverBackgroundColor: '#4ade80', fill: false },
+        { label: 'Исключено', data: pin.map(d => exMap[d.date] || 0), borderColor: '#f87171', backgroundColor: '#f87171', pointHoverBackgroundColor: '#f87171', fill: false }
       ] }, options: chartOpts
     });
   }
@@ -394,7 +415,7 @@
     chartLinks = new Chart(document.getElementById('chartLinks'), {
       type: 'line',
       data: { labels: days.map(d => d.date.slice(5)), datasets: [
-        { label: 'Внешние ссылки', data: days.map(d => d.value || 0), borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.15)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2 }
+        { label: 'Внешние ссылки', data: days.map(d => d.value || 0), borderColor: '#a78bfa', backgroundColor: '#a78bfa', pointHoverBackgroundColor: '#a78bfa', fill: false }
       ] }, options: chartOpts
     });
   }

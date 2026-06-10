@@ -1,13 +1,13 @@
 {
-  "updated": "2026-06-09T20:37",
+  "updated": "2026-06-10T04:09",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
     {
       "query": "igear",
-      "shows": 188.0,
-      "clicks": 114.0,
-      "ctr": 60.64,
+      "shows": 185.0,
+      "clicks": 112.0,
+      "ctr": 60.54,
       "position": 1.2
     },
     {
@@ -19,17 +19,10 @@
     },
     {
       "query": "российская тактическая одежда",
-      "shows": 58.0,
+      "shows": 57.0,
       "clicks": 1.0,
-      "ctr": 1.72,
+      "ctr": 1.75,
       "position": 6.9
-    },
-    {
-      "query": "igear-shop.ru",
-      "shows": 50.0,
-      "clicks": 20.0,
-      "ctr": 40.0,
-      "position": 1.5
     },
     {
       "query": "российский производитель туристической одежды",
@@ -39,8 +32,15 @@
       "position": 4.3
     },
     {
+      "query": "igear-shop.ru",
+      "shows": 48.0,
+      "clicks": 19.0,
+      "ctr": 39.58,
+      "position": 1.5
+    },
+    {
       "query": "производители тактической одежды",
-      "shows": 47.0,
+      "shows": 46.0,
       "clicks": 0,
       "ctr": 0.0,
       "position": 8.1
@@ -54,7 +54,7 @@
     },
     {
       "query": "китель тактический",
-      "shows": 40.0,
+      "shows": 39.0,
       "clicks": 0,
       "ctr": 0.0,
       "position": 10.7
@@ -77,17 +77,17 @@
   "query_analytics": {
     "total_queries": 500,
     "position_buckets": {
-      "top3": 108,
-      "top4_10": 303,
-      "top11_50": 89,
+      "top3": 110,
+      "top4_10": 302,
+      "top11_50": 88,
       "top50plus": 0
     },
     "opportunities": [
       {
         "query": "российская тактическая одежда",
-        "shows": 58.0,
+        "shows": 57.0,
         "clicks": 1.0,
-        "ctr": 1.72,
+        "ctr": 1.75,
         "position": 6.9
       },
       {
@@ -99,7 +99,7 @@
       },
       {
         "query": "производители тактической одежды",
-        "shows": 47.0,
+        "shows": 46.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 8.1
@@ -147,14 +147,14 @@
         "position": 6.5
       },
       {
-        "query": "купить тактические штаны мужские",
-        "shows": 15.0,
+        "query": "рейнджер грин",
+        "shows": 14.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 9.1
       }
     ],
-    "new_count": 383,
+    "new_count": 378,
     "new_queries": [
       {
         "query": "тактические брюки academygear.ru",
@@ -179,10 +179,10 @@
       },
       {
         "query": "купить тактические штаны мужские",
-        "shows": 15.0,
+        "shows": 14.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 9.1
+        "position": 9.2
       },
       {
         "query": "купить тактические брюки",
@@ -197,13 +197,6 @@
         "clicks": 0,
         "ctr": 0.0,
         "position": 7.7
-      },
-      {
-        "query": "мужские тактические брюки",
-        "shows": 11.0,
-        "clicks": 1.0,
-        "ctr": 9.09,
-        "position": 12.8
       },
       {
         "query": "сайт тактической одежды",
@@ -260,10 +253,24 @@
         "clicks": 0,
         "ctr": 0.0,
         "position": 7.0
+      },
+      {
+        "query": "айгири инфинити",
+        "shows": 8.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 6.9
       }
     ],
-    "lost_count": 383,
+    "lost_count": 378,
     "lost_queries": [
+      {
+        "query": "тактическая ветровка полигон зеленая размер xxl",
+        "shows": 18.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 8.7
+      },
       {
         "query": "тактическая одежда российского производства",
         "shows": 7.0,
@@ -279,6 +286,13 @@
         "position": 19.1
       },
       {
+        "query": "тактические штаны цифра",
+        "shows": 7.0,
+        "clicks": 1.0,
+        "ctr": 14.29,
+        "position": 5.6
+      },
+      {
         "query": "игар-2-11-58 цена купить",
         "shows": 6.0,
         "clicks": 0,
@@ -286,11 +300,11 @@
         "position": 9.2
       },
       {
-        "query": "производители тактического снаряжения в россии",
+        "query": "футболка involta размер xl черный",
         "shows": 6.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 8.8
+        "position": 8.7
       },
       {
         "query": "igear shop",
@@ -314,11 +328,11 @@
         "position": 8.4
       },
       {
-        "query": "куртка апекс",
+        "query": "производители тактического снаряжения в россии",
         "shows": 5.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 8.2
+        "position": 9.0
       },
       {
         "query": "айгир шоп ру",
@@ -354,46 +368,27 @@
         "clicks": 0,
         "ctr": 0.0,
         "position": 11.0
-      },
-      {
-        "query": "милитари уфа каталог товаров",
-        "shows": 4.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 4.2
-      },
-      {
-        "query": "тактические брюки idogear g5",
-        "shows": 4.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 12.5
       }
     ],
     "intents": {
       "commercial": {
-        "count": 87,
-        "shows": 392.0,
+        "count": 88,
+        "shows": 388.0,
         "clicks": 16.0
       },
       "informational": {
         "count": 8,
-        "shows": 24.0,
-        "clicks": 4.0
+        "shows": 23.0,
+        "clicks": 3.0
       },
       "other": {
-        "count": 405,
-        "shows": 2022.0,
-        "clicks": 337.0
+        "count": 404,
+        "shows": 1987.0,
+        "clicks": 332.0
       }
     }
   },
   "history": [
-    {
-      "date": "2026-03-11",
-      "shows": 75.0,
-      "clicks": 17.0
-    },
     {
       "date": "2026-03-12",
       "shows": 51.0,
@@ -843,6 +838,11 @@
       "date": "2026-06-09",
       "shows": 0,
       "clicks": 0
+    },
+    {
+      "date": "2026-06-10",
+      "shows": 0,
+      "clicks": 0
     }
   ],
   "pages_in_search": [
@@ -1178,26 +1178,26 @@
   "health": {
     "problems": [
       {
-        "code": "DOCUMENTS_MISSING_DESCRIPTION",
-        "title": "Страницы без description",
-        "severity": "POSSIBLE_PROBLEM",
-        "severity_ru": "Возможная"
-      },
-      {
         "code": "DUPLICATE_CONTENT_ATTRS",
         "title": "DUPLICATE_CONTENT_ATTRS",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
       {
-        "code": "DOCUMENTS_MISSING_TITLE",
-        "title": "Страницы без title",
+        "code": "DOCUMENTS_MISSING_DESCRIPTION",
+        "title": "Страницы без description",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
       {
         "code": "ERROR_IN_ROBOTS_TXT",
         "title": "ERROR_IN_ROBOTS_TXT",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
+        "code": "DOCUMENTS_MISSING_TITLE",
+        "title": "Страницы без title",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       }
@@ -1351,20 +1351,12 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 1458,
-    "users": 926,
-    "pageviews": 6963,
-    "bounceRate": 24.0
+    "visits": 1431,
+    "users": 914,
+    "pageviews": 6832,
+    "bounceRate": 23.8
   },
   "metrika_history": [
-    {
-      "date": "2026-03-11",
-      "visits": 59,
-      "users": 49,
-      "pageviews": 304,
-      "bounceRate": 25.4,
-      "search_visits": 28
-    },
     {
       "date": "2026-03-12",
       "visits": 59,
@@ -2084,6 +2076,14 @@
       "pageviews": 127,
       "bounceRate": 28.3,
       "search_visits": 24
+    },
+    {
+      "date": "2026-06-10",
+      "visits": 13,
+      "users": 12,
+      "pageviews": 67,
+      "bounceRate": 15.4,
+      "search_visits": 8
     }
   ]
 }

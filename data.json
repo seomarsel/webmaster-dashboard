@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-10T04:09",
+  "updated": "2026-06-10T09:51",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
@@ -1178,8 +1178,8 @@
   "health": {
     "problems": [
       {
-        "code": "DUPLICATE_CONTENT_ATTRS",
-        "title": "DUPLICATE_CONTENT_ATTRS",
+        "code": "DOCUMENTS_MISSING_TITLE",
+        "title": "Страницы без title",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
@@ -1196,8 +1196,8 @@
         "severity_ru": "Возможная"
       },
       {
-        "code": "DOCUMENTS_MISSING_TITLE",
-        "title": "Страницы без title",
+        "code": "DUPLICATE_CONTENT_ATTRS",
+        "title": "DUPLICATE_CONTENT_ATTRS",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       }
@@ -1351,9 +1351,9 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 1431,
-    "users": 914,
-    "pageviews": 6832,
+    "visits": 1439,
+    "users": 919,
+    "pageviews": 6876,
     "bounceRate": 23.8
   },
   "metrika_history": [
@@ -2079,11 +2079,11 @@
     },
     {
       "date": "2026-06-10",
-      "visits": 13,
-      "users": 12,
-      "pageviews": 67,
-      "bounceRate": 15.4,
-      "search_visits": 8
+      "visits": 21,
+      "users": 20,
+      "pageviews": 111,
+      "bounceRate": 14.3,
+      "search_visits": 11
     }
   ]
 }

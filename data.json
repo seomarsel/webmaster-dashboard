@@ -1,67 +1,67 @@
 {
-  "updated": "2026-06-22T11:45",
+  "updated": "2026-06-23T09:31",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
     {
       "query": "igear",
       "shows": 194.0,
-      "clicks": 113.0,
-      "ctr": 58.25,
+      "clicks": 112.0,
+      "ctr": 57.73,
       "position": 1.2
     },
     {
       "query": "тактические брюки",
-      "shows": 156.0,
+      "shows": 160.0,
       "clicks": 6.0,
-      "ctr": 3.85,
-      "position": 10.2
+      "ctr": 3.75,
+      "position": 10.3
     },
     {
       "query": "российский производитель туристической одежды",
-      "shows": 103.0,
+      "shows": 106.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 4.4
+      "position": 4.3
     },
     {
       "query": "китель тактический",
-      "shows": 93.0,
+      "shows": 101.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 10.5
-    },
-    {
-      "query": "российская тактическая одежда",
-      "shows": 87.0,
-      "clicks": 1.0,
-      "ctr": 1.15,
-      "position": 4.5
+      "position": 10.6
     },
     {
       "query": "купить штаны тактические",
       "shows": 84.0,
       "clicks": 1.0,
       "ctr": 1.19,
-      "position": 10.2
+      "position": 10.3
+    },
+    {
+      "query": "российская тактическая одежда",
+      "shows": 83.0,
+      "clicks": 1.0,
+      "ctr": 1.2,
+      "position": 4.6
     },
     {
       "query": "штаны тактические купить",
-      "shows": 77.0,
+      "shows": 76.0,
       "clicks": 1.0,
-      "ctr": 1.3,
-      "position": 11.2
+      "ctr": 1.32,
+      "position": 11.3
     },
     {
       "query": "мужские тактические брюки",
-      "shows": 68.0,
+      "shows": 71.0,
       "clicks": 3.0,
-      "ctr": 4.41,
-      "position": 12.2
+      "ctr": 4.23,
+      "position": 12.1
     },
     {
       "query": "тактические штаны",
-      "shows": 53.0,
+      "shows": 54.0,
       "clicks": 0,
       "ctr": 0.0,
       "position": 8.6
@@ -77,60 +77,60 @@
   "query_analytics": {
     "total_queries": 500,
     "position_buckets": {
-      "top3": 78,
-      "top4_10": 294,
-      "top11_50": 128,
+      "top3": 76,
+      "top4_10": 298,
+      "top11_50": 126,
       "top50plus": 0
     },
     "opportunities": [
       {
         "query": "российский производитель туристической одежды",
-        "shows": 103.0,
+        "shows": 106.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 4.4
+        "position": 4.3
       },
       {
         "query": "российская тактическая одежда",
-        "shows": 87.0,
+        "shows": 83.0,
         "clicks": 1.0,
-        "ctr": 1.15,
-        "position": 4.5
+        "ctr": 1.2,
+        "position": 4.6
       },
       {
         "query": "тактические штаны",
-        "shows": 53.0,
+        "shows": 54.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 8.6
       },
       {
         "query": "ranger green",
-        "shows": 50.0,
+        "shows": 51.0,
         "clicks": 1.0,
-        "ctr": 2.0,
-        "position": 5.3
+        "ctr": 1.96,
+        "position": 4.8
       },
       {
         "query": "производители тактической одежды",
-        "shows": 41.0,
+        "shows": 40.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 6.3
       },
       {
-        "query": "тактическая куртка",
-        "shows": 32.0,
-        "clicks": 2.0,
-        "ctr": 6.25,
-        "position": 10.0
+        "query": "брюки цифра",
+        "shows": 36.0,
+        "clicks": 4.0,
+        "ctr": 11.11,
+        "position": 7.1
       },
       {
-        "query": "брюки цифра",
-        "shows": 33.0,
-        "clicks": 4.0,
-        "ctr": 12.12,
-        "position": 6.9
+        "query": "тактические куртки",
+        "shows": 28.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.6
       },
       {
         "query": "брюки тактические москва",
@@ -140,49 +140,56 @@
         "position": 8.6
       },
       {
-        "query": "тактические куртки",
-        "shows": 26.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 7.3
-      },
-      {
         "query": "купить тактические штаны мужские",
         "shows": 25.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 10.0
-      }
-    ],
-    "new_count": 375,
-    "new_queries": [
-      {
-        "query": "купить тактические брюки",
-        "shows": 34.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 10.8
       },
       {
+        "query": "тактические брюки academygear.ru",
+        "shows": 24.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 5.6
+      }
+    ],
+    "new_count": 374,
+    "new_queries": [
+      {
         "query": "брюки цифра",
-        "shows": 33.0,
+        "shows": 36.0,
         "clicks": 4.0,
-        "ctr": 12.12,
-        "position": 6.9
+        "ctr": 11.11,
+        "position": 7.1
       },
       {
         "query": "тактическая куртка",
-        "shows": 32.0,
+        "shows": 33.0,
         "clicks": 2.0,
-        "ctr": 6.25,
-        "position": 10.0
+        "ctr": 6.06,
+        "position": 10.1
       },
       {
         "query": "штаны тактические мужские купить",
-        "shows": 30.0,
+        "shows": 32.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 12.3
+        "position": 12.7
+      },
+      {
+        "query": "тактические куртки",
+        "shows": 28.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.6
+      },
+      {
+        "query": "черные штаны тактические",
+        "shows": 27.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 15.7
       },
       {
         "query": "куртка рабочая ветровка тактическая утепленная",
@@ -190,20 +197,6 @@
         "clicks": 0,
         "ctr": 0.0,
         "position": 11.9
-      },
-      {
-        "query": "тактические куртки",
-        "shows": 26.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 7.3
-      },
-      {
-        "query": "черные штаны тактические",
-        "shows": 25.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 14.9
       },
       {
         "query": "тактическая одежда официальный сайт academygear.ru",
@@ -227,6 +220,13 @@
         "position": 5.6
       },
       {
+        "query": "брюки мультикам купить",
+        "shows": 18.0,
+        "clicks": 7.0,
+        "ctr": 38.89,
+        "position": 5.6
+      },
+      {
         "query": "сайт тактической одежды",
         "shows": 18.0,
         "clicks": 0,
@@ -241,13 +241,6 @@
         "position": 8.1
       },
       {
-        "query": "брюки мультикам купить",
-        "shows": 17.0,
-        "clicks": 7.0,
-        "ctr": 41.18,
-        "position": 5.5
-      },
-      {
         "query": "тактические штаны academygear.ru",
         "shows": 16.0,
         "clicks": 0,
@@ -260,16 +253,23 @@
         "clicks": 0,
         "ctr": 0.0,
         "position": 6.3
+      },
+      {
+        "query": "ветровка тактическая",
+        "shows": 12.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 11.0
       }
     ],
-    "lost_count": 375,
+    "lost_count": 374,
     "lost_queries": [
       {
         "query": "куртка igear",
-        "shows": 12.0,
-        "clicks": 2.0,
-        "ctr": 16.67,
-        "position": 1.8
+        "shows": 13.0,
+        "clicks": 3.0,
+        "ctr": 23.08,
+        "position": 1.7
       },
       {
         "query": "smgear официальный сайт",
@@ -287,10 +287,10 @@
       },
       {
         "query": "одежда уругер",
-        "shows": 7.0,
+        "shows": 8.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 9.3
+        "position": 9.4
       },
       {
         "query": "шорты igear",
@@ -372,28 +372,23 @@
     ],
     "intents": {
       "commercial": {
-        "count": 102,
-        "shows": 809.0,
-        "clicks": 30.0
+        "count": 104,
+        "shows": 825.0,
+        "clicks": 32.0
       },
       "informational": {
         "count": 6,
-        "shows": 17.0,
+        "shows": 16.0,
         "clicks": 2.0
       },
       "other": {
-        "count": 392,
-        "shows": 2780.0,
-        "clicks": 309.0
+        "count": 390,
+        "shows": 2827.0,
+        "clicks": 305.0
       }
     }
   },
   "history": [
-    {
-      "date": "2026-03-24",
-      "shows": 72.0,
-      "clicks": 17.0
-    },
     {
       "date": "2026-03-25",
       "shows": 121.0,
@@ -836,20 +831,21 @@
     },
     {
       "date": "2026-06-21",
-      "shows": 0,
-      "clicks": 0
+      "shows": 212.0,
+      "clicks": 10.0
     },
     {
       "date": "2026-06-22",
       "shows": 0,
       "clicks": 0
+    },
+    {
+      "date": "2026-06-23",
+      "shows": 0,
+      "clicks": 0
     }
   ],
   "pages_in_search": [
-    {
-      "date": "2026-03-24",
-      "value": 188
-    },
     {
       "date": "2026-03-26",
       "value": 188
@@ -988,10 +984,6 @@
     }
   ],
   "pages_excluded": [
-    {
-      "date": "2026-03-24",
-      "value": 3
-    },
     {
       "date": "2026-03-26",
       "value": 2
@@ -1159,14 +1151,14 @@
   "health": {
     "problems": [
       {
-        "code": "ERROR_IN_ROBOTS_TXT",
-        "title": "ERROR_IN_ROBOTS_TXT",
+        "code": "DOCUMENTS_MISSING_DESCRIPTION",
+        "title": "Страницы без description",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
       {
-        "code": "DOCUMENTS_MISSING_DESCRIPTION",
-        "title": "Страницы без description",
+        "code": "ERROR_IN_ROBOTS_TXT",
+        "title": "ERROR_IN_ROBOTS_TXT",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
@@ -1195,7 +1187,7 @@
       "url": "https://igear-shop.ru/sitemap.xml",
       "urls": 3,
       "errors": 0,
-      "last_access": "2026-06-20T13:41:52.000+03:00"
+      "last_access": "2026-06-22T07:46:49.000+03:00"
     }
   ],
   "link_profile": {
@@ -1336,27 +1328,19 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 1406,
-    "users": 930,
-    "pageviews": 6503,
-    "bounceRate": 23.9
+    "visits": 1430,
+    "users": 951,
+    "pageviews": 6555,
+    "bounceRate": 23.8
   },
   "metrika_history": [
-    {
-      "date": "2026-03-24",
-      "visits": 80,
-      "users": 74,
-      "pageviews": 421,
-      "bounceRate": 26.2,
-      "search_visits": 31
-    },
     {
       "date": "2026-03-25",
       "visits": 97,
       "users": 75,
       "pageviews": 466,
       "bounceRate": 16.5,
-      "search_visits": 64
+      "search_visits": 0
     },
     {
       "date": "2026-03-26",
@@ -1364,7 +1348,7 @@
       "users": 57,
       "pageviews": 325,
       "bounceRate": 21.1,
-      "search_visits": 45
+      "search_visits": 0
     },
     {
       "date": "2026-03-27",
@@ -1372,7 +1356,7 @@
       "users": 46,
       "pageviews": 231,
       "bounceRate": 25.5,
-      "search_visits": 34
+      "search_visits": 0
     },
     {
       "date": "2026-03-28",
@@ -1380,7 +1364,7 @@
       "users": 50,
       "pageviews": 269,
       "bounceRate": 26.8,
-      "search_visits": 36
+      "search_visits": 0
     },
     {
       "date": "2026-03-29",
@@ -1388,7 +1372,7 @@
       "users": 56,
       "pageviews": 327,
       "bounceRate": 25.7,
-      "search_visits": 33
+      "search_visits": 0
     },
     {
       "date": "2026-03-30",
@@ -1396,7 +1380,7 @@
       "users": 69,
       "pageviews": 306,
       "bounceRate": 29.1,
-      "search_visits": 38
+      "search_visits": 0
     },
     {
       "date": "2026-03-31",
@@ -1404,7 +1388,7 @@
       "users": 64,
       "pageviews": 314,
       "bounceRate": 33.3,
-      "search_visits": 36
+      "search_visits": 0
     },
     {
       "date": "2026-04-01",
@@ -1412,7 +1396,7 @@
       "users": 61,
       "pageviews": 327,
       "bounceRate": 28.8,
-      "search_visits": 48
+      "search_visits": 0
     },
     {
       "date": "2026-04-02",
@@ -1420,7 +1404,7 @@
       "users": 54,
       "pageviews": 317,
       "bounceRate": 27.0,
-      "search_visits": 43
+      "search_visits": 0
     },
     {
       "date": "2026-04-03",
@@ -1428,7 +1412,7 @@
       "users": 48,
       "pageviews": 239,
       "bounceRate": 31.5,
-      "search_visits": 29
+      "search_visits": 0
     },
     {
       "date": "2026-04-04",
@@ -1436,7 +1420,7 @@
       "users": 46,
       "pageviews": 239,
       "bounceRate": 18.2,
-      "search_visits": 34
+      "search_visits": 0
     },
     {
       "date": "2026-04-05",
@@ -1444,7 +1428,7 @@
       "users": 48,
       "pageviews": 214,
       "bounceRate": 29.6,
-      "search_visits": 39
+      "search_visits": 0
     },
     {
       "date": "2026-04-06",
@@ -1452,7 +1436,7 @@
       "users": 44,
       "pageviews": 229,
       "bounceRate": 29.6,
-      "search_visits": 29
+      "search_visits": 0
     },
     {
       "date": "2026-04-07",
@@ -1460,7 +1444,7 @@
       "users": 50,
       "pageviews": 314,
       "bounceRate": 25.9,
-      "search_visits": 36
+      "search_visits": 0
     },
     {
       "date": "2026-04-08",
@@ -1468,7 +1452,7 @@
       "users": 36,
       "pageviews": 168,
       "bounceRate": 23.3,
-      "search_visits": 29
+      "search_visits": 0
     },
     {
       "date": "2026-04-09",
@@ -1476,7 +1460,7 @@
       "users": 38,
       "pageviews": 229,
       "bounceRate": 23.4,
-      "search_visits": 31
+      "search_visits": 0
     },
     {
       "date": "2026-04-10",
@@ -1484,7 +1468,7 @@
       "users": 58,
       "pageviews": 363,
       "bounceRate": 21.9,
-      "search_visits": 47
+      "search_visits": 0
     },
     {
       "date": "2026-04-11",
@@ -1492,7 +1476,7 @@
       "users": 50,
       "pageviews": 303,
       "bounceRate": 29.6,
-      "search_visits": 34
+      "search_visits": 0
     },
     {
       "date": "2026-04-12",
@@ -1500,7 +1484,7 @@
       "users": 53,
       "pageviews": 266,
       "bounceRate": 24.6,
-      "search_visits": 36
+      "search_visits": 0
     },
     {
       "date": "2026-04-13",
@@ -1508,7 +1492,7 @@
       "users": 54,
       "pageviews": 370,
       "bounceRate": 17.6,
-      "search_visits": 44
+      "search_visits": 0
     },
     {
       "date": "2026-04-14",
@@ -1516,7 +1500,7 @@
       "users": 41,
       "pageviews": 277,
       "bounceRate": 21.3,
-      "search_visits": 33
+      "search_visits": 0
     },
     {
       "date": "2026-04-15",
@@ -1524,7 +1508,7 @@
       "users": 46,
       "pageviews": 323,
       "bounceRate": 17.2,
-      "search_visits": 40
+      "search_visits": 0
     },
     {
       "date": "2026-04-16",
@@ -1532,7 +1516,7 @@
       "users": 65,
       "pageviews": 447,
       "bounceRate": 28.2,
-      "search_visits": 31
+      "search_visits": 0
     },
     {
       "date": "2026-04-17",
@@ -1540,7 +1524,7 @@
       "users": 45,
       "pageviews": 286,
       "bounceRate": 24.1,
-      "search_visits": 39
+      "search_visits": 0
     },
     {
       "date": "2026-04-18",
@@ -1548,7 +1532,7 @@
       "users": 35,
       "pageviews": 177,
       "bounceRate": 20.5,
-      "search_visits": 23
+      "search_visits": 0
     },
     {
       "date": "2026-04-19",
@@ -1556,7 +1540,7 @@
       "users": 41,
       "pageviews": 181,
       "bounceRate": 13.3,
-      "search_visits": 26
+      "search_visits": 0
     },
     {
       "date": "2026-04-20",
@@ -1564,7 +1548,7 @@
       "users": 45,
       "pageviews": 219,
       "bounceRate": 17.6,
-      "search_visits": 32
+      "search_visits": 0
     },
     {
       "date": "2026-04-21",
@@ -1572,7 +1556,7 @@
       "users": 52,
       "pageviews": 355,
       "bounceRate": 20.4,
-      "search_visits": 34
+      "search_visits": 0
     },
     {
       "date": "2026-04-22",
@@ -1580,7 +1564,7 @@
       "users": 42,
       "pageviews": 197,
       "bounceRate": 28.6,
-      "search_visits": 23
+      "search_visits": 0
     },
     {
       "date": "2026-04-23",
@@ -1588,7 +1572,7 @@
       "users": 48,
       "pageviews": 277,
       "bounceRate": 13.0,
-      "search_visits": 29
+      "search_visits": 0
     },
     {
       "date": "2026-04-24",
@@ -1596,7 +1580,7 @@
       "users": 29,
       "pageviews": 136,
       "bounceRate": 16.7,
-      "search_visits": 20
+      "search_visits": 0
     },
     {
       "date": "2026-04-25",
@@ -1604,7 +1588,7 @@
       "users": 29,
       "pageviews": 171,
       "bounceRate": 19.4,
-      "search_visits": 27
+      "search_visits": 0
     },
     {
       "date": "2026-04-26",
@@ -1612,7 +1596,7 @@
       "users": 38,
       "pageviews": 198,
       "bounceRate": 25.6,
-      "search_visits": 32
+      "search_visits": 0
     },
     {
       "date": "2026-04-27",
@@ -1620,7 +1604,7 @@
       "users": 47,
       "pageviews": 366,
       "bounceRate": 16.2,
-      "search_visits": 52
+      "search_visits": 0
     },
     {
       "date": "2026-04-28",
@@ -1628,7 +1612,7 @@
       "users": 51,
       "pageviews": 379,
       "bounceRate": 18.8,
-      "search_visits": 48
+      "search_visits": 0
     },
     {
       "date": "2026-04-29",
@@ -1636,7 +1620,7 @@
       "users": 47,
       "pageviews": 315,
       "bounceRate": 23.8,
-      "search_visits": 38
+      "search_visits": 0
     },
     {
       "date": "2026-04-30",
@@ -1644,7 +1628,7 @@
       "users": 43,
       "pageviews": 291,
       "bounceRate": 18.9,
-      "search_visits": 34
+      "search_visits": 0
     },
     {
       "date": "2026-05-01",
@@ -1652,7 +1636,7 @@
       "users": 44,
       "pageviews": 196,
       "bounceRate": 40.4,
-      "search_visits": 26
+      "search_visits": 0
     },
     {
       "date": "2026-05-02",
@@ -1660,7 +1644,7 @@
       "users": 39,
       "pageviews": 215,
       "bounceRate": 26.0,
-      "search_visits": 33
+      "search_visits": 0
     },
     {
       "date": "2026-05-03",
@@ -1668,7 +1652,7 @@
       "users": 31,
       "pageviews": 192,
       "bounceRate": 20.5,
-      "search_visits": 19
+      "search_visits": 0
     },
     {
       "date": "2026-05-04",
@@ -1676,7 +1660,7 @@
       "users": 57,
       "pageviews": 300,
       "bounceRate": 26.8,
-      "search_visits": 41
+      "search_visits": 0
     },
     {
       "date": "2026-05-05",
@@ -1684,7 +1668,7 @@
       "users": 52,
       "pageviews": 328,
       "bounceRate": 27.3,
-      "search_visits": 42
+      "search_visits": 0
     },
     {
       "date": "2026-05-06",
@@ -1692,7 +1676,7 @@
       "users": 36,
       "pageviews": 272,
       "bounceRate": 25.0,
-      "search_visits": 35
+      "search_visits": 0
     },
     {
       "date": "2026-05-07",
@@ -1700,7 +1684,7 @@
       "users": 40,
       "pageviews": 209,
       "bounceRate": 21.6,
-      "search_visits": 30
+      "search_visits": 0
     },
     {
       "date": "2026-05-08",
@@ -1708,7 +1692,7 @@
       "users": 35,
       "pageviews": 288,
       "bounceRate": 12.0,
-      "search_visits": 39
+      "search_visits": 0
     },
     {
       "date": "2026-05-09",
@@ -1716,7 +1700,7 @@
       "users": 37,
       "pageviews": 160,
       "bounceRate": 14.3,
-      "search_visits": 29
+      "search_visits": 0
     },
     {
       "date": "2026-05-10",
@@ -1724,7 +1708,7 @@
       "users": 34,
       "pageviews": 198,
       "bounceRate": 27.5,
-      "search_visits": 28
+      "search_visits": 0
     },
     {
       "date": "2026-05-11",
@@ -1732,7 +1716,7 @@
       "users": 42,
       "pageviews": 277,
       "bounceRate": 22.0,
-      "search_visits": 34
+      "search_visits": 0
     },
     {
       "date": "2026-05-12",
@@ -1740,7 +1724,7 @@
       "users": 65,
       "pageviews": 539,
       "bounceRate": 28.4,
-      "search_visits": 41
+      "search_visits": 0
     },
     {
       "date": "2026-05-13",
@@ -1748,7 +1732,7 @@
       "users": 43,
       "pageviews": 237,
       "bounceRate": 28.0,
-      "search_visits": 28
+      "search_visits": 0
     },
     {
       "date": "2026-05-14",
@@ -1756,7 +1740,7 @@
       "users": 39,
       "pageviews": 242,
       "bounceRate": 23.4,
-      "search_visits": 33
+      "search_visits": 0
     },
     {
       "date": "2026-05-15",
@@ -1764,7 +1748,7 @@
       "users": 43,
       "pageviews": 226,
       "bounceRate": 24.5,
-      "search_visits": 28
+      "search_visits": 0
     },
     {
       "date": "2026-05-16",
@@ -1772,7 +1756,7 @@
       "users": 47,
       "pageviews": 273,
       "bounceRate": 21.4,
-      "search_visits": 41
+      "search_visits": 0
     },
     {
       "date": "2026-05-17",
@@ -1780,7 +1764,7 @@
       "users": 63,
       "pageviews": 254,
       "bounceRate": 20.5,
-      "search_visits": 31
+      "search_visits": 0
     },
     {
       "date": "2026-05-18",
@@ -1788,7 +1772,7 @@
       "users": 39,
       "pageviews": 183,
       "bounceRate": 25.5,
-      "search_visits": 32
+      "search_visits": 0
     },
     {
       "date": "2026-05-19",
@@ -1796,7 +1780,7 @@
       "users": 32,
       "pageviews": 236,
       "bounceRate": 17.9,
-      "search_visits": 21
+      "search_visits": 0
     },
     {
       "date": "2026-05-20",
@@ -1804,7 +1788,7 @@
       "users": 35,
       "pageviews": 149,
       "bounceRate": 29.3,
-      "search_visits": 26
+      "search_visits": 0
     },
     {
       "date": "2026-05-21",
@@ -1812,7 +1796,7 @@
       "users": 32,
       "pageviews": 200,
       "bounceRate": 17.1,
-      "search_visits": 21
+      "search_visits": 0
     },
     {
       "date": "2026-05-22",
@@ -1820,7 +1804,7 @@
       "users": 28,
       "pageviews": 161,
       "bounceRate": 16.7,
-      "search_visits": 24
+      "search_visits": 0
     },
     {
       "date": "2026-05-23",
@@ -1828,7 +1812,7 @@
       "users": 16,
       "pageviews": 117,
       "bounceRate": 21.1,
-      "search_visits": 16
+      "search_visits": 0
     },
     {
       "date": "2026-05-24",
@@ -1836,7 +1820,7 @@
       "users": 26,
       "pageviews": 140,
       "bounceRate": 28.6,
-      "search_visits": 20
+      "search_visits": 0
     },
     {
       "date": "2026-05-25",
@@ -1844,7 +1828,7 @@
       "users": 36,
       "pageviews": 187,
       "bounceRate": 18.6,
-      "search_visits": 32
+      "search_visits": 0
     },
     {
       "date": "2026-05-26",
@@ -1852,7 +1836,7 @@
       "users": 45,
       "pageviews": 165,
       "bounceRate": 27.1,
-      "search_visits": 37
+      "search_visits": 0
     },
     {
       "date": "2026-05-27",
@@ -1860,7 +1844,7 @@
       "users": 39,
       "pageviews": 214,
       "bounceRate": 11.9,
-      "search_visits": 35
+      "search_visits": 0
     },
     {
       "date": "2026-05-28",
@@ -1868,7 +1852,7 @@
       "users": 31,
       "pageviews": 230,
       "bounceRate": 21.1,
-      "search_visits": 23
+      "search_visits": 0
     },
     {
       "date": "2026-05-29",
@@ -1876,7 +1860,7 @@
       "users": 35,
       "pageviews": 179,
       "bounceRate": 12.5,
-      "search_visits": 30
+      "search_visits": 0
     },
     {
       "date": "2026-05-30",
@@ -1884,7 +1868,7 @@
       "users": 47,
       "pageviews": 278,
       "bounceRate": 20.0,
-      "search_visits": 37
+      "search_visits": 0
     },
     {
       "date": "2026-05-31",
@@ -1892,7 +1876,7 @@
       "users": 42,
       "pageviews": 230,
       "bounceRate": 23.9,
-      "search_visits": 32
+      "search_visits": 0
     },
     {
       "date": "2026-06-01",
@@ -1900,7 +1884,7 @@
       "users": 51,
       "pageviews": 300,
       "bounceRate": 12.3,
-      "search_visits": 48
+      "search_visits": 0
     },
     {
       "date": "2026-06-02",
@@ -1908,7 +1892,7 @@
       "users": 45,
       "pageviews": 282,
       "bounceRate": 34.0,
-      "search_visits": 38
+      "search_visits": 0
     },
     {
       "date": "2026-06-03",
@@ -1916,7 +1900,7 @@
       "users": 35,
       "pageviews": 119,
       "bounceRate": 36.4,
-      "search_visits": 29
+      "search_visits": 0
     },
     {
       "date": "2026-06-04",
@@ -1924,7 +1908,7 @@
       "users": 46,
       "pageviews": 301,
       "bounceRate": 28.8,
-      "search_visits": 35
+      "search_visits": 0
     },
     {
       "date": "2026-06-05",
@@ -1932,7 +1916,7 @@
       "users": 59,
       "pageviews": 200,
       "bounceRate": 34.4,
-      "search_visits": 31
+      "search_visits": 0
     },
     {
       "date": "2026-06-06",
@@ -1940,7 +1924,7 @@
       "users": 43,
       "pageviews": 280,
       "bounceRate": 18.8,
-      "search_visits": 37
+      "search_visits": 0
     },
     {
       "date": "2026-06-07",
@@ -1948,7 +1932,7 @@
       "users": 30,
       "pageviews": 273,
       "bounceRate": 26.8,
-      "search_visits": 31
+      "search_visits": 0
     },
     {
       "date": "2026-06-08",
@@ -1956,7 +1940,7 @@
       "users": 34,
       "pageviews": 166,
       "bounceRate": 29.3,
-      "search_visits": 31
+      "search_visits": 0
     },
     {
       "date": "2026-06-09",
@@ -1964,7 +1948,7 @@
       "users": 35,
       "pageviews": 127,
       "bounceRate": 28.3,
-      "search_visits": 24
+      "search_visits": 0
     },
     {
       "date": "2026-06-10",
@@ -1972,7 +1956,7 @@
       "users": 33,
       "pageviews": 208,
       "bounceRate": 28.3,
-      "search_visits": 26
+      "search_visits": 0
     },
     {
       "date": "2026-06-11",
@@ -1980,7 +1964,7 @@
       "users": 37,
       "pageviews": 267,
       "bounceRate": 27.8,
-      "search_visits": 35
+      "search_visits": 0
     },
     {
       "date": "2026-06-12",
@@ -1988,7 +1972,7 @@
       "users": 29,
       "pageviews": 135,
       "bounceRate": 27.0,
-      "search_visits": 25
+      "search_visits": 0
     },
     {
       "date": "2026-06-13",
@@ -1996,7 +1980,7 @@
       "users": 37,
       "pageviews": 186,
       "bounceRate": 24.4,
-      "search_visits": 29
+      "search_visits": 0
     },
     {
       "date": "2026-06-14",
@@ -2004,7 +1988,7 @@
       "users": 34,
       "pageviews": 145,
       "bounceRate": 41.0,
-      "search_visits": 27
+      "search_visits": 0
     },
     {
       "date": "2026-06-15",
@@ -2012,7 +1996,7 @@
       "users": 50,
       "pageviews": 207,
       "bounceRate": 22.2,
-      "search_visits": 39
+      "search_visits": 0
     },
     {
       "date": "2026-06-16",
@@ -2020,7 +2004,7 @@
       "users": 58,
       "pageviews": 293,
       "bounceRate": 25.4,
-      "search_visits": 39
+      "search_visits": 0
     },
     {
       "date": "2026-06-17",
@@ -2028,7 +2012,7 @@
       "users": 48,
       "pageviews": 290,
       "bounceRate": 16.4,
-      "search_visits": 37
+      "search_visits": 0
     },
     {
       "date": "2026-06-18",
@@ -2036,7 +2020,7 @@
       "users": 53,
       "pageviews": 325,
       "bounceRate": 12.3,
-      "search_visits": 54
+      "search_visits": 0
     },
     {
       "date": "2026-06-19",
@@ -2044,7 +2028,7 @@
       "users": 36,
       "pageviews": 242,
       "bounceRate": 12.2,
-      "search_visits": 34
+      "search_visits": 0
     },
     {
       "date": "2026-06-20",
@@ -2052,7 +2036,7 @@
       "users": 27,
       "pageviews": 180,
       "bounceRate": 21.4,
-      "search_visits": 20
+      "search_visits": 0
     },
     {
       "date": "2026-06-21",
@@ -2060,15 +2044,23 @@
       "users": 26,
       "pageviews": 119,
       "bounceRate": 29.4,
-      "search_visits": 16
+      "search_visits": 0
     },
     {
       "date": "2026-06-22",
-      "visits": 24,
-      "users": 23,
-      "pageviews": 118,
-      "bounceRate": 25.0,
-      "search_visits": 15
+      "visits": 50,
+      "users": 48,
+      "pageviews": 200,
+      "bounceRate": 26.0,
+      "search_visits": 0
+    },
+    {
+      "date": "2026-06-23",
+      "visits": 17,
+      "users": 16,
+      "pageviews": 87,
+      "bounceRate": 11.8,
+      "search_visits": 0
     }
   ]
 }

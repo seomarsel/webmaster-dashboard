@@ -1,49 +1,49 @@
 {
-  "updated": "2026-07-17T08:01",
+  "updated": "2026-07-18T07:41",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
     {
       "query": "брюки цифра",
-      "shows": 283.0,
-      "clicks": 10.0,
-      "ctr": 3.53,
-      "position": 8.5
+      "shows": 295.0,
+      "clicks": 12.0,
+      "ctr": 4.07,
+      "position": 8.6
     },
     {
       "query": "igear",
       "shows": 167.0,
-      "clicks": 96.0,
-      "ctr": 57.49,
+      "clicks": 98.0,
+      "ctr": 58.68,
       "position": 1.3
     },
     {
       "query": "тактические брюки",
-      "shows": 128.0,
+      "shows": 126.0,
       "clicks": 4.0,
-      "ctr": 3.12,
-      "position": 11.1
+      "ctr": 3.17,
+      "position": 11.0
     },
     {
       "query": "ranger green",
-      "shows": 109.0,
+      "shows": 117.0,
       "clicks": 4.0,
-      "ctr": 3.67,
+      "ctr": 3.42,
       "position": 3.6
     },
     {
       "query": "российская тактическая одежда",
-      "shows": 69.0,
+      "shows": 71.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 4.3
+      "position": 4.7
     },
     {
       "query": "российский производитель туристической одежды",
-      "shows": 64.0,
+      "shows": 63.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 6.3
+      "position": 6.4
     },
     {
       "query": "китель тактический",
@@ -54,55 +54,55 @@
     },
     {
       "query": "тактическая одежда официальный сайт academygear.ru",
-      "shows": 48.0,
+      "shows": 53.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 6.8
+      "position": 6.9
     },
     {
       "query": "тактические штаны",
       "shows": 47.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 8.8
+      "position": 8.9
     },
     {
-      "query": "igear одежда тактическая",
+      "query": "брюки мужские тактические купить academygear.ru",
       "shows": 45.0,
-      "clicks": 29.0,
-      "ctr": 64.44,
-      "position": 1.0
+      "clicks": 0,
+      "ctr": 0.0,
+      "position": 6.2
     }
   ],
   "query_analytics": {
     "total_queries": 500,
     "position_buckets": {
-      "top3": 75,
-      "top4_10": 276,
-      "top11_50": 149,
+      "top3": 72,
+      "top4_10": 275,
+      "top11_50": 153,
       "top50plus": 0
     },
     "opportunities": [
       {
         "query": "брюки цифра",
-        "shows": 283.0,
-        "clicks": 10.0,
-        "ctr": 3.53,
-        "position": 8.5
+        "shows": 295.0,
+        "clicks": 12.0,
+        "ctr": 4.07,
+        "position": 8.6
       },
       {
         "query": "российская тактическая одежда",
-        "shows": 69.0,
+        "shows": 71.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 4.3
+        "position": 4.7
       },
       {
         "query": "российский производитель туристической одежды",
-        "shows": 64.0,
+        "shows": 63.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.3
+        "position": 6.4
       },
       {
         "query": "китель тактический",
@@ -113,48 +113,48 @@
       },
       {
         "query": "тактическая одежда официальный сайт academygear.ru",
-        "shows": 48.0,
+        "shows": 53.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.8
+        "position": 6.9
       },
       {
         "query": "тактические штаны",
         "shows": 47.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 8.8
+        "position": 8.9
       },
       {
         "query": "брюки мужские тактические купить academygear.ru",
-        "shows": 41.0,
+        "shows": 45.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 6.2
       },
       {
         "query": "штаны черные тактические academygear.ru",
-        "shows": 40.0,
+        "shows": 43.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 8.6
+        "position": 8.5
       },
       {
         "query": "купить тактические штаны academygear.ru",
-        "shows": 37.0,
+        "shows": 38.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 7.1
       },
       {
-        "query": "брюки мужские тактические academygear.ru",
-        "shows": 31.0,
+        "query": "купить штаны тактические мужские academygear.ru",
+        "shows": 32.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.1
+        "position": 7.9
       }
     ],
-    "new_count": 305,
+    "new_count": 303,
     "new_queries": [
       {
         "query": "брюки тактические мужские черные academygear.ru",
@@ -199,6 +199,20 @@
         "position": 3.4
       },
       {
+        "query": "брюки тактические мужские летние купить",
+        "shows": 11.0,
+        "clicks": 1.0,
+        "ctr": 9.09,
+        "position": 17.5
+      },
+      {
+        "query": "брюки койот летние купить",
+        "shows": 11.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 2.3
+      },
+      {
         "query": "магазин военной одежды",
         "shows": 10.0,
         "clicks": 0,
@@ -218,13 +232,6 @@
         "clicks": 0,
         "ctr": 0.0,
         "position": 5.8
-      },
-      {
-        "query": "брюки тактические мужские летние купить",
-        "shows": 10.0,
-        "clicks": 1.0,
-        "ctr": 10.0,
-        "position": 15.9
       },
       {
         "query": "jrv0593 на шоп геосвип-тегелер ру",
@@ -253,16 +260,9 @@
         "clicks": 0,
         "ctr": 0.0,
         "position": 22.4
-      },
-      {
-        "query": "брюки койот летние купить",
-        "shows": 8.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 2.1
       }
     ],
-    "lost_count": 305,
+    "lost_count": 303,
     "lost_queries": [
       {
         "query": "сайт тактической одежды",
@@ -277,6 +277,13 @@
         "clicks": 0,
         "ctr": 0.0,
         "position": 6.0
+      },
+      {
+        "query": "брюки мужские тактические купить",
+        "shows": 11.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 9.3
       },
       {
         "query": "айгиршоп",
@@ -308,17 +315,10 @@
       },
       {
         "query": "магазин тактической одежды уфа",
-        "shows": 8.0,
+        "shows": 6.0,
         "clicks": 1.0,
-        "ctr": 12.5,
-        "position": 4.8
-      },
-      {
-        "query": "фирмы тактической одежды",
-        "shows": 7.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 11.3
+        "ctr": 16.67,
+        "position": 3.8
       },
       {
         "query": "купить тактические брюки мультикам",
@@ -335,11 +335,11 @@
         "position": 9.2
       },
       {
-        "query": "ветровка тактическая мужская",
-        "shows": 6.0,
+        "query": "og-shop.ru",
+        "shows": 5.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 8.7
+        "position": 6.8
       },
       {
         "query": "игеар шоп",
@@ -356,24 +356,24 @@
         "position": 7.2
       },
       {
+        "query": "атакс брюки купить",
+        "shows": 5.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 6.4
+      },
+      {
         "query": "рейнджер грин камуфляж",
         "shows": 5.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 8.0
-      },
-      {
-        "query": "купить в челябинске тактическую футболку цвет олива большой размер",
-        "shows": 5.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 12.6
       }
     ],
     "intents": {
       "commercial": {
-        "count": 110,
-        "shows": 644.0,
+        "count": 112,
+        "shows": 645.0,
         "clicks": 30.0
       },
       "informational": {
@@ -382,18 +382,13 @@
         "clicks": 0
       },
       "other": {
-        "count": 389,
+        "count": 387,
         "shows": 2968.0,
-        "clicks": 275.0
+        "clicks": 278.0
       }
     }
   },
   "history": [
-    {
-      "date": "2026-04-18",
-      "shows": 90.0,
-      "clicks": 12.0
-    },
     {
       "date": "2026-04-19",
       "shows": 97.0,
@@ -836,11 +831,16 @@
     },
     {
       "date": "2026-07-16",
+      "shows": 232.0,
+      "clicks": 14.0
+    },
+    {
+      "date": "2026-07-17",
       "shows": 0,
       "clicks": 0
     },
     {
-      "date": "2026-07-17",
+      "date": "2026-07-18",
       "shows": 0,
       "clicks": 0
     }
@@ -1167,12 +1167,6 @@
   "health": {
     "problems": [
       {
-        "code": "DUPLICATE_CONTENT_ATTRS",
-        "title": "DUPLICATE_CONTENT_ATTRS",
-        "severity": "POSSIBLE_PROBLEM",
-        "severity_ru": "Возможная"
-      },
-      {
         "code": "DOCUMENTS_MISSING_DESCRIPTION",
         "title": "Страницы без description",
         "severity": "POSSIBLE_PROBLEM",
@@ -1181,6 +1175,12 @@
       {
         "code": "ERROR_IN_ROBOTS_TXT",
         "title": "ERROR_IN_ROBOTS_TXT",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
+        "code": "DUPLICATE_CONTENT_ATTRS",
+        "title": "DUPLICATE_CONTENT_ATTRS",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       },
@@ -1340,20 +1340,12 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 1340,
-    "users": 866,
-    "pageviews": 6702,
-    "bounceRate": 18.6
+    "visits": 1319,
+    "users": 854,
+    "pageviews": 6549,
+    "bounceRate": 18.7
   },
   "metrika_history": [
-    {
-      "date": "2026-04-18",
-      "visits": 44,
-      "users": 35,
-      "pageviews": 177,
-      "bounceRate": 20.5,
-      "search_visits": 23
-    },
     {
       "date": "2026-04-19",
       "visits": 45,
@@ -2068,11 +2060,19 @@
     },
     {
       "date": "2026-07-17",
-      "visits": 20,
-      "users": 20,
-      "pageviews": 158,
-      "bounceRate": 15.0,
-      "search_visits": 14
+      "visits": 42,
+      "users": 39,
+      "pageviews": 244,
+      "bounceRate": 14.3,
+      "search_visits": 33
+    },
+    {
+      "date": "2026-07-18",
+      "visits": 12,
+      "users": 11,
+      "pageviews": 51,
+      "bounceRate": 25.0,
+      "search_visits": 8
     }
   ]
 }

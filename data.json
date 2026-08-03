@@ -1,55 +1,55 @@
 {
-  "updated": "2026-08-02T08:14",
+  "updated": "2026-08-03T09:34",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
     {
       "query": "брюки цифра",
-      "shows": 312.0,
+      "shows": 297.0,
       "clicks": 16.0,
-      "ctr": 5.13,
-      "position": 9.4
+      "ctr": 5.39,
+      "position": 9.3
     },
     {
       "query": "igear",
-      "shows": 154.0,
-      "clicks": 97.0,
-      "ctr": 62.99,
+      "shows": 149.0,
+      "clicks": 95.0,
+      "ctr": 63.76,
       "position": 1.2
     },
     {
       "query": "ranger green",
-      "shows": 108.0,
+      "shows": 106.0,
       "clicks": 1.0,
-      "ctr": 0.93,
-      "position": 4.2
+      "ctr": 0.94,
+      "position": 4.3
     },
     {
       "query": "тактические брюки",
-      "shows": 107.0,
+      "shows": 104.0,
       "clicks": 8.0,
-      "ctr": 7.48,
+      "ctr": 7.69,
       "position": 10.6
     },
     {
       "query": "российская тактическая одежда",
-      "shows": 69.0,
+      "shows": 65.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 6.6
+      "position": 6.7
     },
     {
       "query": "тактическая одежда официальный сайт academygear.ru",
-      "shows": 60.0,
+      "shows": 57.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 7.4
+      "position": 7.5
     },
     {
       "query": "igear официальный сайт",
-      "shows": 58.0,
+      "shows": 56.0,
       "clicks": 30.0,
-      "ctr": 51.72,
+      "ctr": 53.57,
       "position": 1.4
     },
     {
@@ -77,39 +77,39 @@
   "query_analytics": {
     "total_queries": 500,
     "position_buckets": {
-      "top3": 78,
-      "top4_10": 256,
-      "top11_50": 166,
+      "top3": 80,
+      "top4_10": 252,
+      "top11_50": 168,
       "top50plus": 0
     },
     "opportunities": [
       {
         "query": "брюки цифра",
-        "shows": 312.0,
+        "shows": 297.0,
         "clicks": 16.0,
-        "ctr": 5.13,
-        "position": 9.4
+        "ctr": 5.39,
+        "position": 9.3
       },
       {
         "query": "ranger green",
-        "shows": 108.0,
+        "shows": 106.0,
         "clicks": 1.0,
-        "ctr": 0.93,
-        "position": 4.2
+        "ctr": 0.94,
+        "position": 4.3
       },
       {
         "query": "российская тактическая одежда",
-        "shows": 69.0,
+        "shows": 65.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.6
+        "position": 6.7
       },
       {
         "query": "тактическая одежда официальный сайт academygear.ru",
-        "shows": 60.0,
+        "shows": 57.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 7.4
+        "position": 7.5
       },
       {
         "query": "тактические брюки academygear.ru",
@@ -127,7 +127,7 @@
       },
       {
         "query": "брюки мужские тактические купить academygear.ru",
-        "shows": 46.0,
+        "shows": 43.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 6.1
@@ -141,20 +141,20 @@
       },
       {
         "query": "штаны черные тактические academygear.ru",
-        "shows": 40.0,
+        "shows": 38.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 8.4
+        "position": 8.3
       },
       {
         "query": "брюки мужские тактические academygear.ru",
-        "shows": 34.0,
+        "shows": 32.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 6.5
       }
     ],
-    "new_count": 290,
+    "new_count": 296,
     "new_queries": [
       {
         "query": "брюки койот летние купить",
@@ -255,35 +255,42 @@
         "position": 1.1
       },
       {
-        "query": "айгир инфинити",
-        "shows": 8.0,
+        "query": "брюки тактические демисезонные",
+        "shows": 6.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 12.0
+        "position": 10.5
       }
     ],
-    "lost_count": 290,
+    "lost_count": 296,
     "lost_queries": [
       {
         "query": "китель тактический",
-        "shows": 119.0,
+        "shows": 117.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 10.2
       },
       {
+        "query": "российская тактическая одежда academygear.ru",
+        "shows": 35.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 4.7
+      },
+      {
         "query": "брюки мультикам купить",
-        "shows": 22.0,
+        "shows": 21.0,
         "clicks": 10.0,
-        "ctr": 45.45,
-        "position": 5.6
+        "ctr": 47.62,
+        "position": 5.7
       },
       {
         "query": "магазин тактической одежды",
-        "shows": 22.0,
+        "shows": 21.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 9.1
+        "position": 9.2
       },
       {
         "query": "москва купить тактические брюки",
@@ -321,6 +328,13 @@
         "position": 10.8
       },
       {
+        "query": "чуни штурмер",
+        "shows": 10.0,
+        "clicks": 1.0,
+        "ctr": 10.0,
+        "position": 3.1
+      },
+      {
         "query": "купить штаны тактические мужские",
         "shows": 10.0,
         "clicks": 0,
@@ -328,32 +342,18 @@
         "position": 12.0
       },
       {
-        "query": "тактическая одежда academygear.ru",
+        "query": "егерь экипировка",
         "shows": 10.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 5.0
+        "position": 10.1
       },
       {
-        "query": "уфимский бренд одежды",
+        "query": "военная одежда уфа",
         "shows": 9.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 10.3
-      },
-      {
-        "query": "чуни штурмер",
-        "shows": 9.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 3.0
-      },
-      {
-        "query": "егерь экипировка",
-        "shows": 9.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 10.2
+        "position": 3.8
       },
       {
         "query": "apex ветровка",
@@ -363,17 +363,17 @@
         "position": 4.8
       },
       {
-        "query": "ветровка igear attack",
+        "query": "тактическая одежда academygear.ru",
         "shows": 9.0,
-        "clicks": 2.0,
-        "ctr": 22.22,
-        "position": 2.0
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 5.1
       }
     ],
     "intents": {
       "commercial": {
-        "count": 112,
-        "shows": 678.0,
+        "count": 116,
+        "shows": 676.0,
         "clicks": 16.0
       },
       "informational": {
@@ -382,18 +382,13 @@
         "clicks": 1.0
       },
       "other": {
-        "count": 383,
-        "shows": 2704.0,
-        "clicks": 296.0
+        "count": 379,
+        "shows": 2609.0,
+        "clicks": 294.0
       }
     }
   },
   "history": [
-    {
-      "date": "2026-05-04",
-      "shows": 81.0,
-      "clicks": 19.0
-    },
     {
       "date": "2026-05-05",
       "shows": 75.0,
@@ -836,11 +831,16 @@
     },
     {
       "date": "2026-08-01",
+      "shows": 138.0,
+      "clicks": 13.0
+    },
+    {
+      "date": "2026-08-02",
       "shows": 0,
       "clicks": 0
     },
     {
-      "date": "2026-08-02",
+      "date": "2026-08-03",
       "shows": 0,
       "clicks": 0
     }
@@ -1001,6 +1001,10 @@
     {
       "date": "2026-08-01",
       "value": 127
+    },
+    {
+      "date": "2026-08-02",
+      "value": 127
     }
   ],
   "pages_excluded": [
@@ -1159,6 +1163,10 @@
     {
       "date": "2026-08-01",
       "value": 0
+    },
+    {
+      "date": "2026-08-02",
+      "value": 0
     }
   ],
   "excluded_reasons": [
@@ -1191,12 +1199,6 @@
   "health": {
     "problems": [
       {
-        "code": "DOCUMENTS_MISSING_TITLE",
-        "title": "Страницы без title",
-        "severity": "POSSIBLE_PROBLEM",
-        "severity_ru": "Возможная"
-      },
-      {
         "code": "DOCUMENTS_MISSING_DESCRIPTION",
         "title": "Страницы без description",
         "severity": "POSSIBLE_PROBLEM",
@@ -1205,6 +1207,12 @@
       {
         "code": "DUPLICATE_CONTENT_ATTRS",
         "title": "DUPLICATE_CONTENT_ATTRS",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
+        "code": "DOCUMENTS_MISSING_TITLE",
+        "title": "Страницы без title",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       }
@@ -1362,20 +1370,12 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 1420,
-    "users": 909,
-    "pageviews": 7175,
-    "bounceRate": 23.5
+    "visits": 1443,
+    "users": 923,
+    "pageviews": 7174,
+    "bounceRate": 23.6
   },
   "metrika_history": [
-    {
-      "date": "2026-05-04",
-      "visits": 71,
-      "users": 57,
-      "pageviews": 300,
-      "bounceRate": 26.8,
-      "search_visits": 41
-    },
     {
       "date": "2026-05-05",
       "visits": 66,
@@ -2090,11 +2090,19 @@
     },
     {
       "date": "2026-08-02",
-      "visits": 18,
-      "users": 17,
-      "pageviews": 107,
-      "bounceRate": 22.2,
-      "search_visits": 13
+      "visits": 52,
+      "users": 43,
+      "pageviews": 294,
+      "bounceRate": 21.2,
+      "search_visits": 41
+    },
+    {
+      "date": "2026-08-03",
+      "visits": 30,
+      "users": 25,
+      "pageviews": 138,
+      "bounceRate": 20.0,
+      "search_visits": 18
     }
   ]
 }

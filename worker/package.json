@@ -1,0 +1,13 @@
+{
+  "name": "yandex-dash-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node build.mjs --verify dist/index.js",
+    "deploy": "node build.mjs && wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}

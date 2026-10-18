@@ -1,0 +1,20 @@
+name = "yandex-dash"
+main = "dist/index.js"
+compatibility_date = "2026-08-01"
+account_id = "0470d79fe54db6420dd092a929a9b380"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "yandex-dash-db"
+database_id = "61833d55-6f43-4f9b-b9ef-2155bae6526f"
+
+[ai]
+binding = "AI"
+
+[triggers]
+crons = ["*/15 * * * *"]
+
+# Секреты ADMIN_PASSWORD и SESSION_SECRET задаются через:
+#   wrangler secret put ADMIN_PASSWORD
+#   wrangler secret put SESSION_SECRET
+# При обычном wrangler deploy существующие секреты сохраняются автоматически.

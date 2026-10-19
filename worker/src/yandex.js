@@ -1,6 +1,6 @@
 // src/yandex.js
 var DAYS = 180;
-var MAX_GOALS = 15;
+var MAX_GOALS = 50;
 var MAX_PAGES = 500;
 var PAGE_MONTHS = [1, 2, 3, 4];
 var METRIKA = "https://api-metrika.yandex.net";
@@ -85,6 +85,7 @@ async function collectSite(site) {
     updated_at: (/* @__PURE__ */ new Date()).toISOString(),
     errors,
     goals: [],
+    goalsDaily: [],
     daily: [],
     sourcesDaily: [],
     searchDaily: [],
@@ -211,6 +212,51 @@ async function collectSite(site) {
     }
   } catch (e) {
     errors.push("\u041A\u043E\u043D\u0432\u0435\u0440\u0441\u0438\u0438 \u0441 \u043F\u043E\u0438\u0441\u043A\u0430: " + e.message);
+  }
+  if (goalMetrics.length) {
+    for (let gi = 0; gi < goalMetrics.length; gi += 8) {
+      const part = goalMetrics.slice(gi, gi + 8);
+      const gIds = part.map((m) => Number(m.replace(/\D/g, "")));
+      const rounds = [
+        { filters: null, field: "a" },
+        { filters: "ym:s:lastTrafficSource=='organic'", field: "s" }
+      ];
+      const sums = {};
+      for (const rd of rounds) {
+        try {
+          const data = await getJson(
+            statUrl({
+              ids: site.counter_id,
+              metrics: part.join(","),
+              dimensions: "ym:s:date",
+              filters: rd.filters,
+              date1: from,
+              date2: to,
+              limit: 1e5,
+              accuracy: "full"
+            }),
+            site.token
+          );
+          for (const row of data.data || []) {
+            const dkey = row.dimensions[0].name;
+            if (!sums[dkey]) sums[dkey] = {};
+            for (let i2 = 0; i2 < gIds.length; i2++) {
+              const gid = gIds[i2];
+              const cur = sums[dkey][gid] || (sums[dkey][gid] = { a: 0, s: 0 });
+              cur[rd.field] += Number(row.metrics[i2]) || 0;
+            }
+          }
+        } catch (e) {
+          errors.push("\u0426\u0435\u043B\u0438: " + e.message);
+        }
+      }
+      for (const dkey of Object.keys(sums).sort()) {
+        for (const gid of Object.keys(sums[dkey])) {
+          const v = sums[dkey][gid];
+          result.goalsDaily.push({ date: dkey, gid: Number(gid), a: v.a, s: v.s });
+        }
+      }
+    }
   }
   for (const off of PAGE_MONTHS) {
     const m = monthRange(off);

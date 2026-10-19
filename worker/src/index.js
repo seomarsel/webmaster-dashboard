@@ -809,6 +809,19 @@ tbody tr:last-child td { border-bottom: 0; }
 .srcRow i { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; }
 .srcRow .nm { color: var(--text); font-weight: 500; }
 .srcRow .v { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* — цели — */
+.chipbar { display: inline-flex; align-items: center; gap: 2px; background: var(--surface-2);
+	border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 3px; margin: 12px 0 10px; }
+.chipbar .cbLbl { padding: 0 10px; font-size: 12px; color: var(--text-3); }
+.chipbar button.chip { border: 0; background: transparent; padding: 6px 13px; font-size: 12.5px; }
+#gRows td { padding: 9px 10px; }
+#gRows td.task { font-weight: 500; }
+#gMore { margin-top: 10px; display: flex; align-items: center; }
+#gMore .shown { margin-left: auto; margin-right: 12px; font-size: 12px; color: var(--text-3); }
+.chipmore { border: 1px solid var(--border); background: transparent; color: #6aa9ff;
+	padding: 7px 12px; border-radius: var(--radius-xs); font-size: 13px; cursor: pointer; }
+.chipmore:hover { border-color: #313c50; }
 `;
 var LOGIN_PAGE = `<!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
@@ -2303,6 +2316,18 @@ tr[data-child] td { color: var(--text-2); font-size: 12.5px; }
 	<div class="legend" id="legend"></div>
 </div>
 
+<div class="card hidden" id="goalsCard">
+	<div class="chartHead">
+		<h2>\u0414\u043E\u0441\u0442\u0438\u0436\u0435\u043D\u0438\u0435 \u0446\u0435\u043B\u0435\u0439</h2>
+	</div>
+	<div class="chipbar"><span class="cbLbl">\u0418\u0441\u0442\u043E\u0447\u043D\u0438\u043A</span><button type="button" class="chip on" id="gSrcAll">\u0412\u0435\u0441\u044C \u0442\u0440\u0430\u0444\u0438\u043A</button><button type="button" class="chip" id="gSrcSearch">\u0422\u043E\u043B\u044C\u043A\u043E \u043F\u043E\u0438\u0441\u043A\u043E\u0432\u044B\u0439 \u0442\u0440\u0430\u0444\u0438\u043A</button></div>
+	<table>
+		<thead><tr id="gHead"></tr></thead>
+		<tbody id="gRows"></tbody>
+	</table>
+	<div id="gMore"></div>
+</div>
+
 <div class="card">
 	<h2>\u041F\u043E\u0438\u0441\u043A\u043E\u0432\u044B\u0439 \u0442\u0440\u0430\u0444\u0438\u043A \u043F\u043E \u043C\u0435\u0441\u044F\u0446\u0430\u043C</h2>
 	<table>
@@ -3408,9 +3433,95 @@ function applySearchModel(model, title) {
 	bindChartHover();
 }
 
+var goalCtx = null;
+var goalSrc = "all";
+var goalShowAll = false;
+
+function labelRange(f, t) {
+	var d1 = new Date(f + "T00:00:00");
+	var d2 = new Date(t + "T00:00:00");
+	if (isNaN(d1) || isNaN(d2)) return "";
+	var s1 = d1.getDate() + " " + MONTHS[d1.getMonth()];
+	if (d1.getFullYear() !== d2.getFullYear()) s1 += " " + d1.getFullYear();
+	return s1 + " \u2013 " + d2.getDate() + " " + MONTHS[d2.getMonth()] + " " + d2.getFullYear();
+}
+
+function goalsModel(ctx, src) {
+	var d = payload && payload.data ? payload.data : {};
+	var meta = d.goals || [];
+	var gd = d.goalsDaily || [];
+	var map = {};
+	for (var i = 0; i < meta.length; i++) map[meta[i].id] = { name: meta[i].name, cur: 0, prev: 0 };
+	var totalCur = 0, totalPrev = 0;
+	for (var j = 0; j < gd.length; j++) {
+		var r = gd[j];
+		var dt = String(r.date || "");
+		if (!map[r.gid]) map[r.gid] = { name: "\u0426\u0435\u043B\u044C " + r.gid, cur: 0, prev: 0 };
+		var val = src === "search" ? num(r.s) : num(r.a);
+		if (dt >= ctx.from && dt <= ctx.to) { map[r.gid].cur += val; totalCur += val; }
+		else if (dt >= ctx.prevFrom && dt <= ctx.prevTo) { map[r.gid].prev += val; totalPrev += val; }
+	}
+	var list = [];
+	for (var gid in map) {
+		if (!Object.prototype.hasOwnProperty.call(map, gid)) continue;
+		list.push({ id: gid, name: map[gid].name, cur: map[gid].cur, prev: map[gid].prev });
+	}
+	list.sort(function (x, y) { return y.cur - x.cur || y.prev - x.prev || String(x.name).localeCompare(String(y.name)); });
+	return { list: list, totalCur: totalCur, totalPrev: totalPrev };
+}
+
+function setGoalSrcUI() {
+	var a = document.getElementById("gSrcAll");
+	var s = document.getElementById("gSrcSearch");
+	if (a) a.className = goalSrc === "all" ? "chip on" : "chip";
+	if (s) s.className = goalSrc === "search" ? "chip on" : "chip";
+}
+
+function renderGoals() {
+	var card = document.getElementById("goalsCard");
+	if (!card) return;
+	var d = payload && payload.data ? payload.data : {};
+	if (!goalCtx || !(d.goals || []).length || !(d.goalsDaily || []).length) {
+		card.className = "card hidden";
+		return;
+	}
+	var m = goalsModel(goalCtx, goalSrc);
+	document.getElementById("gHead").innerHTML =
+		'<th style="width:34px">#</th><th>\u0426\u0435\u043B\u044C</th>' +
+		'<th class="num">\u0414\u043E\u0441\u0442\u0438\u0436\u0435\u043D\u0438\u044F \u0437\u0430 ' + esc(goalCtx.curLabel) + ' \u2193</th>' +
+		'<th class="num">\u0414\u043E\u0441\u0442\u0438\u0436\u0435\u043D\u0438\u044F \u0437\u0430 ' + esc(goalCtx.prevLabel) + "</th>";
+	var showN = goalShowAll ? m.list.length : Math.min(10, m.list.length);
+	var s = "";
+	for (var i = 0; i < showN; i++) {
+		var g = m.list[i];
+		s += '<tr><td class="hint">' + (i + 1) + '</td><td class="task">' + esc(g.name) + "</td>" +
+			'<td class="num"><b>' + fmtNum(g.cur) + "</b></td>" +
+			'<td class="num">' + fmtNum(g.prev) + "</td></tr>";
+	}
+	s += "<tr><td></td><td><b>\u0418\u0442\u043E\u0433\u043E \u043F\u043E \u0432\u0441\u0435\u043C \u0446\u0435\u043B\u044F\u043C</b></td>" +
+		'<td class="num"><b>' + fmtNum(m.totalCur) + "</b></td>" +
+		'<td class="num"><b>' + fmtNum(m.totalPrev) + "</b></td></tr>";
+	document.getElementById("gRows").innerHTML = s;
+	var more = document.getElementById("gMore");
+	if (m.list.length > 10) {
+		more.innerHTML = '<span class="shown">\u041F\u043E\u043A\u0430\u0437\u0430\u043D\u043E ' + showN + " \u0438\u0437 " + m.list.length + "</span>" +
+			'<button type="button" class="chipmore" id="gMoreBtn">' + (goalShowAll ? "\u0421\u0432\u0435\u0440\u043D\u0443\u0442\u044C" : "\u041F\u043E\u043A\u0430\u0437\u0430\u0442\u044C \u0432\u0441\u0435") + " \u2192</button>";
+		var b = document.getElementById("gMoreBtn");
+		if (b) b.onclick = function () { goalShowAll = !goalShowAll; renderGoals(); };
+	} else more.innerHTML = "";
+	card.className = "card";
+}
+
 function paintCompare() {
 	var months = lastMonths(2);
 	applySearchModel(cmpSearchModel(months), "\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
+	goalCtx = {
+		from: months[0].start, to: months[0].end,
+		prevFrom: months[1].start, prevTo: months[1].end,
+		curLabel: labelRange(months[0].start, months[0].end),
+		prevLabel: labelRange(months[1].start, months[1].end)
+	};
+	renderGoals();
 
 	var a = searchTotals(months[0].start, months[0].end);
 	var b = searchTotals(months[1].start, months[1].end);
@@ -3471,6 +3582,13 @@ function paintPeriod() {
 		applySearchModel(rangeSearchModel(fromStr, toStr, prevFrom, prevTo, group),
 			"\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
 	}
+	goalCtx = {
+		from: fromStr, to: toStr,
+		prevFrom: prevFrom, prevTo: prevTo,
+		curLabel: withPrev ? labelRange(fromStr, toStr) : "",
+		prevLabel: withPrev ? labelRange(prevFrom, prevTo) : ""
+	};
+	renderGoals();
 	document.getElementById("kpi").innerHTML =
 		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u0432\u0441\u0435\u0433\u043E", cu.visits,
 			shareBadge(cu.visits > 0 ? (t.visits / cu.visits) * 100 : null, cp.visits > 0 ? (pt.visits / cp.visits) * 100 : null)) +
@@ -3496,6 +3614,13 @@ function paintToday() {
 
 	applySearchModel(todaySearchModel(),
 		"\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
+	goalCtx = {
+		from: t0, to: t0,
+		prevFrom: t1, prevTo: t1,
+		curLabel: "\u0441\u0435\u0433\u043E\u0434\u043D\u044F, " + labelRange(t0, t0),
+		prevLabel: "\u0432\u0447\u0435\u0440\u0430, " + labelRange(t1, t1)
+	};
+	renderGoals();
 
 	/* KPI: сегодня против вчера */
 	var tt = searchTotals(t0, t0);
@@ -3600,6 +3725,10 @@ async function boot() {
 		highlight("");
 		paint();
 	};
+	var gsA = document.getElementById("gSrcAll");
+	var gsS = document.getElementById("gSrcSearch");
+	if (gsA) gsA.onclick = function () { goalSrc = "all"; setGoalSrcUI(); renderGoals(); };
+	if (gsS) gsS.onclick = function () { goalSrc = "search"; setGoalSrcUI(); renderGoals(); };
 	window.onresize = function () {
 		if (lastLabels.length) drawSeries(lastLabels, lastSeries);
 	};

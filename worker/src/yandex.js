@@ -219,7 +219,7 @@ async function collectSite(site) {
       statUrl({
         ids: site.counter_id,
         metrics: "ym:s:visits,ym:s:bounceRate",
-        dimensions: "ym:s:date,ym:s:browser",
+        dimensions: "ym:s:date,ym:s:browser,ym:s:browserVersion",
         filters: "ym:s:lastTrafficSource=='organic'",
         date1: from,
         date2: to,
@@ -232,6 +232,7 @@ async function collectSite(site) {
       result.browsersDaily.push({
         date: row.dimensions[0].name,
         browser: row.dimensions[1].name,
+        ver: row.dimensions[2] && row.dimensions[2].name || "",
         visits: Number(row.metrics[0]) || 0,
         bounce: Number(row.metrics[1]) || 0
       });

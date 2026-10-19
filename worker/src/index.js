@@ -743,6 +743,8 @@ th { color: var(--text-3); font-weight: 600; font-size: 11px; letter-spacing: .5
 	text-transform: uppercase; white-space: nowrap; border-bottom: 1px solid var(--border); }
 tbody tr:hover td { background: #151a24; }
 tbody tr:last-child td { border-bottom: 0; }
+#brCard tbody tr.brRow td { cursor: pointer; }
+#brCard tbody tr.brSub td { padding: 2px 12px 2px 34px; color: var(--text-2); font-size: 12.5px; }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
 .hidden { display: none !important; }
 .fmt { font-variant-numeric: tabular-nums; }
@@ -3532,6 +3534,8 @@ function renderGoals() {
 	card.className = "card";
 }
 
+var brOpen = {};
+
 function renderBrowsers() {
 	var card = document.getElementById("brCard");
 	if (!card) return;
@@ -3547,18 +3551,31 @@ function renderBrowsers() {
 		var dt = String(r.date || "");
 		if (dt < goalCtx.from || dt > goalCtx.to) continue;
 		var nm = r.browser || "\u2014";
-		if (!map[nm]) map[nm] = { visits: 0, bounce: 0 };
+		if (!map[nm]) map[nm] = { visits: 0, bounce: 0, vers: {} };
+		var b = map[nm];
 		var v = num(r.visits);
-		map[nm].visits += v;
-		if (r.bounce != null && isFinite(Number(r.bounce))) map[nm].bounce += Number(r.bounce) * v;
+		b.visits += v;
+		if (r.bounce != null && isFinite(Number(r.bounce))) b.bounce += Number(r.bounce) * v;
 		tot += v;
+		if (r.ver === void 0 || r.ver === null) continue;
+		var vn = String(r.ver) || "\u2014";
+		if (!b.vers[vn]) b.vers[vn] = { visits: 0, bounce: 0 };
+		b.vers[vn].visits += v;
+		if (r.bounce != null && isFinite(Number(r.bounce))) b.vers[vn].bounce += Number(r.bounce) * v;
 	}
 	var list = [];
 	for (var nm2 in map) {
 		if (!Object.prototype.hasOwnProperty.call(map, nm2)) continue;
-		var b = map[nm2];
-		if (tot <= 0 || b.visits / tot <= 0.02) continue;
-		list.push({ name: nm2, bounce: b.visits ? b.bounce / b.visits : null, visits: b.visits });
+		var b2 = map[nm2];
+		if (tot <= 0 || b2.visits / tot <= 0.02) continue;
+		var vl = [];
+		for (var vn2 in b2.vers) {
+			if (!Object.prototype.hasOwnProperty.call(b2.vers, vn2)) continue;
+			var w = b2.vers[vn2];
+			vl.push({ name: vn2, bounce: w.visits ? w.bounce / w.visits : null, visits: w.visits });
+		}
+		vl.sort(function (x, y) { return (y.bounce || 0) - (x.bounce || 0) || y.visits - x.visits; });
+		list.push({ name: nm2, bounce: b2.visits ? b2.bounce / b2.visits : null, visits: b2.visits, vers: vl });
 	}
 	if (!list.length) {
 		card.className = "card hidden";
@@ -3568,12 +3585,27 @@ function renderBrowsers() {
 	var s = "";
 	for (var j = 0; j < list.length; j++) {
 		var it = list[j];
-		s += '<tr><td class="task">' + esc(it.name) + "</td>" +
+		var open = !!brOpen[it.name];
+		s += '<tr class="brRow" data-br="' + esc(it.name) + '"><td class="task">' + (open ? "\u25BE" : "\u25B8") + " " + esc(it.name) + "</td>" +
 			'<td class="num">' + (it.bounce == null ? "\u2014" : (Math.round(it.bounce * 10) / 10).toFixed(1) + "%") + "</td></tr>";
+		if (open) {
+			for (var k2 = 0; k2 < it.vers.length; k2++) {
+				var vr = it.vers[k2];
+				s += '<tr class="brSub"><td>' + esc(vr.name) + "</td>" +
+					'<td class="num">' + (vr.bounce == null ? "\u2014" : (Math.round(vr.bounce * 10) / 10).toFixed(1) + "%") + "</td></tr>";
+			}
+		}
 	}
-	document.getElementById("brRows").innerHTML = s;
+	var rowsEl = document.getElementById("brRows");
+	rowsEl.innerHTML = s;
+	var rows = rowsEl.getElementsByTagName("tr");
+	for (var m2 = 0; m2 < rows.length; m2++) {
+		if (rows[m2].className === "brRow") {
+			rows[m2].onclick = (function (nm3) { return function () { brOpen[nm3] = !brOpen[nm3]; renderBrowsers(); }; })(rows[m2].getAttribute("data-br"));
+		}
+	}
 	var note = document.getElementById("brNote");
-	if (note) note.textContent = "\u0417\u0430 " + goalCtx.curLabel + " \u00B7 \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u044B \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u044B \u0441 \u0434\u043E\u043B\u0435\u0439 \u0432\u0438\u0437\u0438\u0442\u043E\u0432 \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430 \u0431\u043E\u043B\u044C\u0448\u0435 2%";
+	if (note) note.textContent = "\u0417\u0430 " + goalCtx.curLabel + " \u00B7 \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u044B \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u044B \u0441 \u0434\u043E\u043B\u0435\u0439 \u0432\u0438\u0437\u0438\u0442\u043E\u0432 \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430 \u0431\u043E\u043B\u044C\u0448\u0435 2% \u00B7 \u043A\u043B\u0438\u043A \u043F\u043E \u0441\u0442\u0440\u043E\u043A\u0435 \u2014 \u0432\u0435\u0440\u0441\u0438\u0438 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430";
 	card.className = "card";
 }
 

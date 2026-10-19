@@ -2345,7 +2345,7 @@ tr[data-child] td { color: var(--text-2); font-size: 12.5px; }
 	</div>
 	<p class="muted" id="brNote"></p>
 	<table>
-		<thead><tr><th>\u0411\u0440\u0430\u0443\u0437\u0435\u0440</th><th class="num">\u041E\u0442\u043A\u0430\u0437\u044B</th></tr></thead>
+		<thead><tr id="brHead"></tr></thead>
 		<tbody id="brRows"></tbody>
 	</table>
 </div>
@@ -3536,6 +3536,8 @@ function renderGoals() {
 
 var brOpen = {};
 
+function brFmt(x) { return x == null ? "\u2014" : (Math.round(x * 10) / 10).toFixed(1) + "%"; }
+
 function renderBrowsers() {
 	var card = document.getElementById("brCard");
 	if (!card) return;
@@ -3549,19 +3551,26 @@ function renderBrowsers() {
 	for (var i = 0; i < bd.length; i++) {
 		var r = bd[i];
 		var dt = String(r.date || "");
-		if (dt < goalCtx.from || dt > goalCtx.to) continue;
+		var isPrev;
+		if (dt >= goalCtx.from && dt <= goalCtx.to) isPrev = false;
+		else if (goalCtx.prevFrom && dt >= goalCtx.prevFrom && dt <= goalCtx.prevTo) isPrev = true;
+		else continue;
 		var nm = r.browser || "\u2014";
-		if (!map[nm]) map[nm] = { visits: 0, bounce: 0, vers: {} };
+		if (!map[nm]) map[nm] = { visits: 0, bounce: 0, pvisits: 0, pbounce: 0, vers: {} };
 		var b = map[nm];
 		var v = num(r.visits);
-		b.visits += v;
-		if (r.bounce != null && isFinite(Number(r.bounce))) b.bounce += Number(r.bounce) * v;
-		tot += v;
+		if (r.bounce != null && isFinite(Number(r.bounce))) {
+			if (isPrev) b.pbounce += Number(r.bounce) * v; else b.bounce += Number(r.bounce) * v;
+		}
+		if (isPrev) b.pvisits += v; else { b.visits += v; tot += v; }
 		if (r.ver === void 0 || r.ver === null) continue;
 		var vn = String(r.ver) || "\u2014";
-		if (!b.vers[vn]) b.vers[vn] = { visits: 0, bounce: 0 };
-		b.vers[vn].visits += v;
-		if (r.bounce != null && isFinite(Number(r.bounce))) b.vers[vn].bounce += Number(r.bounce) * v;
+		if (!b.vers[vn]) b.vers[vn] = { visits: 0, bounce: 0, pvisits: 0, pbounce: 0 };
+		var w0 = b.vers[vn];
+		if (isPrev) w0.pvisits += v; else w0.visits += v;
+		if (r.bounce != null && isFinite(Number(r.bounce))) {
+			if (isPrev) w0.pbounce += Number(r.bounce) * v; else w0.bounce += Number(r.bounce) * v;
+		}
 	}
 	var list = [];
 	for (var nm2 in map) {
@@ -3572,27 +3581,35 @@ function renderBrowsers() {
 		for (var vn2 in b2.vers) {
 			if (!Object.prototype.hasOwnProperty.call(b2.vers, vn2)) continue;
 			var w = b2.vers[vn2];
-			vl.push({ name: vn2, bounce: w.visits ? w.bounce / w.visits : null, visits: w.visits });
+			if (!w.visits && !w.pvisits) continue;
+			vl.push({ name: vn2, bounce: w.visits ? w.bounce / w.visits : null, bounceP: w.pvisits ? w.pbounce / w.pvisits : null, visits: w.visits });
 		}
 		vl.sort(function (x, y) { return (y.bounce || 0) - (x.bounce || 0) || y.visits - x.visits; });
-		list.push({ name: nm2, bounce: b2.visits ? b2.bounce / b2.visits : null, visits: b2.visits, vers: vl });
+		list.push({ name: nm2, bounce: b2.visits ? b2.bounce / b2.visits : null, bounceP: b2.pvisits ? b2.pbounce / b2.pvisits : null, visits: b2.visits, vers: vl });
 	}
 	if (!list.length) {
 		card.className = "card hidden";
 		return;
 	}
 	list.sort(function (x, y) { return (y.bounce || 0) - (x.bounce || 0) || y.visits - x.visits; });
+	var two = !!goalCtx.curLabel && !!goalCtx.prevLabel;
+	var head = '<th>\u0411\u0440\u0430\u0443\u0437\u0435\u0440</th><th class="num">';
+	if (two) head += "\u041E\u0442\u043A\u0430\u0437\u044B \u0437\u0430 " + esc(goalCtx.curLabel) + '</th><th class="num">\u041E\u0442\u043A\u0430\u0437\u044B \u0437\u0430 ' + esc(goalCtx.prevLabel);
+	else head += "\u041E\u0442\u043A\u0430\u0437\u044B";
+	document.getElementById("brHead").innerHTML = head + "</th>";
 	var s = "";
 	for (var j = 0; j < list.length; j++) {
 		var it = list[j];
 		var open = !!brOpen[it.name];
-		s += '<tr class="brRow" data-br="' + esc(it.name) + '"><td class="task">' + (open ? "\u25BE" : "\u25B8") + " " + esc(it.name) + "</td>" +
-			'<td class="num">' + (it.bounce == null ? "\u2014" : (Math.round(it.bounce * 10) / 10).toFixed(1) + "%") + "</td></tr>";
+		s += '<tr class="brRow" data-br="' + esc(it.name) + '"><td class="task">' + (open ? "\u25BE" : "\u25B8") + " " + esc(it.name) + "</td>";
+		if (two) s += '<td class="num">' + brFmt(it.bounce) + '</td><td class="num">' + brFmt(it.bounceP) + "</td></tr>";
+		else s += '<td class="num">' + brFmt(it.bounce) + "</td></tr>";
 		if (open) {
 			for (var k2 = 0; k2 < it.vers.length; k2++) {
 				var vr = it.vers[k2];
-				s += '<tr class="brSub"><td>' + esc(vr.name) + "</td>" +
-					'<td class="num">' + (vr.bounce == null ? "\u2014" : (Math.round(vr.bounce * 10) / 10).toFixed(1) + "%") + "</td></tr>";
+				s += '<tr class="brSub"><td>' + esc(vr.name) + "</td>";
+				if (two) s += '<td class="num">' + brFmt(vr.bounce) + '</td><td class="num">' + brFmt(vr.bounceP) + "</td></tr>";
+				else s += '<td class="num">' + brFmt(vr.bounce) + "</td></tr>";
 			}
 		}
 	}
@@ -3605,7 +3622,7 @@ function renderBrowsers() {
 		}
 	}
 	var note = document.getElementById("brNote");
-	if (note) note.textContent = "\u0417\u0430 " + goalCtx.curLabel + " \u00B7 \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u044B \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u044B \u0441 \u0434\u043E\u043B\u0435\u0439 \u0432\u0438\u0437\u0438\u0442\u043E\u0432 \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430 \u0431\u043E\u043B\u044C\u0448\u0435 2% \u00B7 \u043A\u043B\u0438\u043A \u043F\u043E \u0441\u0442\u0440\u043E\u043A\u0435 \u2014 \u0432\u0435\u0440\u0441\u0438\u0438 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430";
+	if (note) note.textContent = (two ? "\u0417\u0430 " + goalCtx.curLabel + " \u043F\u0440\u043E\u0442\u0438\u0432 " + goalCtx.prevLabel : "") + " \u00B7 \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u044B \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u044B \u0441 \u0434\u043E\u043B\u0435\u0439 \u0432\u0438\u0437\u0438\u0442\u043E\u0432 \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430 \u0431\u043E\u043B\u044C\u0448\u0435 2% \u00B7 \u043A\u043B\u0438\u043A \u043F\u043E \u0441\u0442\u0440\u043E\u043A\u0435 \u2014 \u0432\u0435\u0440\u0441\u0438\u0438 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430";
 	card.className = "card";
 }
 

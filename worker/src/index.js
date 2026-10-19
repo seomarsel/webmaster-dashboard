@@ -743,6 +743,8 @@ th { color: var(--text-3); font-weight: 600; font-size: 11px; letter-spacing: .5
 	text-transform: uppercase; white-space: nowrap; border-bottom: 1px solid var(--border); }
 tbody tr:hover td { background: #151a24; }
 tbody tr:last-child td { border-bottom: 0; }
+#brCard { overflow-x: auto; }
+#brCard th { white-space: normal; }
 #brCard tbody tr.brRow td { cursor: pointer; }
 #brCard tbody tr.brSub td { padding: 2px 12px 2px 34px; color: var(--text-2); font-size: 12.5px; }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
@@ -3538,6 +3540,15 @@ var brOpen = {};
 
 function brFmt(x) { return x == null ? "\u2014" : (Math.round(x * 10) / 10).toFixed(1) + "%"; }
 
+function brShort(f, t) {
+	var p1 = String(f || "").split("-"), p2 = String(t || "").split("-");
+	if (p1.length < 3 || p2.length < 3) return "";
+	if (f === t) return p1[2] + "." + p1[1];
+	var s = p1[2] + "." + p1[1] + " \u2013 " + p2[2] + "." + p2[1];
+	if (p1[0] !== p2[0]) s = p1[2] + "." + p1[1] + "." + p1[0].slice(2) + " \u2013 " + p2[2] + "." + p2[1] + "." + p2[0].slice(2);
+	return s;
+}
+
 function renderBrowsers() {
 	var card = document.getElementById("brCard");
 	if (!card) return;
@@ -3593,10 +3604,11 @@ function renderBrowsers() {
 	}
 	list.sort(function (x, y) { return (y.bounce || 0) - (x.bounce || 0) || y.visits - x.visits; });
 	var two = !!goalCtx.curLabel && !!goalCtx.prevLabel;
+	var cS = esc(brShort(goalCtx.from, goalCtx.to)), pS = esc(brShort(goalCtx.prevFrom, goalCtx.prevTo));
 	var head = '<th>\u0411\u0440\u0430\u0443\u0437\u0435\u0440</th><th class="num">';
-	var vLbl = "\u0412\u0438\u0437\u0438\u0442\u044B \u0437\u0430 ";
-	var bLbl = "\u041E\u0442\u043A\u0430\u0437\u044B \u0437\u0430 ";
-	if (two) head += vLbl + esc(goalCtx.curLabel) + '</th><th class="num">' + vLbl + esc(goalCtx.prevLabel) + '</th><th class="num">' + bLbl + esc(goalCtx.curLabel) + '</th><th class="num">' + bLbl + esc(goalCtx.prevLabel);
+	var vLbl = "\u0412\u0438\u0437\u0438\u0442\u044B ";
+	var bLbl = "\u041E\u0442\u043A\u0430\u0437\u044B ";
+	if (two) head += vLbl + cS + '</th><th class="num">' + vLbl + pS + '</th><th class="num">' + bLbl + cS + '</th><th class="num">' + bLbl + pS;
 	else head += "\u0412\u0438\u0437\u0438\u0442\u044B</th>" + '<th class="num">' + "\u041E\u0442\u043A\u0430\u0437\u044B";
 	document.getElementById("brHead").innerHTML = head + "</th>";
 	var s = "";

@@ -646,42 +646,169 @@ async function dashData(env, site) {
 }
 __name(dashData, "dashData");
 var CSS = `
+:root {
+	--bg: #0b0e13; --surface: #11151d; --surface-2: #161b25;
+	--border: #232a36; --border-soft: #1b212c;
+	--text: #e8ecf3; --text-2: #93a0b4; --text-3: #5f6b7d;
+	--accent: #3b82f6; --accent-soft: rgba(59, 130, 246, .12);
+	--green: #22c55e; --green-soft: rgba(34, 197, 94, .1);
+	--red: #ef4444; --red-soft: rgba(239, 68, 68, .1);
+	--amber: #f59e0b; --amber-soft: rgba(245, 158, 11, .1);
+	--radius: 14px; --radius-sm: 10px; --radius-xs: 8px;
+	--s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 24px; --s8: 32px;
+	--shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .25);
+}
 * { box-sizing: border-box; }
-body { margin: 0; padding: 24px; background: #0f1115; color: #e7e9ee;
-	font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
-h1 { font-size: 22px; margin: 0 0 4px; }
-h2 { font-size: 16px; margin: 0 0 12px; }
+body {
+	margin: 0; color: var(--text); background:
+		radial-gradient(1200px 400px at 70% -10%, rgba(59, 130, 246, .07), transparent 60%),
+		var(--bg);
+	font-family: -apple-system, "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-size: 14px; line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+	scrollbar-color: #2a3140 var(--bg);
+}
+h1 { font-size: 20px; font-weight: 650; letter-spacing: -.2px; margin: 0; }
+h2 { font-size: 14px; font-weight: 600; letter-spacing: -.1px; margin: 0; }
 a { color: #6aa9ff; }
-.muted { color: #8b93a7; font-size: 13px; }
-.card { background: #171a21; border: 1px solid #242833; border-radius: 12px;
-	padding: 18px; margin-bottom: 18px; }
-label { display: block; font-size: 12px; color: #8b93a7; margin-bottom: 4px; }
+.muted { color: var(--text-2); font-size: 12.5px; }
+.hint { color: var(--text-3); font-size: 12px; }
+.overline { font-size: 11px; letter-spacing: .5px; text-transform: uppercase; color: var(--text-3); font-weight: 600; }
+
+/* — шапка дашборда — */
+.topbar {
+	position: sticky; top: 0; z-index: 10;
+	display: flex; align-items: center; gap: 20px; height: 56px;
+	padding: 0 var(--s6);
+	background: rgba(11, 14, 19, .82); backdrop-filter: blur(12px);
+	border-bottom: 1px solid var(--border-soft);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+.brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+	box-shadow: 0 0 0 4px var(--green-soft); flex: 0 0 auto; }
+.topbar .meta { margin-left: auto; color: var(--text-3); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar .meta b { color: var(--text-2); font-weight: 600; }
+.container { max-width: 1180px; margin: 0 auto; padding: var(--s6) var(--s6) var(--s8); }
+
+/* — карточки — */
+.card {
+	background: var(--surface); border: 1px solid var(--border-soft);
+	border-radius: var(--radius); padding: var(--s5); box-shadow: var(--shadow);
+	margin-bottom: var(--s4); min-width: 0;
+}
+.card .head { display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s4); }
+.card .badge { margin-left: auto; font-size: 11px; color: var(--text-3);
+	background: var(--surface-2); border: 1px solid var(--border);
+	padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+
+label { display: block; font-size: 11px; color: var(--text-3); font-weight: 600;
+	letter-spacing: .3px; margin-bottom: 5px; }
 input, select, textarea, button { font: inherit; }
-input, select, textarea { width: 100%; padding: 9px 10px; border-radius: 8px;
-	border: 1px solid #2b3040; background: #10131a; color: #e7e9ee; }
+input, select, textarea {
+	width: 100%; padding: 8px 10px; border-radius: var(--radius-xs);
+	border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
+	outline: none; transition: border-color .15s, box-shadow .15s;
+}
+input:focus, select:focus, textarea:focus {
+	border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);
+}
 textarea { min-height: 90px; resize: vertical; }
-button { padding: 9px 14px; border-radius: 8px; border: 1px solid #2b3040;
-	background: #232838; color: #e7e9ee; cursor: pointer; }
-button:hover { background: #2c3245; }
-button.primary { background: #2f6df6; border-color: #2f6df6; }
+button {
+	padding: 8px 14px; border-radius: var(--radius-xs); border: 1px solid var(--border);
+	background: var(--surface-2); color: var(--text); cursor: pointer;
+	font-size: 13px; font-weight: 500; transition: border-color .15s, background .15s;
+}
+button:hover { border-color: #313c50; background: #1b2230; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+button.primary:hover { background: #2f74e0; }
 button.danger { background: #7f1d1d; border-color: #7f1d1d; }
-.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
-.row > div { flex: 1 1 160px; }
-.actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #242833;
+
+.row { display: flex; gap: var(--s4); flex-wrap: wrap; align-items: flex-end; }
+.row > div { flex: 1 1 160px; min-width: 0; }
+.actions { display: flex; gap: var(--s2); flex-wrap: wrap; margin-top: var(--s3); }
+
+/* — таблицы — */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border-soft);
 	vertical-align: middle; }
-th { color: #8b93a7; font-weight: 500; font-size: 12px; }
+th { color: var(--text-3); font-weight: 600; font-size: 11px; letter-spacing: .5px;
+	text-transform: uppercase; white-space: nowrap; border-bottom: 1px solid var(--border); }
+tbody tr:hover td { background: #151a24; }
+tbody tr:last-child td { border-bottom: 0; }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
 .hidden { display: none !important; }
 .fmt { font-variant-numeric: tabular-nums; }
-.chip { display: inline-block; padding: 6px 12px; border-radius: 999px;
-	border: 1px solid #2b3040; background: #171a21; cursor: pointer; font-size: 13px; }
-.chip.on { background: #2f6df6; border-color: #2f6df6; }
-.kpi { display: flex; gap: 12px; flex-wrap: wrap; }
-.kpi .box { flex: 1 1 150px; background: #171a21; border: 1px solid #242833;
-	border-radius: 12px; padding: 14px; }
-.kpi .box b { display: block; font-size: 22px; margin-top: 4px; }
+
+/* — сегменты (периоды) — */
+.chip { display: inline-block; padding: 6px 13px; border-radius: 7px;
+	border: 0; background: transparent; color: var(--text-2);
+	cursor: pointer; font-size: 12.5px; transition: .15s; }
+.chip:hover:not(.on) { color: var(--text); }
+.chip.on { background: #202a3c; color: var(--text); box-shadow: inset 0 0 0 1px #2d3a52; }
+#periods { display: inline-flex; background: var(--surface-2);
+	border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 3px; gap: 2px; }
+
+/* — KPI — */
+.kpi { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s4); }
+.kpi .box:nth-child(6) { grid-column: span 3; }
+.kpi .box:nth-child(7) { grid-column: span 2; }
+@media (max-width: 1020px) {
+	.kpi { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.kpi .box:nth-child(6) { grid-column: span 2; }
+	.kpi .box:nth-child(7) { grid-column: span 1; }
+}
+@media (max-width: 640px) {
+	.kpi { grid-template-columns: 1fr 1fr; }
+	.kpi .box:nth-child(6), .kpi .box:nth-child(7) { grid-column: auto; }
+}
+.kpi .box, .kpi > div {
+	background: var(--surface); border: 1px solid var(--border-soft);
+	border-radius: var(--radius); padding: var(--s4) var(--s5);
+	box-shadow: var(--shadow); position: relative; overflow: hidden;
+	min-width: 0;
+}
+.kpi .box .lbl, .kpi > div > span.muted:first-child { display: block; font-size: 12px;
+	color: var(--text-2); font-weight: 500; }
+.kpi .box b, .kpi > div b { display: block; font-size: 27px; font-weight: 650;
+	letter-spacing: -.5px; margin-top: 2px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.kpi .box .sub { display: flex; align-items: center; gap: 6px; margin-top: 6px;
+	font-size: 12px; color: var(--text-3); flex-wrap: wrap; }
+
+/* — тренды — */
+.trend { display: inline-flex; align-items: center; gap: 4px; font-weight: 600;
+	font-size: 12px; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.trend.up { color: #4ade80; background: var(--green-soft); }
+.trend.down { color: #f87171; background: var(--red-soft); }
+.trend .arrow { font-size: 10px; }
+
+/* — бейджи позиции/ранга — */
+.rank { display: inline-flex; min-width: 34px; justify-content: center;
+	font-weight: 600; font-size: 12px; padding: 2px 8px; border-radius: 6px;
+	font-variant-numeric: tabular-nums; }
+.rank.top3 { color: #4ade80; background: var(--green-soft); }
+.rank.top10 { color: #fbbf24; background: var(--amber-soft); }
+.rank.low { color: var(--text-2); background: var(--surface-2); }
+
+.up { color: #4ade80; }
+.down { color: #f87171; }
+
+/* — график с рядами источников — */
+.chartHead { display: flex; align-items: flex-start; gap: 12px; }
+.chartTotal { margin-left: auto; text-align: right; white-space: nowrap; }
+.chartTotal .cv { display: block; font-size: 26px; font-weight: 650; letter-spacing: -.5px; font-variant-numeric: tabular-nums; }
+.chartWrap { position: relative; margin-top: 10px; }
+.tip { position: absolute; display: none; pointer-events: none; left: 0; top: 0;
+	background: rgba(13, 17, 23, .96); border: 1px solid var(--border); border-radius: 8px;
+	padding: 8px 11px; font-size: 12px; color: var(--text-2); white-space: nowrap; z-index: 5; box-shadow: var(--shadow); }
+.tip b { color: var(--text); font-weight: 600; }
+.srcHint { margin-top: 12px; font-size: 12px; color: var(--text-3); }
+.srcRows { margin-top: 4px; }
+.srcRow { display: flex; align-items: center; gap: 10px; padding: 11px 10px;
+	border-radius: var(--radius-xs); cursor: pointer; transition: background .12s; }
+.srcRow:hover, .srcRow.sel { background: var(--surface-2); }
+.srcRow i { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; }
+.srcRow .nm { color: var(--text); font-weight: 500; }
+.srcRow .v { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
 `;
 var LOGIN_PAGE = `<!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
@@ -718,15 +845,16 @@ var ADMIN_PAGE = `<!doctype html>
 <title>\u0410\u0434\u043C\u0438\u043D\u043A\u0430 \u0434\u0430\u0448\u0431\u043E\u0440\u0434\u0430</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"><\/script>
 <style>${CSS}
+body { padding: 20px 24px; }
 .layout { display: flex; gap: 18px; align-items: flex-start; }
-.side { flex: 0 0 250px; position: sticky; top: 24px; background: #171a21;
-	border: 1px solid #242833; border-radius: 12px; padding: 10px; }
-.side .grp { color: #8b93a7; font-size: 11px; text-transform: uppercase;
+.side { flex: 0 0 250px; position: sticky; top: 24px; background: var(--surface);
+	border: 1px solid var(--border-soft); border-radius: var(--radius); padding: 10px; }
+.side .grp { color: var(--text-3); font-size: 11px; text-transform: uppercase;
 	letter-spacing: .05em; padding: 12px 10px 4px; }
 .side button { display: block; width: 100%; text-align: left; background: transparent;
-	border: 0; padding: 9px 10px; border-radius: 8px; color: #c9d1e0; font-size: 14px; }
-.side button:hover { background: #1f2431; }
-.side button.on { background: #2f6df6; color: #fff; }
+	border: 0; padding: 9px 10px; border-radius: var(--radius-xs); color: #c9d1e0; font-size: 14px; }
+.side button:hover { background: var(--surface-2); }
+.side button.on { background: var(--accent); color: #fff; }
 .pane { flex: 1 1 0; min-width: 0; }
 .pane h1.sec { font-size: 18px; margin: 4px 0 14px; }
 @media (max-width: 900px) {
@@ -2128,21 +2256,23 @@ var DASH_TEMPLATE = `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>\u0414\u0430\u0448\u0431\u043E\u0440\u0434</title><style>${CSS}
 canvas { width: 100%; height: 300px; display: block; }
-.legend span { display: inline-flex; align-items: center; gap: 6px; margin-right: 14px; font-size: 13px; }
-.legend i { width: 12px; height: 3px; border-radius: 2px; display: inline-block; }
-.up { color: #22c55e; }
-.down { color: #ef4444; }
-tr[data-child] td { color: #8b93a7; font-size: 13px; }
-.toggle { cursor: pointer; color: #6aa9ff; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; margin-right: 16px; font-size: 12.5px; color: var(--text-2); }
+.legend i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+tr[data-child] td { color: var(--text-2); font-size: 12.5px; }
+.toggle { cursor: pointer; color: #6aa9ff; border-bottom: 1px dashed rgba(106,169,255,.45); }
+.toggle:hover { color: #8db8ff; }
 </style></head>
 <body>
-<h1 id="title">\u0414\u0430\u0448\u0431\u043E\u0440\u0434</h1>
-<p class="muted"><span id="updated"></span></p>
+<div class="topbar">
+	<div class="brand"><span class="dot"></span><h1 id="title">\u0414\u0430\u0448\u0431\u043E\u0440\u0434</h1></div>
+	<div class="meta"><b id="updated"></b></div>
+</div>
+<div class="container">
 
 <div class="card">
 	<div class="row">
 		<div id="pickerBox"><label>\u0421\u0430\u0439\u0442</label><select id="picker"></select></div>
-		<div style="flex:0 0 auto"><button id="reload">\u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u0434\u0430\u043D\u043D\u044B\u0435</button></div>
+		<div style="flex:0 0 auto"><button id="reload" class="primary">\u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u0434\u0430\u043D\u043D\u044B\u0435</button></div>
 	</div>
 	<div id="periods" style="margin-top:14px"></div>
 	<div class="row" style="margin-top:14px">
@@ -2162,9 +2292,15 @@ tr[data-child] td { color: #8b93a7; font-size: 13px; }
 <div class="kpi" id="kpi"></div>
 
 <div class="card">
-	<h2 id="chartTitle">\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438</h2>
+	<div class="chartHead">
+		<h2 id="chartTitle">\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438</h2>
+		<div class="chartTotal"><span class="cv" id="chartTotalV"></span><span id="chartTotalB"></span></div>
+	</div>
+	<div class="chartWrap">
+		<canvas id="chart"></canvas>
+		<div class="tip" id="chartTip"></div>
+	</div>
 	<div class="legend" id="legend"></div>
-	<canvas id="chart"></canvas>
 </div>
 
 <div class="card">
@@ -2282,7 +2418,8 @@ function hasKeys(o) {
 }
 
 var PRESETS = [
-	{ id: "cmp", label: "\u041F\u0440\u043E\u0448\u043B\u044B\u0439 \u0438 \u043F\u043E\u0437\u0430\u043F\u0440\u043E\u0448\u043B\u044B\u0439 \u043C\u0435\u0441\u044F\u0446" },
+	{ id: "cmp", label: "" },
+	{ id: "today", label: "\u0421\u0435\u0433\u043E\u0434\u043D\u044F" },
 	{ id: "7", label: "7 \u0434\u043D\u0435\u0439" },
 	{ id: "30", label: "30 \u0434\u043D\u0435\u0439" },
 	{ id: "90", label: "90 \u0434\u043D\u0435\u0439" },
@@ -2297,13 +2434,23 @@ function highlight(id) {
 	}
 }
 
+var dayCmp = false;
 function setPreset(id) {
 	if (id === "cmp") {
 		compare = true;
+		dayCmp = false;
 		highlight("cmp");
 		paint();
 		return;
 	}
+	if (id === "today") {
+		compare = false;
+		dayCmp = true;
+		highlight("today");
+		paint();
+		return;
+	}
+	dayCmp = false;
 	compare = false;
 	var days = Number(id);
 	var to = new Date();
@@ -2320,6 +2467,12 @@ function setPreset(id) {
 }
 
 (function buildChips() {
+	var mm = lastMonths(2);
+	var m0 = MONTHS[Number(String(mm[0].key).slice(5, 7)) - 1];
+	var m1 = MONTHS[Number(String(mm[1].key).slice(5, 7)) - 1];
+	PRESETS[0].label = "\u0421\u0440\u0430\u0432\u043D\u0435\u043D\u0438\u0435 " +
+		m0.charAt(0).toUpperCase() + m0.slice(1) + " \u0438 " +
+		m1.charAt(0).toUpperCase() + m1.slice(1);
 	var s = "";
 	for (var i = 0; i < PRESETS.length; i++) {
 		s += '<span class="chip" data-p="' + PRESETS[i].id + '">' + PRESETS[i].label + "</span> ";
@@ -2371,9 +2524,9 @@ function drawSeries(labels, series) {
 	}
 	max = Math.ceil(max * 1.15);
 
-	g.strokeStyle = "#242833";
-	g.fillStyle = "#8b93a7";
-	g.font = "11px sans-serif";
+	g.strokeStyle = "#1d2530";
+	g.fillStyle = "#5f6b7d";
+	g.font = "11px -apple-system, 'Segoe UI', Roboto, sans-serif";
 	g.lineWidth = 1;
 	for (var t = 0; t <= 4; t++) {
 		var y = padT + ((h - padT - padB) * t) / 4;
@@ -2388,9 +2541,29 @@ function drawSeries(labels, series) {
 	if (!n) return;
 	var stepX = n > 1 ? (w - padL - padR) / (n - 1) : 0;
 
+	if (series.length && series[0].values.length > 1) {
+		var vals0 = series[0].values;
+		var grad = g.createLinearGradient(0, padT, 0, h - padB);
+		grad.addColorStop(0, "rgba(59,130,246,.20)");
+		grad.addColorStop(1, "rgba(59,130,246,0)");
+		g.beginPath();
+		for (var f2 = 0; f2 < vals0.length; f2++) {
+			var fx = padL + stepX * f2;
+			var fy = padT + (h - padT - padB) * (1 - num(vals0[f2]) / max);
+			if (f2 === 0) g.moveTo(fx, fy); else g.lineTo(fx, fy);
+		}
+		g.lineTo(padL + stepX * (vals0.length - 1), h - padB);
+		g.lineTo(padL, h - padB);
+		g.closePath();
+		g.fillStyle = grad;
+		g.fill();
+	}
+
 	for (var s = 0; s < series.length; s++) {
 		g.strokeStyle = series[s].color;
-		g.lineWidth = 2;
+		g.lineWidth = 2.2;
+		g.lineJoin = "round";
+		g.lineCap = "round";
 		g.beginPath();
 		for (var k = 0; k < series[s].values.length; k++) {
 			var x = padL + stepX * k;
@@ -2401,7 +2574,7 @@ function drawSeries(labels, series) {
 		g.stroke();
 	}
 
-	g.fillStyle = "#8b93a7";
+	g.fillStyle = "#5f6b7d";
 	var everyX = Math.ceil(n / 10);
 	for (var q = 0; q < n; q += everyX) {
 		g.fillText(labels[q], padL + stepX * q - 10, h - 8);
@@ -2729,7 +2902,10 @@ function changePos(a, b) {
 }
 
 function posCell(v) {
-	return '<td class="num fmt">' + (v == null ? "\u2014" : v) + "</td>";
+	if (v == null) return '<td class="num fmt">\u2014</td>';
+	var pn = Number(v);
+	var cls = !isFinite(pn) ? "" : pn <= 3 ? " top3" : pn <= 10 ? " top10" : "";
+	return '<td class="num fmt"><span class="rank' + cls + '">' + v + "</span></td>";
 }
 
 function renderPosTable(engine, rowsId, headId) {
@@ -2814,49 +2990,447 @@ function bindPosToggle(rowsId) {
 }
 
 function kpiBox(name, value, extra) {
-	return '<div class="box"><span class="muted">' + name + "</span><b>" + value + "</b>" +
-		(extra ? '<span class="muted">' + extra + "</span>" : "") + "</div>";
+	return '<div class="box"><span class="lbl">' + name + "</span><b>" + value + "</b>" +
+		(extra ? '<div class="sub">' + extra + "</div>" : "") + "</div>";
+}
+function trendBadge(cur, prev, opts) {
+	opts = opts || {};
+	if (cur == null || prev == null || !isFinite(Number(cur)) || !isFinite(Number(prev)) || Number(prev) === 0) {
+		return '<span class="hint">\u2014</span>';
+	}
+	var p = ((Number(cur) - Number(prev)) / Number(prev)) * 100;
+	var goodUp = p >= 0;
+	if (opts.lowerIsBetter && p < 0) goodUp = true;
+	var cls = goodUp ? "up" : "down";
+	var arrow = goodUp ? "\u25B2" : "\u25BC";
+	var sign = goodUp ? "+" : "\u2212";
+	return '<span class="trend ' + cls + '"><span class="arrow">' + arrow + "</span>" + sign +
+		Math.abs(p).toFixed(1) + "%" + (opts.suffix ? " " + opts.suffix : "") + "</span>";
+}
+function shareBadge(cur, prev) {
+	if (cur == null || !isFinite(cur)) return "";
+	return '<span class="hint">\u043F\u043E\u0438\u0441\u043A: ' + cur.toFixed(1) + "%</span>";
+}
+function dailyTotals(from, to) {
+	var d = payload && payload.data ? payload.data : {};
+	var res = { visits: 0, users: 0, bounce: 0, bn: 0, bounceAvg: null };
+	var arr = d.daily || [];
+	for (var i = 0; i < arr.length; i++) {
+		var dt = String(arr[i].date || "");
+		if (dt < from || dt > to) continue;
+		var u = num(arr[i].users);
+		res.visits += num(arr[i].visits);
+		res.users += u;
+		if (arr[i].bounce != null && isFinite(Number(arr[i].bounce))) {
+			res.bounce += Number(arr[i].bounce) * u;
+			res.bn += u;
+		}
+	}
+	res.bounceAvg = res.bn ? res.bounce / res.bn : null;
+	return res;
+}
+
+function fmtNum(n) {
+	var s = String(Math.round(num(n)));
+	var out = "";
+	while (s.length > 3) { out = "\u202F" + s.slice(-3) + out; s = s.slice(0, -3); }
+	return s + out;
+}
+
+function keyToDmy(key) {
+	var p = String(key).split("-");
+	return p[2] + "." + p[1] + "." + p[0];
+}
+
+var searchChart = null;
+
+function searchDefVals(months, eng) {
+	var d = payload && payload.data ? payload.data : {};
+	var vals = [[], []];
+	var totals = [0, 0];
+	var sd = d.searchDaily || [];
+	var m, i, dt, v;
+	if (sd.length) {
+		for (m = 0; m < 2; m++) {
+			var ln = Number(String(months[m].end).slice(-2), 10);
+			var arr = [];
+			for (var day = 1; day <= ln; day++) arr.push(0);
+			for (i = 0; i < sd.length; i++) {
+				dt = String(sd[i].date || "");
+				if (dt < months[m].start || dt > months[m].end) continue;
+				var e = String(sd[i].engine || sd[i].searchEngine || "").toLowerCase();
+				var isY = e.indexOf("yandex") >= 0 || e.indexOf("\u044F\u043D\u0434\u0435\u043A\u0441") >= 0;
+				var isG = e.indexOf("google") >= 0;
+				var match = eng === null || (eng === "yandex" && isY) || (eng === "google" && isG) || (eng === "other" && !isY && !isG);
+				if (!match) continue;
+				v = num(sd[i].visits != null ? sd[i].visits : sd[i].users);
+				var di = Number(String(dt).slice(-2), 10) - 1;
+				if (di >= 0 && di < ln) { arr[di] += v; totals[m] += v; }
+			}
+			vals[m] = arr;
+		}
+	} else {
+		var src = d.sourcesDaily || [];
+		for (m = 0; m < 2; m++) {
+			var ln2 = Number(String(months[m].end).slice(-2), 10);
+			var arr2 = [];
+			for (var day2 = 1; day2 <= ln2; day2++) arr2.push(0);
+			for (i = 0; i < src.length; i++) {
+				dt = String(src[i].date || "");
+				if (dt < months[m].start || dt > months[m].end || !isSearchSource(src[i].source)) continue;
+				v = num(src[i].visits != null ? src[i].visits : src[i].users);
+				var di2 = Number(String(dt).slice(-2), 10) - 1;
+				if (di2 >= 0 && di2 < ln2) { arr2[di2] += v; totals[m] += v; }
+			}
+			vals[m] = arr2;
+		}
+	}
+	return { vals: vals, totals: totals };
+}
+
+function searchDefs() {
+	var defs = [
+		{ key: "all", name: "\u0412\u0435\u0441\u044C \u043F\u043E\u0438\u0441\u043A\u043E\u0432\u044B\u0439 \u0442\u0440\u0430\u0444\u0438\u043A", color: "#e8ecf3", eng: null },
+		{ key: "yandex", name: "\u042F\u043D\u0434\u0435\u043A\u0441", color: "#f59e0b", eng: "yandex" },
+		{ key: "google", name: "Google", color: "#3b82f6", eng: "google" },
+		{ key: "other", name: "\u041F\u0440\u043E\u0447\u0438\u0435 \u0441\u0438\u0441\u0442\u0435\u043C\u044B", color: "#67748a", eng: "other" }
+	];
+	var d = payload && payload.data ? payload.data : {};
+	if (!(d.searchDaily || []).length) defs = defs.slice(0, 1);
+	return defs;
+}
+
+function updateSearchHead() {
+	var st = searchChart;
+	if (!st || !st.rows) return;
+	var row = st.rows[st.sel] || st.rows[0];
+	document.getElementById("chartTotalV").textContent = fmtNum(row.total);
+	document.getElementById("chartTotalB").innerHTML = trendBadge(row.total, row.totalPrev);
+}
+
+function drawSearchChart(hoverIdx) {
+	var st = searchChart;
+	if (!st || !st.rows) return;
+	var row = st.rows[st.sel] || st.rows[0];
+	var c = document.getElementById("chart");
+	var ratio = window.devicePixelRatio || 1;
+	var w = c.clientWidth;
+	var h = 300;
+	c.width = w * ratio;
+	c.height = h * ratio;
+	var g = c.getContext("2d");
+	g.setTransform(ratio, 0, 0, ratio, 0, 0);
+	g.clearRect(0, 0, w, h);
+
+	var padL = 44, padR = 12, padT = 14, padB = 26;
+	var n = row.cur.length;
+	if (!n) return;
+	var max = 1;
+	for (var i = 0; i < n; i++) {
+		max = Math.max(max, num(row.cur[i]), num(row.prev ? row.prev[i] : 0));
+	}
+	max = Math.ceil(max * 1.12);
+
+	g.strokeStyle = "#1d2530";
+	g.fillStyle = "#5f6b7d";
+	g.font = "11px -apple-system, 'Segoe UI', Roboto, sans-serif";
+	g.lineWidth = 1;
+	for (var t = 0; t <= 4; t++) {
+		var y = padT + ((h - padT - padB) * t) / 4;
+		g.beginPath();
+		g.moveTo(padL, y);
+		g.lineTo(w - padR, y);
+		g.stroke();
+		g.fillText(fmtNum(max - (max * t) / 4), 6, y + 3);
+	}
+
+	var stepX = n > 1 ? (w - padL - padR) / (n - 1) : 0;
+	function px(i) { return padL + stepX * i; }
+	function py(v) { return padT + (h - padT - padB) * (1 - num(v) / max); }
+
+	function strokeVals(vals, color, width, dash) {
+		g.strokeStyle = color;
+		g.lineWidth = width;
+		g.setLineDash(dash || []);
+		g.lineJoin = "round";
+		g.lineCap = "round";
+		g.beginPath();
+		var started = false;
+		for (var i = 0; i < n; i++) {
+			if (vals[i] == null) { started = false; continue; }
+			if (!started) { g.moveTo(px(i), py(vals[i])); started = true; }
+			else g.lineTo(px(i), py(vals[i]));
+		}
+		g.stroke();
+		g.setLineDash([]);
+	}
+
+	var hasPrev = !!(st.prevKeys && row.prev && row.prev.length);
+	if (hasPrev) strokeVals(row.prev, "#7c86a0", 1.6, [4, 4]);
+	strokeVals(row.cur, row.color, 2.4, null);
+
+	if (hoverIdx != null && hoverIdx >= 0 && hoverIdx < n) {
+		var hx = px(hoverIdx);
+		g.strokeStyle = "rgba(255,255,255,.16)";
+		g.lineWidth = 1;
+		g.beginPath();
+		g.moveTo(hx, padT);
+		g.lineTo(hx, h - padB);
+		g.stroke();
+		if (row.cur[hoverIdx] != null) {
+			g.beginPath();
+			g.fillStyle = row.color;
+			g.arc(hx, py(row.cur[hoverIdx]), 3.5, 0, Math.PI * 2);
+			g.fill();
+		}
+		if (hasPrev && row.prev[hoverIdx] != null) {
+			g.beginPath();
+			g.fillStyle = "#7c86a0";
+			g.arc(hx, py(row.prev[hoverIdx]), 3.5, 0, Math.PI * 2);
+			g.fill();
+		}
+	}
+
+	g.fillStyle = "#5f6b7d";
+	var everyX = Math.max(1, Math.ceil(n / 14));
+	var lblw = (st.labels && st.labels[0]) ? String(st.labels[0]).length : 4;
+	if (lblw > 6) everyX = stepX && (w - padL - padR) / (n / everyX) < lblw * 7 ? Math.max(2, everyX) : everyX;
+	for (var i2 = 0; i2 < n; i2 += everyX) {
+		var lb = st.labels && st.labels[i2] ? st.labels[i2] : String(i2 + 1);
+		g.fillText(lb, px(i2) - 9, h - 8);
+	}
+}
+
+function hideChartTip() {
+	var tip = document.getElementById("chartTip");
+	if (tip) tip.style.display = "none";
+}
+
+function bindChartHover() {
+	var c = document.getElementById("chart");
+	var tip = document.getElementById("chartTip");
+	c.onmousemove = function (ev) {
+		var st = searchChart;
+		if (!st || !st.rows) return;
+		var row = st.rows[st.sel] || st.rows[0];
+		var n = row.cur.length;
+		if (!n) return;
+		var rect = c.getBoundingClientRect();
+		var x = ev.clientX - rect.left;
+		var padL = 44, padR = 12;
+		var w = c.clientWidth;
+		var stepX = n > 1 ? (w - padL - padR) / (n - 1) : 1;
+		var idx = Math.round((x - padL) / stepX);
+		if (idx < 0) idx = 0;
+		if (idx > n - 1) idx = n - 1;
+		drawSearchChart(idx);
+		var nm = row.name;
+		var html = "<div><b>" + esc(nm) + "</b> " + keyToDmy(st.curKeys[idx]) + ": " + fmtNum(row.cur[idx]) + "</div>";
+		if (st.prevKeys && row.prev && row.prev[idx] != null) {
+			html += "<div><b>" + esc(nm) + "</b> " + keyToDmy(st.prevKeys[idx]) + ": " + fmtNum(row.prev[idx]) + "</div>";
+		}
+		tip.innerHTML = html;
+		tip.style.display = "block";
+		var tw = tip.offsetWidth;
+		var left = x + 14;
+		if (left + tw > w - 4) left = x - tw - 14;
+		if (left < 4) left = 4;
+		tip.style.left = left + "px";
+		tip.style.top = "36px";
+	};
+	c.onmouseleave = hideChartTip;
+}
+
+function renderSearchRows() {
+	var st = searchChart;
+	var s = '<div class="srcHint">\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u043D\u0430 \u0441\u0442\u0440\u043E\u043A\u0443, \u0447\u0442\u043E\u0431\u044B \u0443\u0432\u0438\u0434\u0435\u0442\u044C \u0435\u0451 \u043D\u0430 \u0433\u0440\u0430\u0444\u0438\u043A\u0435</div><div class="srcRows">';
+	for (var i = 0; i < st.rows.length; i++) {
+		var r = st.rows[i];
+		s += '<div class="srcRow' + (i === st.sel ? " sel" : "") + '" data-i="' + i + '">' +
+			'<i style="background:' + r.color + '"></i>' +
+			'<span class="nm">' + esc(r.name) + '</span>' +
+			'<span class="v">' + fmtNum(r.total) + "</span>" +
+			trendBadge(r.total, r.totalPrev) +
+			"</div>";
+	}
+	s += "</div>";
+	var wrap = document.getElementById("legend");
+	wrap.innerHTML = s;
+	wrap.onclick = function (ev) {
+		var el = ev.target;
+		while (el && el !== wrap && !(el.className && String(el.className).indexOf("srcRow") >= 0)) el = el.parentNode;
+		if (!el || el === wrap) return;
+		var st = searchChart;
+		var idx = Number(el.getAttribute("data-i"));
+		if (!st || isNaN(idx)) return;
+		st.sel = idx;
+		renderSearchRows();
+		updateSearchHead();
+		drawSearchChart(null);
+	};
+}
+
+function addDays(dateStr, k) {
+	var d = new Date(dateStr + "T00:00:00");
+	d.setDate(d.getDate() + k);
+	return fmtDate(d);
+}
+
+function bucketIdxOf(dt, base, group) {
+	if (group === "month") {
+		return (Number(String(dt).slice(0, 4)) - Number(String(base).slice(0, 4))) * 12 +
+			(Number(String(dt).slice(5, 7)) - Number(String(base).slice(5, 7)));
+	}
+	var days = Math.round((new Date(dt + "T00:00:00") - new Date(base + "T00:00:00")) / 864e5);
+	return group === "week" ? Math.floor(days / 7) : days;
+}
+
+function aggWindow(winFrom, winTo, base, group, cnt, eng) {
+	var arr = [];
+	var total = 0;
+	for (var j = 0; j < cnt; j++) arr.push(0);
+	var d = payload && payload.data ? payload.data : {};
+	var sd = d.searchDaily || [];
+	var i, dt, v, idx;
+	if (sd.length) {
+		for (i = 0; i < sd.length; i++) {
+			dt = String(sd[i].date || "");
+			if (dt < winFrom || dt > winTo) continue;
+			var e = String(sd[i].engine || sd[i].searchEngine || "").toLowerCase();
+			var isY = e.indexOf("yandex") >= 0 || e.indexOf("\u044F\u043D\u0434\u0435\u043A\u0441") >= 0;
+			var isG = e.indexOf("google") >= 0;
+			var match = eng === null || (eng === "yandex" && isY) || (eng === "google" && isG) || (eng === "other" && !isY && !isG);
+			if (!match) continue;
+			v = num(sd[i].visits != null ? sd[i].visits : sd[i].users);
+			idx = bucketIdxOf(dt, base, group);
+			if (idx >= 0 && idx < cnt) { arr[idx] += v; total += v; }
+		}
+	} else {
+		var src = d.sourcesDaily || [];
+		for (i = 0; i < src.length; i++) {
+			dt = String(src[i].date || "");
+			if (dt < winFrom || dt > winTo || !isSearchSource(src[i].source)) continue;
+			v = num(src[i].visits != null ? src[i].visits : src[i].users);
+			idx = bucketIdxOf(dt, base, group);
+			if (idx >= 0 && idx < cnt) { arr[idx] += v; total += v; }
+		}
+	}
+	return { arr: arr, total: total };
+}
+
+function cmpSearchModel(months) {
+	var defs = searchDefs();
+	var rows = [];
+	for (var k = 0; k < defs.length; k++) {
+		var r = searchDefVals(months, defs[k].eng);
+		rows.push({ name: defs[k].name, color: defs[k].color, cur: r.vals[0], prev: r.vals[1], total: r.totals[0], totalPrev: r.totals[1] });
+	}
+	var ln0 = Number(String(months[0].end).slice(-2), 10);
+	var ln1 = Number(String(months[1].end).slice(-2), 10);
+	var curKeys = [], prevKeys = [], labels = [];
+	var mm = Number(String(months[0].key).slice(5, 7)) - 1;
+	for (var i = 0; i < ln0; i++) {
+		curKeys.push(months[0].key + "-" + pad2(i + 1));
+		labels.push((i + 1) + " " + MONTHS[mm].slice(0, 3));
+	}
+	for (var i2 = 0; i2 < ln1; i2++) prevKeys.push(months[1].key + "-" + pad2(i2 + 1));
+	return { rows: rows, curKeys: curKeys, prevKeys: prevKeys, labels: labels, sel: 0 };
+}
+
+function rangeSearchModel(from, to, prevFrom, prevTo, group) {
+	var span = Math.round((new Date(to + "T00:00:00") - new Date(from + "T00:00:00")) / 864e5) + 1;
+	var cnt;
+	if (group === "month") {
+		cnt = (Number(String(to).slice(0, 4)) - Number(String(from).slice(0, 4))) * 12 +
+			(Number(String(to).slice(5, 7)) - Number(String(from).slice(5, 7))) + 1;
+	} else if (group === "week") {
+		cnt = Math.ceil(span / 7);
+	} else {
+		cnt = span;
+	}
+	var curKeys = [], prevKeys = [], labels = [];
+	for (var i = 0; i < cnt; i++) {
+		var off = group === "week" ? i * 7 : i;
+		if (group === "month") {
+			var mm = Number(String(from).slice(5, 7)) - 1 + i;
+			var yy = Number(String(from).slice(0, 4)) + Math.floor(mm / 12);
+			curKeys.push(yy + "-" + pad2((mm % 12) + 1) + "-01");
+			var mm2 = Number(String(prevFrom).slice(5, 7)) - 1 + i;
+			var yy2 = Number(String(prevFrom).slice(0, 4)) + Math.floor(mm2 / 12);
+			prevKeys.push(yy2 + "-" + pad2((mm2 % 12) + 1) + "-01");
+		} else {
+			curKeys.push(addDays(from, off));
+			prevKeys.push(addDays(prevFrom, off));
+		}
+		labels.push(labelOf(curKeys[i]));
+	}
+	var defs = searchDefs();
+	var rows = [];
+	for (var k = 0; k < defs.length; k++) {
+		var a1 = aggWindow(from, to, from, group, cnt, defs[k].eng);
+		var a2 = aggWindow(prevFrom, prevTo, prevFrom, group, cnt, defs[k].eng);
+		rows.push({ name: defs[k].name, color: defs[k].color, cur: a1.arr, prev: a2.arr, total: a1.total, totalPrev: a2.total });
+	}
+	return { rows: rows, curKeys: curKeys, prevKeys: prevKeys, labels: labels, sel: 0 };
+}
+
+function todaySearchModel() {
+	var td = new Date();
+	var yd = new Date(); yd.setDate(yd.getDate() - 1);
+	var t0 = fmtDate(td);
+	var t1 = fmtDate(yd);
+	var f14 = new Date(); f14.setDate(f14.getDate() - 13);
+	var f14s = fmtDate(f14);
+	var cnt = 14;
+	var curKeys = [], labels = [];
+	for (var i = 0; i < cnt; i++) {
+		var k = addDays(f14s, i);
+		curKeys.push(k);
+		labels.push(labelOf(k));
+	}
+	var defs = searchDefs();
+	var rows = [];
+	for (var k2 = 0; k2 < defs.length; k2++) {
+		var agg = aggWindow(f14s, t0, f14s, "day", cnt, defs[k2].eng);
+		var today = aggWindow(t0, t0, t0, "day", 1, defs[k2].eng);
+		var yest = aggWindow(t1, t1, t1, "day", 1, defs[k2].eng);
+		rows.push({ name: defs[k2].name, color: defs[k2].color, cur: agg.arr, prev: null, total: today.total, totalPrev: yest.total });
+	}
+	return { rows: rows, curKeys: curKeys, prevKeys: null, labels: labels, sel: 0 };
+}
+
+function applySearchModel(model, title) {
+	searchChart = model;
+	document.getElementById("chartTitle").textContent = title;
+	renderSearchRows();
+	updateSearchHead();
+	drawSearchChart(null);
+	bindChartHover();
 }
 
 function paintCompare() {
 	var months = lastMonths(2);
-	var d = payload && payload.data ? payload.data : {};
-	var daily = d.daily || [];
-	var series = [];
-	var labels = [];
-	var colors = ["#6aa9ff", "#f59e0b"];
-
-	for (var m = 0; m < months.length; m++) {
-		var vals = [];
-		for (var day = 1; day <= 31; day++) {
-			var dt = months[m].key + "-" + pad2(day);
-			if (dt > months[m].end) break;
-			var found = 0;
-			for (var i = 0; i < daily.length; i++) {
-				if (String(daily[i].date) === dt) { found = num(daily[i].users); break; }
-			}
-			vals.push(found);
-			if (m === 0) labels.push(String(day));
-		}
-		series.push({ name: months[m].label, color: colors[m], values: vals });
-	}
-	while (series.length > 1 && series[1].values.length > labels.length) {
-		labels.push(String(labels.length + 1));
-	}
-
-	document.getElementById("chartTitle").textContent = "\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438: " +
-		months[0].label + " \u0438 " + months[1].label;
-	setLegend(series);
-	drawSeries(labels, series);
+	applySearchModel(cmpSearchModel(months), "\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
 
 	var a = searchTotals(months[0].start, months[0].end);
 	var b = searchTotals(months[1].start, months[1].end);
+	var da = dailyTotals(months[0].start, months[0].end);
+	var db = dailyTotals(months[1].start, months[1].end);
+	var bounceCur = da.bounceAvg == null ? null : Math.round(da.bounceAvg * 10) / 10;
+	var bouncePrev = db.bounceAvg == null ? null : Math.round(db.bounceAvg * 10) / 10;
+	var bounceBadge = (bounceCur == null || bouncePrev == null) ? '<span class="hint">\u2014</span>'
+		: '<span class="trend ' + (bounceCur <= bouncePrev ? "up" : "down") + '"><span class="arrow">' +
+			(bounceCur <= bouncePrev ? "\u25BC" : "\u25B2") + "</span>" +
+			Math.abs(bounceCur - bouncePrev).toFixed(1) + " \u043F.\u043F.</span>";
 	document.getElementById("kpi").innerHTML =
-		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u0441 \u043F\u043E\u0438\u0441\u043A\u0430, " + months[0].label, a.visits, "\u0431\u044B\u043B\u043E " + b.visits) +
-		kpiBox("\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438 \u0441 \u043F\u043E\u0438\u0441\u043A\u0430", a.users, "\u0431\u044B\u043B\u043E " + b.users) +
-		kpiBox("\u0421 \u042F\u043D\u0434\u0435\u043A\u0441\u0430", a.yandex, "\u0431\u044B\u043B\u043E " + b.yandex) +
-		kpiBox("\u0421 Google", a.google, "\u0431\u044B\u043B\u043E " + b.google) +
-		kpiBox("\u041A\u043E\u043D\u0432\u0435\u0440\u0441\u0438\u0438 \u0441 \u043F\u043E\u0438\u0441\u043A\u0430", a.conv, "\u0431\u044B\u043B\u043E " + b.conv);
+		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u0432\u0441\u0435\u0433\u043E", da.visits,
+			shareBadge(da.visits > 0 ? (a.visits / da.visits) * 100 : null, db.visits > 0 ? (b.visits / db.visits) * 100 : null)) +
+		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u0441 \u043F\u043E\u0438\u0441\u043A\u0430", a.visits, trendBadge(a.visits, b.visits)) +
+		kpiBox("\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438", da.users, trendBadge(da.users, db.users)) +
+		kpiBox("\u0421 \u042F\u043D\u0434\u0435\u043A\u0441\u0430", a.yandex, trendBadge(a.yandex, b.yandex)) +
+		kpiBox("\u0421 Google", a.google, trendBadge(a.google, b.google)) +
+		kpiBox("\u041A\u043E\u043D\u0432\u0435\u0440\u0441\u0438\u0438", a.conv, b.conv > 0 ? trendBadge(a.conv, b.conv) : "") +
+		kpiBox("\u041E\u0442\u043A\u0430\u0437\u044B", bounceCur == null ? "\u2014" : bounceCur + "%", bounceBadge);
 
 	renderSeoTable();
 	renderAiTable();
@@ -2868,44 +3442,80 @@ function paintCompare() {
 }
 
 function paintPeriod() {
-	var d = payload && payload.data ? payload.data : {};
-	var daily = d.daily || [];
-	var buckets = {};
-	var order = [];
-	for (var i = 0; i < daily.length; i++) {
-		var dt = String(daily[i].date);
-		if (fromStr && dt < fromStr) continue;
-		if (toStr && dt > toStr) continue;
-		var b = bucketOf(dt);
-		if (!buckets[b]) { buckets[b] = { visits: 0, users: 0 }; order.push(b); }
-		buckets[b].visits += num(daily[i].visits);
-		buckets[b].users += num(daily[i].users);
-	}
-	order.sort();
-	var labels = [];
-	var vVisits = [];
-	var vUsers = [];
-	for (var j = 0; j < order.length; j++) {
-		labels.push(labelOf(order[j]));
-		vVisits.push(buckets[order[j]].visits);
-		vUsers.push(buckets[order[j]].users);
-	}
-	var series = [
-		{ name: "\u0412\u0438\u0437\u0438\u0442\u044B", color: "#6aa9ff", values: vVisits },
-		{ name: "\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438", color: "#f59e0b", values: vUsers }
-	];
-	document.getElementById("chartTitle").textContent = "\u0412\u0438\u0437\u0438\u0442\u044B \u0438 \u043F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438";
-	setLegend(series);
-	drawSeries(labels, series);
-
 	var t = searchTotals(fromStr, toStr);
-	var totalV = 0, totalU = 0;
-	for (var k = 0; k < vVisits.length; k++) { totalV += vVisits[k]; totalU += vUsers[k]; }
+	/* предыдущий период той же длины */
+	var prevFrom = fromStr, prevTo = toStr;
+	if (fromStr && toStr) {
+		var pd1 = new Date(fromStr + "T00:00:00");
+		var pd2 = new Date(toStr + "T00:00:00");
+		var spanDays = Math.max(1, Math.round((pd2 - pd1) / 864e5) + 1);
+		var p1 = new Date(pd1);
+		p1.setDate(p1.getDate() - spanDays);
+		var p2 = new Date(pd1);
+		p2.setDate(p2.getDate() - 1);
+		prevFrom = fmtDate(p1);
+		prevTo = fmtDate(p2);
+	}
+	var pt = searchTotals(prevFrom, prevTo);
+	var cu = dailyTotals(fromStr, toStr);
+	var cp = dailyTotals(prevFrom, prevTo);
+
+	var bounceCur2 = cu.bounceAvg == null ? null : Math.round(cu.bounceAvg * 10) / 10;
+	var bouncePrev2 = cp.bounceAvg == null ? null : Math.round(cp.bounceAvg * 10) / 10;
+	var bounceBadge2 = (bounceCur2 == null || bouncePrev2 == null) ? '<span class="hint">\u2014</span>'
+		: '<span class="trend ' + (bounceCur2 <= bouncePrev2 ? "up" : "down") + '"><span class="arrow">' +
+			(bounceCur2 <= bouncePrev2 ? "\u25BC" : "\u25B2") + "</span>" +
+			Math.abs(bounceCur2 - bouncePrev2).toFixed(1) + " \u043F.\u043F.</span>";
+	var withPrev = !!(fromStr && toStr);
+	if (withPrev) {
+		applySearchModel(rangeSearchModel(fromStr, toStr, prevFrom, prevTo, group),
+			"\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
+	}
 	document.getElementById("kpi").innerHTML =
-		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B, \u0432\u0441\u0435\u0433\u043E", totalV) +
-		kpiBox("\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438, \u0432\u0441\u0435\u0433\u043E", totalU) +
-		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u0441 \u043F\u043E\u0438\u0441\u043A\u0430", t.visits) +
-		kpiBox("\u041A\u043E\u043D\u0432\u0435\u0440\u0441\u0438\u0438 \u0441 \u043F\u043E\u0438\u0441\u043A\u0430", t.conv);
+		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u0432\u0441\u0435\u0433\u043E", cu.visits,
+			shareBadge(cu.visits > 0 ? (t.visits / cu.visits) * 100 : null, cp.visits > 0 ? (pt.visits / cp.visits) * 100 : null)) +
+		kpiBox("\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438 \u0432\u0441\u0435\u0433\u043E", cu.users, withPrev ? trendBadge(cu.users, cp.users) : "") +
+		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u0441 \u043F\u043E\u0438\u0441\u043A\u0430", t.visits, withPrev ? trendBadge(t.visits, pt.visits) : "") +
+		kpiBox("\u041A\u043E\u043D\u0432\u0435\u0440\u0441\u0438\u0438 \u0441 \u043F\u043E\u0438\u0441\u043A\u0430", t.conv, withPrev && pt.conv > 0 ? trendBadge(t.conv, pt.conv) : "") +
+		kpiBox("\u041E\u0442\u043a\u0430\u0437\u044B (\u0441\u0440.)", bounceCur2 == null ? "\u2014" : bounceCur2 + "%", bounceBadge2);
+
+	renderSeoTable();
+	renderAiTable();
+	renderCompTable();
+	renderPrompts();
+	renderPagesTable();
+	renderPosTable("yandex", "yPosRows", "yPosHead");
+	renderPosTable("google", "gPosRows", "gPosHead");
+}
+
+function paintToday() {
+	var td = new Date();
+	var yd = new Date(); yd.setDate(yd.getDate() - 1);
+	var t0 = fmtDate(td);
+	var t1 = fmtDate(yd);
+
+	applySearchModel(todaySearchModel(),
+		"\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
+
+	/* KPI: сегодня против вчера */
+	var tt = searchTotals(t0, t0);
+	var ty = searchTotals(t1, t1);
+	var du = dailyTotals(t0, t0);
+	var dy = dailyTotals(t1, t1);
+	var bc = du.bounceAvg == null ? null : Math.round(du.bounceAvg * 10) / 10;
+	var bp = dy.bounceAvg == null ? null : Math.round(dy.bounceAvg * 10) / 10;
+	var bounceB = (bc == null || bp == null) ? '<span class="hint">\u043D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445</span>'
+		: '<span class="trend ' + (bc <= bp ? "up" : "down") + '"><span class="arrow">' +
+			(bc <= bp ? "\u25BC" : "\u25B2") + "</span>" + Math.abs(bc - bp).toFixed(1) + " \u043F.\u043F.</span>";
+	document.getElementById("kpi").innerHTML =
+		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u2014 \u0441\u0435\u0433\u043E\u0434\u043D\u044F", du.visits,
+			shareBadge(du.visits > 0 ? (tt.visits / du.visits) * 100 : null, dy.visits > 0 ? (ty.visits / dy.visits) * 100 : null)) +
+		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u0441 \u043F\u043E\u0438\u0441\u043A\u0430", tt.visits, trendBadge(tt.visits, ty.visits, { suffix: "\u0432\u0441\u0435\u0433\u043E: " + ty.visits })) +
+		kpiBox("\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438", du.users, trendBadge(du.users, dy.users, { suffix: "\u0432\u0441\u0435\u0433\u043E: " + dy.users })) +
+		kpiBox("\u0421 \u042F\u043D\u0434\u0435\u043A\u0441\u0430", tt.yandex, trendBadge(tt.yandex, ty.yandex, { suffix: "\u0432\u0441\u0435\u0433\u043E: " + ty.yandex })) +
+		kpiBox("\u0421 Google", tt.google, trendBadge(tt.google, ty.google, { suffix: "\u0432\u0441\u0435\u0433\u043E: " + ty.google })) +
+		kpiBox("\u041A\u043E\u043D\u0432\u0435\u0440\u0441\u0438\u0438", tt.conv, ty.conv > 0 ? trendBadge(tt.conv, ty.conv, { suffix: "\u0432\u0441\u0435\u0433\u043E: " + ty.conv }) : "") +
+		kpiBox("\u041E\u0442\u043a\u0430\u0437\u044B", bc == null ? "\u2014" : bc + "%", bounceB);
 
 	renderSeoTable();
 	renderAiTable();
@@ -2918,7 +3528,9 @@ function paintPeriod() {
 
 function paint() {
 	if (!payload) return;
-	if (compare) paintCompare(); else paintPeriod();
+	if (dayCmp) paintToday();
+	else if (compare) paintCompare();
+	else paintPeriod();
 }
 
 async function loadData(siteId) {
@@ -2939,9 +3551,14 @@ async function loadData(siteId) {
 		prompts: d.prompts || {},
 		done: d.done || {}
 	};
+	function fmtUpd(s) {
+		var d = new Date(s);
+		if (isNaN(d)) return s;
+		return d.getDate() + " " + MONTHS[d.getMonth()] + ", " + pad2(d.getHours()) + ":" + pad2(d.getMinutes());
+	}
 	document.getElementById("title").textContent = "\u0414\u0430\u0448\u0431\u043E\u0440\u0434 \xB7 " + (payload.site.name || "");
 	var upd = payload.data && payload.data.updated_at ? payload.data.updated_at : "";
-	document.getElementById("updated").textContent = upd ? "\u0414\u0430\u043D\u043D\u044B\u0435 \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u044B: " + upd : "\u0414\u0430\u043D\u043D\u044B\u0445 \u043F\u043E\u043A\u0430 \u043D\u0435\u0442";
+	document.getElementById("updated").textContent = upd ? "\u0414\u0430\u043D\u043D\u044B\u0435 \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u044B: " + fmtUpd(upd) : "\u0414\u0430\u043D\u043D\u044B\u0445 \u043F\u043E\u043A\u0430 \u043D\u0435\u0442";
 	paint();
 }
 
@@ -2976,6 +3593,7 @@ async function boot() {
 
 	document.getElementById("apply").onclick = function () {
 		compare = false;
+		dayCmp = false;
 		fromStr = document.getElementById("from").value;
 		toStr = document.getElementById("to").value;
 		group = document.getElementById("group").value;
@@ -3048,7 +3666,7 @@ var insKey = "";
 
 (function insStyle() {
 	var st = document.createElement("style");
-	st.textContent = ".ins{margin-top:14px;padding:12px 14px;border-left:3px solid #6aa9ff;background:rgba(106,169,255,.08);border-radius:8px;font-size:14px;line-height:1.6}.ins h4{margin:0 0 6px;font-size:12px;letter-spacing:.4px;text-transform:uppercase;color:#6aa9ff}.ins p{margin:5px 0}.ins .muted{color:#8b93a7}.ins h5{margin:12px 0 4px;font-size:12px;letter-spacing:.4px;text-transform:uppercase;color:#22c55e}#planCard h5,#doneCard h5{margin:16px 0 6px;font-size:14px;color:#6aa9ff;text-transform:none;letter-spacing:0}#doneCard h5:first-child{margin-top:4px}#planCard p.lead{margin:6px 0 12px;line-height:1.7;color:#c9d1e0}#planCard p.lead+h5{margin-top:6px}#planCard p.task,#doneCard p.task{margin:4px 0;padding-left:16px;position:relative;line-height:1.6}#planCard p.task:before,#doneCard p.task:before{content:'\u2022';position:absolute;left:2px;color:#22c55e}#insBtn{margin-left:8px}";
+	st.textContent = ".ins{margin-top:14px;padding:12px 14px;border-left:3px solid #3b82f6;background:rgba(59,130,246,.08);border-radius:8px;font-size:14px;line-height:1.6}.ins h4{margin:0 0 6px;font-size:12px;letter-spacing:.4px;text-transform:uppercase;color:#60a5fa}.ins p{margin:5px 0}.ins .muted{color:#93a0b4}.ins h5{margin:12px 0 4px;font-size:12px;letter-spacing:.4px;text-transform:uppercase;color:#4ade80}#planCard h5,#doneCard h5{margin:16px 0 6px;font-size:14px;color:#60a5fa;text-transform:none;letter-spacing:0}#doneCard h5:first-child{margin-top:4px}#planCard p.lead{margin:6px 0 12px;line-height:1.7;color:#c9d1e0}#planCard p.lead+h5{margin-top:6px}#planCard p.task,#doneCard p.task{margin:4px 0;padding-left:16px;position:relative;line-height:1.6}#planCard p.task:before,#doneCard p.task:before{content:'\u2022';position:absolute;left:2px;color:#4ade80}#insBtn{margin-left:8px}";
 	document.head.appendChild(st);
 })();
 
@@ -3305,6 +3923,7 @@ paint = function () {
 	setTimeout(function () { insSync(false); }, 400);
 };
 <\/script>
+</div>
 </body></html>`;
 function dashPage(mode, slug) {
   return DASH_TEMPLATE.replace(/__MODE__/g, mode).replace(/__SLUG__/g, slug || "");

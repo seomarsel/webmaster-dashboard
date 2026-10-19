@@ -50,6 +50,11 @@
 | `src-yandex.js` | извлечённый модуль `src/yandex.js` — интеграция с Яндекс API (read-only копия) |
 | `src-index.js` | извлечённый модуль `src/index.js` — роутинг, админка, дашборд-HTML |
 | `dump-d1.mjs` | скрипт полного дампа D1 в JSON (Node, fetch; запускается `node dump-d1.mjs`) |
+| `d1-q.mjs` | быстрый SQL-запрос к D1 через REST: `node d1-q.mjs "SELECT …"` |
+| `dump-live-scripts.mjs` | выкачивает инлайн-скрипты живой страницы в `live-script-N.js` (для `node --check` после правок шаблона) |
+| `deploy-prod.mjs` | рабочий деплой: multipart-PUT локального `index.js` в прод (`.env` рядом; биндинги/секреты сохраняются; PUT schedules падает с «Could not parse request body» — не страшно, cron переживает) |
+| `deploy-test*.mjs` | тестовые сценарии recovery-сессии (неактуальны) |
+| `extract-src.mjs` | разделение бандла на `src/{runtime,yandex,index}.js` + верификация (`--verify`) |
 | `.env` | активный Cloudflare API-токен, account_id, D1 database_id, имя воркера (секрет!) |
 | `START.md` | стартовый промпт для нового окна OpenCode: как подключиться и работать без контекста этой сессии |
 | `.gitignore` | исключает .env и файлы с токенами из git |
@@ -67,7 +72,7 @@
 Константы:
 ```js
 DAYS = 180          // глубина периода сбора (180 дней)
-MAX_GOALS = 15      // до 15 целей Метрики
+MAX_GOALS = 50      // до 50 целей Метрики (поднято 19.10.2026 с 15, §16)
 MAX_PAGES = 500     // до 500 страниц за месяц
 PAGE_MONTHS = [1,2,3,4]  // страницы за 4 последних полных месяца
 METRIKA = "https://api-metrika.yandex.net"
@@ -81,6 +86,11 @@ WEBMASTER = "https://api.webmaster.yandex.net/v4/user"
 3. Ещё раз с `ym:s:lastTrafficSource` → `sourcesDaily`.
 4. С `ym:s:lastSearchEngineRoot` + filter `ym:s:lastTrafficSource=='organic'` → `searchDaily` (посещения/пользователи/конверсии по поисковикам).
 5. С `ym:s:sumGoalReachesAny` (organic) → `searchConvDaily`.
+5b. Цели партиями по 8 метрик, два прохода (весь трафик / organic) → `goalsDaily` [{date, gid, a, s}] (§16).
+5c. Технологии за 180 дней (все: метрики `ym:s:visits,ym:s:bounceRate`, фильтр `ym:s:lastTrafficSource=='organic'`, ошибки в `errors`):
+    - `ym:s:date,ym:s:browser,ym:s:browserVersion` → `browsersDaily` [{date, browser, ver, visits, bounce}] (§18);
+    - `ym:s:date,ym:s:deviceCategory` → `devicesDaily` [{date, device, visits, bounce}] (берётся `id`, значения desktop/mobile/tablet; ⚠️ `ym:s:lastDeviceCategory` не существует) (§19);
+    - `ym:s:date,ym:s:screenResolution` → `resolutionDaily` [{date, resolution, visits, bounce}] — «1920x1080» (§19).
 6. Для каждого из 4 месяцев — `pagesForMonth` (`ym:s:startURL` as dimension) → `pagesMonths["YYYY-MM"] = [{url, visits, conversions}]`.
 7. Вебмастер (если заполнен `host_id`): `GET /` → `user_id`, затем
    - `GET /{user_id}/hosts/{host_id}/summary/` → `webmaster = {sqi, pages_in_search, excluded_pages}`
@@ -198,7 +208,10 @@ done_works (site_id INTEGER, month TEXT, text TEXT, PRIMARY KEY (site_id, month)
 { name, counter_id, host_id, period:"YYYY-MM-DD — YYYY-MM-DD", updated_at,
   errors:[], goals:[{id,name}], daily:[{date,visits,users,bounce}],
   sourcesDaily:[{date,source,visits,users}], searchDaily:[{date,engine,visits,users,conversions}],
-  searchConvDaily:[{date,conversions}], pagesMonths:{"YYYY-MM":[{url,visits,conversions}]},
+  searchConvDaily:[{date,conversions}], goalsDaily:[{date,gid,a,s}],
+  browsersDaily:[{date,browser,ver,visits,bounce}], devicesDaily:[{date,device,visits,bounce}],
+  resolutionDaily:[{date,resolution,visits,bounce}],
+  pagesMonths:{"YYYY-MM":[{url,visits,conversions}]},
   webmaster:{sqi, pages_in_search, excluded_pages}, queries:[{query,shows,clicks}] }
 ```
 Размеры снапшотов: site1 ≈ 272 КБ, site3 ≈ 21 КБ, site4 ≈ 336 КБ.

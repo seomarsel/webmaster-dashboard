@@ -8,7 +8,8 @@
 ```
 worker/
   src/runtime.js   служебные помощники esbuild (var __defProp/__name)
-  src/yandex.js    модуль интеграции: API Яндекс Метрики (180 дней, 15 целей, топ-500 страниц)
+  src/yandex.js    модуль интеграции: API Яндекс Метрики (180 дней, 50 целей, топ-500 страниц,
+                   ежедневные ряды: sources/search/conversions/цели/браузеры(+версии)/устройства/разрешения)
                    и Яндекс Вебмастера (summary + search-queries)
   src/index.js     модуль: роутинг, авторизация (HMAC cookie sess), админка, дашборд,
                    работа с D1, AI-инсайты, scheduled(cron)
@@ -22,8 +23,18 @@ dist/              собранный бандл (не в git; создаётс�
 
 1. Правки вносятся в **`src/yandex.js`** или **`src/index.js`** (в бандле они размечены
    комментариями `// src/yandex.js` / `// src/index.js` — это границы сборки).
-2. Проверка синтаксиса: `npx wrangler deploy --dry-run` или просто сборка + `node --check dist/index.js` — выполняется командой `npm run build`, затем `node --check dist/index.js`.
-3. Деплой: `npx wrangler deploy` (или `npm run deploy`). Секреты существующие сохраняются.
+2. Сборка и проверка: `npm run build` (или `node build.mjs`), затем `node --check dist/index.js`.
+3. Рабочий деплой-флоу (используется фактически, 19.10.2026): скопировать
+   `dist/index.js` в `../../yandex-dash-recovered/index.js` и из этой папки выполнить
+   `node deploy-prod.mjs` — токен живёт в её `.env`; скрипт делает multipart-PUT через
+   Cloudflare API, биндинги (`DB`, `AI`) и секреты (`ADMIN_PASSWORD`, `SESSION_SECRET`)
+   сохраняются, в конце — проверки (`prodBindings`, `liveCheck`). После любого изменения
+   инлайн-скриптов дашборда проверить живой JS: `node dump-live-scripts.mjs` +
+   `node --check live-script-0.js` (файлы удалить).
+4. `npx wrangler deploy` тоже работает, но основной путь — скрипт выше.
+5. Инлайн-скрипты шаблонов: строки, содержащие `"` внутри атрибутов, оборачивать в
+   одинарные кавычки (`'<th class="num">…</th>'`) — бандл-шаблон это JS-строка, `\"`
+   в ней ломает живой скрипт (ловили 19.10.2026).
 
 ## Важно
 

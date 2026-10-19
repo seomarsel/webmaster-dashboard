@@ -91,6 +91,8 @@ async function collectSite(site) {
     searchDaily: [],
     searchConvDaily: [],
     browsersDaily: [],
+    devicesDaily: [],
+    resolutionDaily: [],
     pagesMonths: {},
     webmaster: {},
     queries: []
@@ -239,6 +241,56 @@ async function collectSite(site) {
     }
   } catch (e) {
     errors.push("\u0411\u0440\u0430\u0443\u0437\u0435\u0440\u044B: " + e.message);
+  }
+  try {
+    const data = await getJson(
+      statUrl({
+        ids: site.counter_id,
+        metrics: "ym:s:visits,ym:s:bounceRate",
+        dimensions: "ym:s:date,ym:s:deviceCategory",
+        filters: "ym:s:lastTrafficSource=='organic'",
+        date1: from,
+        date2: to,
+        limit: 1e5,
+        accuracy: "full"
+      }),
+      site.token
+    );
+    for (const row of data.data || []) {
+      result.devicesDaily.push({
+        date: row.dimensions[0].name,
+        device: row.dimensions[1].id || row.dimensions[1].name,
+        visits: Number(row.metrics[0]) || 0,
+        bounce: Number(row.metrics[1]) || 0
+      });
+    }
+  } catch (e) {
+    errors.push("\u0423\u0441\u0442\u0440\u043E\u0439\u0441\u0442\u0432\u0430: " + e.message);
+  }
+  try {
+    const data = await getJson(
+      statUrl({
+        ids: site.counter_id,
+        metrics: "ym:s:visits,ym:s:bounceRate",
+        dimensions: "ym:s:date,ym:s:screenResolution",
+        filters: "ym:s:lastTrafficSource=='organic'",
+        date1: from,
+        date2: to,
+        limit: 1e5,
+        accuracy: "full"
+      }),
+      site.token
+    );
+    for (const row of data.data || []) {
+      result.resolutionDaily.push({
+        date: row.dimensions[0].name,
+        resolution: row.dimensions[1].id || row.dimensions[1].name,
+        visits: Number(row.metrics[0]) || 0,
+        bounce: Number(row.metrics[1]) || 0
+      });
+    }
+  } catch (e) {
+    errors.push("\u0420\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u0438\u044F: " + e.message);
   }
   if (goalMetrics.length) {
     for (let gi = 0; gi < goalMetrics.length; gi += 8) {

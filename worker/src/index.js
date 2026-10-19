@@ -745,6 +745,10 @@ tbody tr:hover td { background: #151a24; }
 tbody tr:last-child td { border-bottom: 0; }
 #brCard { overflow-x: auto; }
 #brCard th { white-space: normal; }
+#dvCard { overflow-x: auto; }
+#dvCard th { white-space: normal; }
+#rsCard { overflow-x: auto; }
+#rsCard th { white-space: normal; }
 #brCard tbody tr.brRow td { cursor: pointer; }
 #brCard tbody tr.brSub td { padding: 2px 12px 2px 34px; color: var(--text-2); font-size: 12.5px; }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
@@ -2352,6 +2356,28 @@ tr[data-child] td { color: var(--text-2); font-size: 12.5px; }
 	</table>
 </div>
 
+<div class="card hidden" id="dvCard">
+	<div class="chartHead">
+		<h2>\u041E\u0442\u043A\u0430\u0437\u044B \u043F\u043E \u0443\u0441\u0442\u0440\u043E\u0439\u0441\u0442\u0432\u0430\u043C \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430</h2>
+	</div>
+	<p class="muted" id="dvNote"></p>
+	<table>
+		<thead><tr id="dvHead"></tr></thead>
+		<tbody id="dvRows"></tbody>
+	</table>
+</div>
+
+<div class="card hidden" id="rsCard">
+	<div class="chartHead">
+		<h2>\u041E\u0442\u043A\u0430\u0437\u044B \u043F\u043E \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u0438\u044E \u0434\u0438\u0441\u043F\u043B\u0435\u044F \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430</h2>
+	</div>
+	<p class="muted" id="rsNote"></p>
+	<table>
+		<thead><tr id="rsHead"></tr></thead>
+		<tbody id="rsRows"></tbody>
+	</table>
+</div>
+
 <div class="card">
 	<h2>\u041F\u043E\u0438\u0441\u043A\u043E\u0432\u044B\u0439 \u0442\u0440\u0430\u0444\u0438\u043A \u043F\u043E \u043C\u0435\u0441\u044F\u0446\u0430\u043C</h2>
 	<table>
@@ -3640,6 +3666,132 @@ function renderBrowsers() {
 	card.className = "card";
 }
 
+function devName(v) {
+	var s = String(v || "").toLowerCase();
+	if (s === "desktop") return "\u041A\u043E\u043C\u043F\u044C\u044E\u0442\u0435\u0440\u044B";
+	if (s === "mobile") return "\u0421\u043C\u0430\u0440\u0442\u0444\u043E\u043D\u044B";
+	if (s === "tablet") return "\u041F\u043B\u0430\u043D\u0448\u0435\u0442\u044B";
+	return v || "\u2014";
+}
+
+function renderDevices() {
+	var card = document.getElementById("dvCard");
+	if (!card) return;
+	var d = payload && payload.data ? payload.data : {};
+	var dd = d.devicesDaily || [];
+	if (!goalCtx || !dd.length) {
+		card.className = "card hidden";
+		return;
+	}
+	var map = {}, tot = 0;
+	for (var i = 0; i < dd.length; i++) {
+		var r = dd[i];
+		var dt = String(r.date || "");
+		var isPrev;
+		if (dt >= goalCtx.from && dt <= goalCtx.to) isPrev = false;
+		else if (goalCtx.prevFrom && dt >= goalCtx.prevFrom && dt <= goalCtx.prevTo) isPrev = true;
+		else continue;
+		var nm = devName(r.device);
+		if (!map[nm]) map[nm] = { visits: 0, bounce: 0, pvisits: 0, pbounce: 0 };
+		var b = map[nm];
+		var v = num(r.visits);
+		if (r.bounce != null && isFinite(Number(r.bounce))) {
+			if (isPrev) b.pbounce += Number(r.bounce) * v; else b.bounce += Number(r.bounce) * v;
+		}
+		if (isPrev) b.pvisits += v; else { b.visits += v; tot += v; }
+	}
+	var list = [];
+	for (var nm2 in map) {
+		if (!Object.prototype.hasOwnProperty.call(map, nm2)) continue;
+		var b2 = map[nm2];
+		if (tot <= 0 || b2.visits / tot <= 0.02) continue;
+		list.push({ name: nm2, bounce: b2.visits ? b2.bounce / b2.visits : null, bounceP: b2.pvisits ? b2.pbounce / b2.pvisits : null, visits: b2.visits, pvisits: b2.pvisits });
+	}
+	if (!list.length) {
+		card.className = "card hidden";
+		return;
+	}
+	list.sort(function (x, y) { return (y.bounce || 0) - (x.bounce || 0) || y.visits - x.visits; });
+	var two = !!goalCtx.curLabel && !!goalCtx.prevLabel;
+	var cS = esc(brShort(goalCtx.from, goalCtx.to)), pS = esc(brShort(goalCtx.prevFrom, goalCtx.prevTo));
+	var vLbl = "\u0412\u0438\u0437\u0438\u0442\u044B ";
+	var bLbl = "\u041E\u0442\u043A\u0430\u0437\u044B ";
+	var head = '<th>\u0423\u0441\u0442\u0440\u043E\u0439\u0441\u0442\u0432\u043E</th><th class="num">';
+	if (two) head += vLbl + cS + '</th><th class="num">' + vLbl + pS + '</th><th class="num">' + bLbl + cS + '</th><th class="num">' + bLbl + pS;
+	else head += "\u0412\u0438\u0437\u0438\u0442\u044B</th>" + '<th class="num">' + "\u041E\u0442\u043A\u0430\u0437\u044B";
+	document.getElementById("dvHead").innerHTML = head + "</th>";
+	var s = "";
+	for (var j = 0; j < list.length; j++) {
+		var it = list[j];
+		s += '<tr><td class="task">' + esc(it.name) + "</td>";
+		if (two) s += '<td class="num">' + fmtNum(it.visits) + '</td><td class="num">' + fmtNum(it.pvisits) + '</td><td class="num">' + brFmt(it.bounce) + '</td><td class="num">' + brFmt(it.bounceP) + "</td></tr>";
+		else s += '<td class="num">' + fmtNum(it.visits) + '</td><td class="num">' + brFmt(it.bounce) + "</td></tr>";
+	}
+	document.getElementById("dvRows").innerHTML = s;
+	var note = document.getElementById("dvNote");
+	if (note) note.textContent = (two ? "\u0417\u0430 " + goalCtx.curLabel + " \u043F\u0440\u043E\u0442\u0438\u0432 " + goalCtx.prevLabel : "") + " \u00B7 \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u044B \u0443\u0441\u0442\u0440\u043E\u0439\u0441\u0442\u0432\u0430 \u0441 \u0434\u043E\u043B\u0435\u0439 \u0432\u0438\u0437\u0438\u0442\u043E\u0432 \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430 \u0431\u043E\u043B\u044C\u0448\u0435 2%";
+	card.className = "card";
+}
+
+function renderResolution() {
+	var card = document.getElementById("rsCard");
+	if (!card) return;
+	var d = payload && payload.data ? payload.data : {};
+	var rd = d.resolutionDaily || [];
+	if (!goalCtx || !rd.length) {
+		card.className = "card hidden";
+		return;
+	}
+	var map = {}, tot = 0;
+	for (var i = 0; i < rd.length; i++) {
+		var r = rd[i];
+		var dt = String(r.date || "");
+		var isPrev;
+		if (dt >= goalCtx.from && dt <= goalCtx.to) isPrev = false;
+		else if (goalCtx.prevFrom && dt >= goalCtx.prevFrom && dt <= goalCtx.prevTo) isPrev = true;
+		else continue;
+		var nm = r.resolution || "\u2014";
+		if (!map[nm]) map[nm] = { visits: 0, bounce: 0, pvisits: 0, pbounce: 0 };
+		var b = map[nm];
+		var v = num(r.visits);
+		if (r.bounce != null && isFinite(Number(r.bounce))) {
+			if (isPrev) b.pbounce += Number(r.bounce) * v; else b.bounce += Number(r.bounce) * v;
+		}
+		if (isPrev) b.pvisits += v; else { b.visits += v; tot += v; }
+	}
+	var list = [];
+	for (var nm2 in map) {
+		if (!Object.prototype.hasOwnProperty.call(map, nm2)) continue;
+		var b2 = map[nm2];
+		if (tot <= 0 || b2.visits / tot <= 0.02) continue;
+		list.push({ name: nm2, bounce: b2.visits ? b2.bounce / b2.visits : null, bounceP: b2.pvisits ? b2.pbounce / b2.pvisits : null, visits: b2.visits, pvisits: b2.pvisits });
+	}
+	if (!list.length) {
+		card.className = "card hidden";
+		return;
+	}
+	list.sort(function (x, y) { return (y.bounce || 0) - (x.bounce || 0) || y.visits - x.visits; });
+	var two = !!goalCtx.curLabel && !!goalCtx.prevLabel;
+	var cS = esc(brShort(goalCtx.from, goalCtx.to)), pS = esc(brShort(goalCtx.prevFrom, goalCtx.prevTo));
+	var vLbl = "\u0412\u0438\u0437\u0438\u0442\u044B ";
+	var bLbl = "\u041E\u0442\u043A\u0430\u0437\u044B ";
+	var head = '<th>\u0420\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u0438\u0435</th><th class="num">';
+	if (two) head += vLbl + cS + '</th><th class="num">' + vLbl + pS + '</th><th class="num">' + bLbl + cS + '</th><th class="num">' + bLbl + pS;
+	else head += "\u0412\u0438\u0437\u0438\u0442\u044B</th>" + '<th class="num">' + "\u041E\u0442\u043A\u0430\u0437\u044B";
+	document.getElementById("rsHead").innerHTML = head + "</th>";
+	var s = "";
+	for (var j = 0; j < list.length; j++) {
+		var it = list[j];
+		s += '<tr><td class="task">' + esc(it.name) + "</td>";
+		if (two) s += '<td class="num">' + fmtNum(it.visits) + '</td><td class="num">' + fmtNum(it.pvisits) + '</td><td class="num">' + brFmt(it.bounce) + '</td><td class="num">' + brFmt(it.bounceP) + "</td></tr>";
+		else s += '<td class="num">' + fmtNum(it.visits) + '</td><td class="num">' + brFmt(it.bounce) + "</td></tr>";
+	}
+	document.getElementById("rsRows").innerHTML = s;
+	var note = document.getElementById("rsNote");
+	if (note) note.textContent = (two ? "\u0417\u0430 " + goalCtx.curLabel + " \u043F\u0440\u043E\u0442\u0438\u0432 " + goalCtx.prevLabel : "") + " \u00B7 \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u044B \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u0438\u044F \u0441 \u0434\u043E\u043B\u0435\u0439 \u0432\u0438\u0437\u0438\u0442\u043E\u0432 \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430 \u0431\u043E\u043B\u044C\u0448\u0435 2%";
+	card.className = "card";
+}
+
 function paintCompare() {
 	var months = lastMonths(2);
 	applySearchModel(cmpSearchModel(months), "\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
@@ -3651,6 +3803,8 @@ function paintCompare() {
 	};
 	renderGoals();
 	renderBrowsers();
+	renderDevices();
+	renderResolution();
 
 	var a = searchTotals(months[0].start, months[0].end);
 	var b = searchTotals(months[1].start, months[1].end);
@@ -3719,6 +3873,8 @@ function paintPeriod() {
 	};
 	renderGoals();
 	renderBrowsers();
+	renderDevices();
+	renderResolution();
 	document.getElementById("kpi").innerHTML =
 		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u0432\u0441\u0435\u0433\u043E", cu.visits,
 			shareBadge(cu.visits > 0 ? (t.visits / cu.visits) * 100 : null, cp.visits > 0 ? (pt.visits / cp.visits) * 100 : null)) +
@@ -3752,6 +3908,8 @@ function paintToday() {
 	};
 	renderGoals();
 	renderBrowsers();
+	renderDevices();
+	renderResolution();
 
 	/* KPI: сегодня против вчера */
 	var tt = searchTotals(t0, t0);

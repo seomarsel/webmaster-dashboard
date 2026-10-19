@@ -688,6 +688,14 @@ a { color: #6aa9ff; }
 	box-shadow: 0 0 0 4px var(--green-soft); flex: 0 0 auto; }
 .topbar .meta { margin-left: auto; color: var(--text-3); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .topbar .meta b { color: var(--text-2); font-weight: 600; }
+.refreshbtn { display: none; margin-left: auto; border: 1px solid var(--border);
+	background: transparent; color: var(--text-2); padding: 7px 13px;
+	border-radius: var(--radius-sm); font-size: 12.5px; cursor: pointer; white-space: nowrap;
+	font-family: inherit; }
+.refreshbtn:hover { border-color: #313c50; color: #8db8ff; }
+.refreshbtn[disabled] { opacity: .55; cursor: default; }
+body.client .refreshbtn { display: inline-block; }
+body.client .topbar .meta { margin-left: 0; }
 .container { max-width: 1180px; margin: 0 auto; padding: var(--s6) var(--s6) var(--s8); }
 
 /* — карточки — */
@@ -2275,9 +2283,10 @@ tr[data-child] td { color: var(--text-2); font-size: 12.5px; }
 .toggle { cursor: pointer; color: #6aa9ff; border-bottom: 1px dashed rgba(106,169,255,.45); }
 .toggle:hover { color: #8db8ff; }
 </style></head>
-<body>
+<body class="__MODE__">
 <div class="topbar">
 	<div class="brand"><span class="dot"></span><h1 id="title">\u0414\u0430\u0448\u0431\u043E\u0440\u0434</h1></div>
+	<button type="button" class="refreshbtn" id="refreshBtn">\u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u0434\u0430\u043D\u043D\u044B\u0435</button>
 	<div class="meta"><b id="updated"></b></div>
 </div>
 <div class="container">
@@ -3691,6 +3700,31 @@ async function boot() {
 	if (MODE === "client") {
 		document.getElementById("pickerBox").className = "hidden";
 		document.getElementById("reload").className = "hidden";
+		var rb = document.getElementById("refreshBtn");
+		rb.onclick = async function () {
+			if (rb.disabled) return;
+			rb.disabled = true;
+			rb.textContent = "\u041E\u0431\u043D\u043E\u0432\u043B\u044F\u044E\u2026";
+			try {
+				var r = await fetch("/api/public/refresh?slug=" + encodeURIComponent(SLUG), { method: "POST" });
+				var d = await r.json();
+				if (r.status === 200 && d && d.ok) {
+					rb.textContent = "\u0413\u043E\u0442\u043E\u0432\u043E \u2713";
+					await loadData(SLUG);
+				} else if (d && d.wait != null) {
+					var mm = Math.ceil(d.wait / 60);
+					rb.textContent = "\u041D\u0435\u0434\u0430\u0432\u043D\u043E \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u043E - \u0447\u0435\u0440\u0435\u0437 " + (mm < 1 ? "<1" : mm) + " \u043C\u0438\u043D";
+				} else {
+					rb.textContent = "\u041E\u0448\u0438\u0431\u043A\u0430";
+				}
+			} catch (e) {
+				rb.textContent = "\u041E\u0448\u0438\u0431\u043A\u0430";
+			}
+			setTimeout(function () {
+				rb.disabled = false;
+				rb.textContent = "\u041E\u0431\u043D\u043E\u0432\u0438\u0442\u044C \u0434\u0430\u043D\u043D\u044B\u0435";
+			}, 2500);
+		};
 	} else {
 		var r = await fetch("/api/sites");
 		if (r.status === 401) { location.href = "/login"; return; }
@@ -4085,6 +4119,24 @@ var index_default = {
       ).bind(slug).first();
       if (!site) return json({ error: "not found" }, 404);
       return json(await loadInsights(env, site.id));
+    }
+    if (path === "/api/public/refresh" && request.method === "POST") {
+      const slug = url.searchParams.get("slug") || "";
+      const site = await env.DB.prepare(
+        "SELECT id FROM sites WHERE slug = ? AND active = 1"
+      ).bind(slug).first();
+      if (!site) return json({ error: "not found" }, 404);
+      const snap = await env.DB.prepare(
+        "SELECT updated_at FROM snapshots WHERE site_id = ?"
+      ).bind(site.id).first();
+      if (snap && snap.updated_at) {
+        const age = Date.now() - new Date(snap.updated_at).getTime();
+        if (age < 15 * 60 * 1000) {
+          return json({ ok: false, wait: Math.ceil((15 * 60 * 1000 - age) / 1000) });
+        }
+      }
+      const count = await collectAll(env, site.id);
+      return json({ ok: true, count });
     }
     if (path === "/login") return html(LOGIN_PAGE);
     if (path === "/api/login" && request.method === "POST") {

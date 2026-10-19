@@ -385,3 +385,8 @@ wrangler deploy             # выкатить исправленный worker
 
 - `MAX_GOALS` поднят 15 → 50; в `collectSite` добавлен блок после `searchConvDaily`: цели бьются на партии по 8 метрик `ym:s:goal<id>reaches`, для каждой партии два запроса `/stat/v1/data` с `dimensions: "ym:s:date"` — без фильтра (поле `a`, весь трафик) и с `filters: "ym:s:lastTrafficSource=='organic'"` (поле `s`, поисковый трафик).
 - Результат — `result.goalsDaily: [{date, gid, a, s}]`, попадает в payload снапшота целиком (`dashData` отдаёт payload как есть, отдельной миграции не нужно). «Поисковый» = органика lastTrafficSource.
+
+## 17. Кнопка «Обновить данные» на клиентском дашборде (19.10.2026, актуально)
+
+- Публичный эндпоинт `POST /api/public/refresh?slug=<slug>`: ищет сайт по slug (`active=1`), проверяет `snapshots.updated_at` — если свежее 15 минут, возвращает `{ok:false, wait:<сек>}` (лимит, чтобы не дёргать Метрику); иначе запускает `collectAll(env, site.id)` и возвращает `{ok:true, count}`. Все прочие `/api/*` по-прежнему требуют админ-сессию.
+- UI: кнопка `#refreshBtn` в sticky-топбаре дашборда (`.refreshbtn`), видима только при `MODE==="client"` (CSS `body.client .refreshbtn`, на `<body class="__MODE__">`; в панели владельца скрыта). Клик: «Обновляю…» → POST → при ok — «Готово ✓» + `loadData(SLUG)`; при wait — «Недавно обновлено - через N мин»; кнопка блокируется на время запроса и 2,5 с после.

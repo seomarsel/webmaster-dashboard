@@ -390,3 +390,9 @@ wrangler deploy             # выкатить исправленный worker
 
 - Публичный эндпоинт `POST /api/public/refresh?slug=<slug>`: ищет сайт по slug (`active=1`), проверяет `snapshots.updated_at` — если свежее 15 минут, возвращает `{ok:false, wait:<сек>}` (лимит, чтобы не дёргать Метрику); иначе запускает `collectAll(env, site.id)` и возвращает `{ok:true, count}`. Все прочие `/api/*` по-прежнему требуют админ-сессию.
 - UI: кнопка `#refreshBtn` в sticky-топбаре дашборда (`.refreshbtn`), видима только при `MODE==="client"` (CSS `body.client .refreshbtn`, на `<body class="__MODE__">`; в панели владельца скрыта). Клик: «Обновляю…» → POST → при ok — «Готово ✓» + `loadData(SLUG)`; при wait — «Недавно обновлено - через N мин»; кнопка блокируется на время запроса и 2,5 с после.
+
+## 18. Таблица «Отказы по браузерам из поиска» (19.10.2026, актуально)
+
+- Сборщик (`src/yandex.js`, блок после `searchConvDaily`): запрос `/stat/v1/data` с `metrics: "ym:s:visits,ym:s:bounceRate"`, `dimensions: "ym:s:date,ym:s:browser"`, фильтр `ym:s:lastTrafficSource=='organic'` → `result.browsersDaily: [{date, browser, visits, bounce}]` (bounce — процент отказов за день). Ошибки — в `errors` («Браузеры: …»), процесс не валят.
+- Дашборд: карточка `#brCard` сразу после `#goalsCard` (скрыта, пока в payload нет `browsersDaily`). Рендер `renderBrowsers()` по контексту окна `goalCtx` (заполняется в `paintCompare`/`paintPeriod`/`paintToday`, вызывается рядом с каждым `renderGoals()`): визиты и взвешенный по визитам средний процент отказов за текущее окно; в таблицу попадают только браузеры с долей визитов из поиска **строго больше 2%** от суммы визитов из поиска за окно; сортировка по отказам по убыванию; подпись `#brNote` = «За <окно> · показаны браузеры с долей визитов из поиска больше 2%». Колонки: «Браузер», «Отказы».
+- Задеплоено 19.10.2026 (`deploy-prod.mjs`, бандл собран `worker/build.mjs` из `worker/src`); проверено на живых данных руннер.рф (870 строк за 180 дней).

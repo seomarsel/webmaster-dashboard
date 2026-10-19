@@ -90,6 +90,7 @@ async function collectSite(site) {
     sourcesDaily: [],
     searchDaily: [],
     searchConvDaily: [],
+    browsersDaily: [],
     pagesMonths: {},
     webmaster: {},
     queries: []
@@ -212,6 +213,31 @@ async function collectSite(site) {
     }
   } catch (e) {
     errors.push("\u041A\u043E\u043D\u0432\u0435\u0440\u0441\u0438\u0438 \u0441 \u043F\u043E\u0438\u0441\u043A\u0430: " + e.message);
+  }
+  try {
+    const data = await getJson(
+      statUrl({
+        ids: site.counter_id,
+        metrics: "ym:s:visits,ym:s:bounceRate",
+        dimensions: "ym:s:date,ym:s:browser",
+        filters: "ym:s:lastTrafficSource=='organic'",
+        date1: from,
+        date2: to,
+        limit: 1e5,
+        accuracy: "full"
+      }),
+      site.token
+    );
+    for (const row of data.data || []) {
+      result.browsersDaily.push({
+        date: row.dimensions[0].name,
+        browser: row.dimensions[1].name,
+        visits: Number(row.metrics[0]) || 0,
+        bounce: Number(row.metrics[1]) || 0
+      });
+    }
+  } catch (e) {
+    errors.push("\u0411\u0440\u0430\u0443\u0437\u0435\u0440\u044B: " + e.message);
   }
   if (goalMetrics.length) {
     for (let gi = 0; gi < goalMetrics.length; gi += 8) {

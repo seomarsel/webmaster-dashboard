@@ -2337,6 +2337,17 @@ tr[data-child] td { color: var(--text-2); font-size: 12.5px; }
 	<div id="gMore"></div>
 </div>
 
+<div class="card hidden" id="brCard">
+	<div class="chartHead">
+		<h2>\u041E\u0442\u043A\u0430\u0437\u044B \u043F\u043E \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430\u043C \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430</h2>
+	</div>
+	<p class="muted" id="brNote"></p>
+	<table>
+		<thead><tr><th>\u0411\u0440\u0430\u0443\u0437\u0435\u0440</th><th class="num">\u041E\u0442\u043A\u0430\u0437\u044B</th></tr></thead>
+		<tbody id="brRows"></tbody>
+	</table>
+</div>
+
 <div class="card">
 	<h2>\u041F\u043E\u0438\u0441\u043A\u043E\u0432\u044B\u0439 \u0442\u0440\u0430\u0444\u0438\u043A \u043F\u043E \u043C\u0435\u0441\u044F\u0446\u0430\u043C</h2>
 	<table>
@@ -3521,6 +3532,51 @@ function renderGoals() {
 	card.className = "card";
 }
 
+function renderBrowsers() {
+	var card = document.getElementById("brCard");
+	if (!card) return;
+	var d = payload && payload.data ? payload.data : {};
+	var bd = d.browsersDaily || [];
+	if (!goalCtx || !bd.length) {
+		card.className = "card hidden";
+		return;
+	}
+	var map = {}, tot = 0;
+	for (var i = 0; i < bd.length; i++) {
+		var r = bd[i];
+		var dt = String(r.date || "");
+		if (dt < goalCtx.from || dt > goalCtx.to) continue;
+		var nm = r.browser || "\u2014";
+		if (!map[nm]) map[nm] = { visits: 0, bounce: 0 };
+		var v = num(r.visits);
+		map[nm].visits += v;
+		if (r.bounce != null && isFinite(Number(r.bounce))) map[nm].bounce += Number(r.bounce) * v;
+		tot += v;
+	}
+	var list = [];
+	for (var nm2 in map) {
+		if (!Object.prototype.hasOwnProperty.call(map, nm2)) continue;
+		var b = map[nm2];
+		if (tot <= 0 || b.visits / tot <= 0.02) continue;
+		list.push({ name: nm2, bounce: b.visits ? b.bounce / b.visits : null, visits: b.visits });
+	}
+	if (!list.length) {
+		card.className = "card hidden";
+		return;
+	}
+	list.sort(function (x, y) { return (y.bounce || 0) - (x.bounce || 0) || y.visits - x.visits; });
+	var s = "";
+	for (var j = 0; j < list.length; j++) {
+		var it = list[j];
+		s += '<tr><td class="task">' + esc(it.name) + "</td>" +
+			'<td class="num">' + (it.bounce == null ? "\u2014" : (Math.round(it.bounce * 10) / 10).toFixed(1) + "%") + "</td></tr>";
+	}
+	document.getElementById("brRows").innerHTML = s;
+	var note = document.getElementById("brNote");
+	if (note) note.textContent = "\u0417\u0430 " + goalCtx.curLabel + " \u00B7 \u043F\u043E\u043A\u0430\u0437\u0430\u043D\u044B \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u044B \u0441 \u0434\u043E\u043B\u0435\u0439 \u0432\u0438\u0437\u0438\u0442\u043E\u0432 \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430 \u0431\u043E\u043B\u044C\u0448\u0435 2%";
+	card.className = "card";
+}
+
 function paintCompare() {
 	var months = lastMonths(2);
 	applySearchModel(cmpSearchModel(months), "\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
@@ -3531,6 +3587,7 @@ function paintCompare() {
 		prevLabel: labelRange(months[1].start, months[1].end)
 	};
 	renderGoals();
+	renderBrowsers();
 
 	var a = searchTotals(months[0].start, months[0].end);
 	var b = searchTotals(months[1].start, months[1].end);
@@ -3598,6 +3655,7 @@ function paintPeriod() {
 		prevLabel: withPrev ? labelRange(prevFrom, prevTo) : ""
 	};
 	renderGoals();
+	renderBrowsers();
 	document.getElementById("kpi").innerHTML =
 		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u0432\u0441\u0435\u0433\u043E", cu.visits,
 			shareBadge(cu.visits > 0 ? (t.visits / cu.visits) * 100 : null, cp.visits > 0 ? (pt.visits / cp.visits) * 100 : null)) +
@@ -3630,6 +3688,7 @@ function paintToday() {
 		prevLabel: "\u0432\u0447\u0435\u0440\u0430, " + labelRange(t1, t1)
 	};
 	renderGoals();
+	renderBrowsers();
 
 	/* KPI: сегодня против вчера */
 	var tt = searchTotals(t0, t0);

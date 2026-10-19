@@ -3582,10 +3582,10 @@ function renderBrowsers() {
 			if (!Object.prototype.hasOwnProperty.call(b2.vers, vn2)) continue;
 			var w = b2.vers[vn2];
 			if (!w.visits && !w.pvisits) continue;
-			vl.push({ name: vn2, bounce: w.visits ? w.bounce / w.visits : null, bounceP: w.pvisits ? w.pbounce / w.pvisits : null, visits: w.visits });
+			vl.push({ name: vn2, bounce: w.visits ? w.bounce / w.visits : null, bounceP: w.pvisits ? w.pbounce / w.pvisits : null, visits: w.visits, pvisits: w.pvisits });
 		}
 		vl.sort(function (x, y) { return (y.bounce || 0) - (x.bounce || 0) || y.visits - x.visits; });
-		list.push({ name: nm2, bounce: b2.visits ? b2.bounce / b2.visits : null, bounceP: b2.pvisits ? b2.pbounce / b2.pvisits : null, visits: b2.visits, vers: vl });
+		list.push({ name: nm2, bounce: b2.visits ? b2.bounce / b2.visits : null, bounceP: b2.pvisits ? b2.pbounce / b2.pvisits : null, visits: b2.visits, pvisits: b2.pvisits, vers: vl });
 	}
 	if (!list.length) {
 		card.className = "card hidden";
@@ -3594,22 +3594,24 @@ function renderBrowsers() {
 	list.sort(function (x, y) { return (y.bounce || 0) - (x.bounce || 0) || y.visits - x.visits; });
 	var two = !!goalCtx.curLabel && !!goalCtx.prevLabel;
 	var head = '<th>\u0411\u0440\u0430\u0443\u0437\u0435\u0440</th><th class="num">';
-	if (two) head += "\u041E\u0442\u043A\u0430\u0437\u044B \u0437\u0430 " + esc(goalCtx.curLabel) + '</th><th class="num">\u041E\u0442\u043A\u0430\u0437\u044B \u0437\u0430 ' + esc(goalCtx.prevLabel);
-	else head += "\u041E\u0442\u043A\u0430\u0437\u044B";
+	var vLbl = "\u0412\u0438\u0437\u0438\u0442\u044B \u0437\u0430 ";
+	var bLbl = "\u041E\u0442\u043A\u0430\u0437\u044B \u0437\u0430 ";
+	if (two) head += vLbl + esc(goalCtx.curLabel) + '</th><th class="num">' + vLbl + esc(goalCtx.prevLabel) + '</th><th class="num">' + bLbl + esc(goalCtx.curLabel) + '</th><th class="num">' + bLbl + esc(goalCtx.prevLabel);
+	else head += "\u0412\u0438\u0437\u0438\u0442\u044B</th>" + '<th class="num">' + "\u041E\u0442\u043A\u0430\u0437\u044B";
 	document.getElementById("brHead").innerHTML = head + "</th>";
 	var s = "";
 	for (var j = 0; j < list.length; j++) {
 		var it = list[j];
 		var open = !!brOpen[it.name];
 		s += '<tr class="brRow" data-br="' + esc(it.name) + '"><td class="task">' + (open ? "\u25BE" : "\u25B8") + " " + esc(it.name) + "</td>";
-		if (two) s += '<td class="num">' + brFmt(it.bounce) + '</td><td class="num">' + brFmt(it.bounceP) + "</td></tr>";
-		else s += '<td class="num">' + brFmt(it.bounce) + "</td></tr>";
+		if (two) s += '<td class="num">' + fmtNum(it.visits) + '</td><td class="num">' + fmtNum(it.pvisits) + '</td><td class="num">' + brFmt(it.bounce) + '</td><td class="num">' + brFmt(it.bounceP) + "</td></tr>";
+		else s += '<td class="num">' + fmtNum(it.visits) + '</td><td class="num">' + brFmt(it.bounce) + "</td></tr>";
 		if (open) {
 			for (var k2 = 0; k2 < it.vers.length; k2++) {
 				var vr = it.vers[k2];
 				s += '<tr class="brSub"><td>' + esc(vr.name) + "</td>";
-				if (two) s += '<td class="num">' + brFmt(vr.bounce) + '</td><td class="num">' + brFmt(vr.bounceP) + "</td></tr>";
-				else s += '<td class="num">' + brFmt(vr.bounce) + "</td></tr>";
+				if (two) s += '<td class="num">' + fmtNum(vr.visits) + '</td><td class="num">' + fmtNum(vr.pvisits) + '</td><td class="num">' + brFmt(vr.bounce) + '</td><td class="num">' + brFmt(vr.bounceP) + "</td></tr>";
+				else s += '<td class="num">' + fmtNum(vr.visits) + '</td><td class="num">' + brFmt(vr.bounce) + "</td></tr>";
 			}
 		}
 	}

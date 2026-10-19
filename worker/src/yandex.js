@@ -71,6 +71,33 @@ async function pagesForMonth(site, goalMetrics, from, to) {
   return out;
 }
 __name(pagesForMonth, "pagesForMonth");
+async function landingForMonth(site, from, to) {
+  const url = statUrl({
+    ids: site.counter_id,
+    metrics: "ym:s:visits,ym:s:bounceRate,ym:s:sumGoalReachesAny",
+    dimensions: "ym:s:startURL",
+    filters: "ym:s:lastTrafficSource=='organic'",
+    date1: from,
+    date2: to,
+    sort: "-ym:s:visits",
+    limit: MAX_PAGES,
+    accuracy: "full"
+  });
+  const data = await getJson(url, site.token);
+  const out = [];
+  for (const row of data.data || []) {
+    const pageUrl = row.dimensions[0].name;
+    if (!pageUrl) continue;
+    out.push({
+      url: pageUrl,
+      visits: Number(row.metrics[0]) || 0,
+      bounce: Number(row.metrics[1]) || 0,
+      conversions: Number(row.metrics[2]) || 0
+    });
+  }
+  return out;
+}
+__name(landingForMonth, "landingForMonth");
 async function collectSite(site) {
   const errors = [];
   const now = /* @__PURE__ */ new Date();
@@ -94,6 +121,7 @@ async function collectSite(site) {
     devicesDaily: [],
     resolutionDaily: [],
     pagesMonths: {},
+    landingMonths: {},
     webmaster: {},
     queries: []
   };
@@ -344,6 +372,15 @@ async function collectSite(site) {
     } catch (e) {
       errors.push("\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u044B " + m.key + ": " + e.message);
       result.pagesMonths[m.key] = [];
+    }
+  }
+  for (const off of [0].concat(PAGE_MONTHS)) {
+    const m = monthRange(off);
+    try {
+      result.landingMonths[m.key] = await landingForMonth(site, m.from, m.to);
+    } catch (e) {
+      errors.push("\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u044B \u0432\u0445\u043E\u0434\u0430 " + m.key + ": " + e.message);
+      result.landingMonths[m.key] = [];
     }
   }
   if (site.host_id) {

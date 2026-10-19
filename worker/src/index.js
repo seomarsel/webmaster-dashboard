@@ -749,6 +749,8 @@ tbody tr:last-child td { border-bottom: 0; }
 #dvCard th { white-space: normal; }
 #rsCard { overflow-x: auto; }
 #rsCard th { white-space: normal; }
+#lpCard { overflow-x: auto; }
+#lpCard th { white-space: normal; }
 #brCard tbody tr.brRow td { cursor: pointer; }
 #brCard tbody tr.brSub td { padding: 2px 12px 2px 34px; color: var(--text-2); font-size: 12.5px; }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
@@ -2378,6 +2380,16 @@ tr[data-child] td { color: var(--text-2); font-size: 12.5px; }
 	</table>
 </div>
 
+<div class="card hidden" id="lpCard">
+	<h2>\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u044B \u0432\u0445\u043E\u0434\u0430 \u0441 \u043E\u0442\u043A\u0430\u0437\u0430\u043C\u0438 \u0438 \u043A\u043E\u043D\u0432\u0435\u0440\u0441\u0438\u044F\u043C\u0438</h2>
+	<p class="muted" id="lpNote"></p>
+	<table>
+		<thead><tr id="lpHead"></tr></thead>
+		<tbody id="lpRows"></tbody>
+	</table>
+	<div id="lpMore"></div>
+</div>
+
 <div class="card">
 	<h2>\u041F\u043E\u0438\u0441\u043A\u043E\u0432\u044B\u0439 \u0442\u0440\u0430\u0444\u0438\u043A \u043F\u043E \u043C\u0435\u0441\u044F\u0446\u0430\u043C</h2>
 	<table>
@@ -3792,6 +3804,110 @@ function renderResolution() {
 	card.className = "card";
 }
 
+var lpShowAll = false;
+var LP_ABBR = ["\u044F\u043D\u0432", "\u0444\u0435\u0432", "\u043C\u0430\u0440", "\u0430\u043F\u0440", "\u043C\u0430\u0439", "\u0438\u044E\u043D", "\u0438\u044E\u043B", "\u0430\u0432\u0433", "\u0441\u0435\u043D", "\u043E\u043A\u0442", "\u043D\u043E\u044F", "\u0434\u0435\u043A"];
+
+function lpLbl(key) {
+	var p = String(key || "").split("-");
+	if (p.length < 2) return "";
+	var n = Number(p[1]);
+	return (LP_ABBR[n - 1] || "") + " " + p[0];
+}
+
+function renderLanding() {
+	var card = document.getElementById("lpCard");
+	if (!card) return;
+	var d = payload && payload.data ? payload.data : {};
+	var lm = d.landingMonths || {};
+	var keys = [];
+	for (var k in lm) {
+		if (Object.prototype.hasOwnProperty.call(lm, k) && (lm[k] || []).length) keys.push(k);
+	}
+	keys.sort();
+	if (!keys.length) {
+		card.className = "card hidden";
+		return;
+	}
+	var curKey = keys[keys.length - 1];
+	var prevKey = keys.length > 1 ? keys[keys.length - 2] : null;
+	var two = !!prevKey;
+	var curLbl = lpLbl(curKey), prevLbl = prevKey ? lpLbl(prevKey) : "";
+	var map = {};
+	var cArr = lm[curKey] || [];
+	for (var i = 0; i < cArr.length; i++) {
+		map[cArr[i].url] = { cv: num(cArr[i].visits), cb: cArr[i].bounce, cc: num(cArr[i].conversions), pv: 0, pb: null, pc: 0 };
+	}
+	if (prevKey) {
+		var pArr = lm[prevKey] || [];
+		for (var j = 0; j < pArr.length; j++) {
+			var it2 = pArr[j];
+			if (!map[it2.url]) map[it2.url] = { cv: 0, cb: null, cc: 0, pv: 0, pb: null, pc: 0 };
+			map[it2.url].pv = num(it2.visits);
+			map[it2.url].pb = it2.bounce;
+			map[it2.url].pc = num(it2.conversions);
+		}
+	}
+	var list = [];
+	for (var u in map) {
+		if (!Object.prototype.hasOwnProperty.call(map, u)) continue;
+		if (map[u].cv <= 0) continue;
+		list.push(u);
+	}
+	list.sort(function (a, b) { return map[b].cv - map[a].cv; });
+	if (!list.length) {
+		card.className = "card hidden";
+		return;
+	}
+	var vLbl = "\u0412\u0438\u0437\u0438\u0442\u044B ";
+	var bLbl = "\u041E\u0442\u043A\u0430\u0437\u044B ";
+	var cLbl = "\u041A\u043E\u043D\u0432. ";
+	var head = '<th>URL \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u044B</th><th class="num">';
+	if (two) head += vLbl + esc(curLbl) + '</th><th class="num">' + vLbl + esc(prevLbl) + '</th><th class="num">' + bLbl + esc(curLbl) + '</th><th class="num">' + bLbl + esc(prevLbl) + '</th><th class="num">' + cLbl + esc(curLbl) + '</th><th class="num">' + cLbl + esc(prevLbl);
+	else head += "\u0412\u0438\u0437\u0438\u0442\u044B</th>" + '<th class="num">' + "\u041E\u0442\u043A\u0430\u0437\u044B</th>" + '<th class="num">' + "\u041A\u043E\u043D\u0432.";
+	document.getElementById("lpHead").innerHTML = head + "</th>";
+	var showN = lpShowAll ? list.length : Math.min(10, list.length);
+	var s = "";
+	for (var r = 0; r < showN; r++) {
+		var u2 = list[r], m2 = map[u2];
+		s += "<tr><td>" + esc(u2) + "</td>";
+		if (two) s += '<td class="num">' + fmtNum(m2.cv) + '</td><td class="num">' + fmtNum(m2.pv) + '</td><td class="num">' + brFmt(m2.cb) + '</td><td class="num">' + brFmt(m2.pb) + '</td><td class="num">' + fmtNum(m2.cc) + '</td><td class="num">' + fmtNum(m2.pc) + "</td></tr>";
+		else s += '<td class="num">' + fmtNum(m2.cv) + '</td><td class="num">' + brFmt(m2.cb) + '</td><td class="num">' + fmtNum(m2.cc) + "</td></tr>";
+	}
+	var tcv = 0, tws = 0, twn = 0, tcc = 0;
+	for (var c1 = 0; c1 < cArr.length; c1++) {
+		var cr = cArr[c1];
+		tcv += num(cr.visits);
+		if (cr.bounce != null && isFinite(Number(cr.bounce))) { tws += num(cr.visits) * Number(cr.bounce); twn += num(cr.visits); }
+		tcc += num(cr.conversions);
+	}
+	s += "<tr><td><b>\u0418\u0442\u043E\u0433\u043E</b></td>";
+	if (two) {
+		var tpv = 0, twp = 0, tqp = 0, tpc = 0;
+		for (var c2 = 0; c2 < pArr.length; c2++) {
+			var pr = pArr[c2];
+			tpv += num(pr.visits);
+			if (pr.bounce != null && isFinite(Number(pr.bounce))) { twp += num(pr.visits) * Number(pr.bounce); tqp += num(pr.visits); }
+			tpc += num(pr.conversions);
+		}
+		s += '<td class="num"><b>' + fmtNum(tcv) + '</b></td><td class="num"><b>' + fmtNum(tpv) + '</b></td>' +
+			'<td class="num"><b>' + brFmt(twn ? tws / twn : null) + '</b></td><td class="num"><b>' + brFmt(tqp ? twp / tqp : null) + '</b></td>' +
+			'<td class="num"><b>' + fmtNum(tcc) + '</b></td><td class="num"><b>' + fmtNum(tpc) + "</b></td></tr>";
+	} else {
+		s += '<td class="num"><b>' + fmtNum(tcv) + '</b></td><td class="num"><b>' + brFmt(twn ? tws / twn : null) + '</b></td><td class="num"><b>' + fmtNum(tcc) + "</b></td></tr>";
+	}
+	document.getElementById("lpRows").innerHTML = s;
+	var more = document.getElementById("lpMore");
+	if (list.length > 10) {
+		more.innerHTML = '<span class="shown">\u041F\u043E\u043A\u0430\u0437\u0430\u043D\u043E ' + showN + " \u0438\u0437 " + list.length + "</span>" +
+			'<button type="button" class="chipmore" id="lpMoreBtn">' + (lpShowAll ? "\u0421\u0432\u0435\u0440\u043D\u0443\u0442\u044C" : "\u041F\u043E\u043A\u0430\u0437\u0430\u0442\u044C \u0432\u0441\u0435") + " \u2192</button>";
+		var bb = document.getElementById("lpMoreBtn");
+		if (bb) bb.onclick = function () { lpShowAll = !lpShowAll; renderLanding(); };
+	} else more.innerHTML = "";
+	var note = document.getElementById("lpNote");
+	if (note) note.textContent = "\u0422\u043E\u043F \u0441\u0442\u0440\u0430\u043D\u0438\u0446 \u0432\u0445\u043E\u0434\u0430 \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u043E\u0432\u043E\u0433\u043E \u0442\u0440\u0430\u0444\u0438\u043A\u0430 \u00B7 " + esc(curLbl) + (two ? " \u043F\u0440\u043E\u0442\u0438\u0432 " + esc(prevLbl) : "");
+	card.className = "card";
+}
+
 function paintCompare() {
 	var months = lastMonths(2);
 	applySearchModel(cmpSearchModel(months), "\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
@@ -3805,6 +3921,7 @@ function paintCompare() {
 	renderBrowsers();
 	renderDevices();
 	renderResolution();
+	renderLanding();
 
 	var a = searchTotals(months[0].start, months[0].end);
 	var b = searchTotals(months[1].start, months[1].end);
@@ -3875,6 +3992,7 @@ function paintPeriod() {
 	renderBrowsers();
 	renderDevices();
 	renderResolution();
+	renderLanding();
 	document.getElementById("kpi").innerHTML =
 		kpiBox("\u0412\u0438\u0437\u0438\u0442\u044B \u0432\u0441\u0435\u0433\u043E", cu.visits,
 			shareBadge(cu.visits > 0 ? (t.visits / cu.visits) * 100 : null, cp.visits > 0 ? (pt.visits / cp.visits) * 100 : null)) +
@@ -3910,6 +4028,7 @@ function paintToday() {
 	renderBrowsers();
 	renderDevices();
 	renderResolution();
+	renderLanding();
 
 	/* KPI: сегодня против вчера */
 	var tt = searchTotals(t0, t0);

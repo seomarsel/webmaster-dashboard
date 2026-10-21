@@ -821,6 +821,7 @@ tbody tr:last-child td { border-bottom: 0; }
 .tip b { color: var(--text); font-weight: 600; }
 .srcHint { margin-top: 12px; font-size: 12px; color: var(--text-3); }
 .srcRows { margin-top: 4px; }
+#gLegend .srcRows { max-height: 300px; overflow-y: auto; padding-right: 4px; }
 .srcRow { display: flex; align-items: center; gap: 10px; padding: 11px 10px;
 	border-radius: var(--radius-xs); cursor: pointer; transition: background .12s; }
 .srcRow:hover, .srcRow.sel { background: var(--surface-2); }
@@ -3983,9 +3984,8 @@ function buildGoalDefs(curFrom, curTo) {
 	}
 	list.sort(function (x, y) { return y.total - x.total; });
 	var defs = [{ gid: null, name: "\u0412\u0441\u0435 \u0446\u0435\u043B\u0438", color: GOAL_COLORS[0] }];
-	for (var k = 0; k < list.length && defs.length < 6; k++) {
-		if (!list[k].total) break;
-		defs.push({ gid: list[k].gid, name: list[k].name, color: GOAL_COLORS[defs.length] });
+	for (var k = 0; k < list.length; k++) {
+		defs.push({ gid: list[k].gid, name: list[k].name, color: GOAL_COLORS[defs.length % GOAL_COLORS.length] });
 	}
 	return defs;
 }

@@ -2335,6 +2335,18 @@ tr[data-child] td { color: var(--text-2); font-size: 12.5px; }
 	<div class="legend" id="legend"></div>
 </div>
 
+<div class="card hidden" id="goalsChartCard">
+	<div class="chartHead">
+		<h2 id="gChartTitle">\u0414\u043E\u0441\u0442\u0438\u0436\u0435\u043D\u0438\u0435 \u0446\u0435\u043B\u0435\u0439 \u043F\u043E \u0434\u043D\u044F\u043C</h2>
+		<div class="chartTotal"><span class="cv" id="gChartTotalV"></span><span id="gChartTotalB"></span></div>
+	</div>
+	<div class="chartWrap">
+		<canvas id="gChart"></canvas>
+		<div class="tip" id="gChartTip"></div>
+	</div>
+	<div class="legend" id="gLegend"></div>
+</div>
+
 <div class="card hidden" id="goalsCard">
 	<div class="chartHead">
 		<h2>\u0414\u043E\u0441\u0442\u0438\u0436\u0435\u043D\u0438\u0435 \u0446\u0435\u043B\u0435\u0439</h2>
@@ -3195,11 +3207,10 @@ function updateSearchHead() {
 	document.getElementById("chartTotalB").innerHTML = trendBadge(row.total, row.totalPrev);
 }
 
-function drawSearchChart(hoverIdx) {
-	var st = searchChart;
+function drawChartState(st, canvasId, hoverIdx) {
 	if (!st || !st.rows) return;
 	var row = st.rows[st.sel] || st.rows[0];
-	var c = document.getElementById("chart");
+	var c = document.getElementById(canvasId);
 	var ratio = window.devicePixelRatio || 1;
 	var w = c.clientWidth;
 	var h = 300;
@@ -3288,16 +3299,24 @@ function drawSearchChart(hoverIdx) {
 	}
 }
 
+function drawSearchChart(hoverIdx) {
+	drawChartState(searchChart, "chart", hoverIdx);
+}
+
+function drawGoalChart(hoverIdx) {
+	drawChartState(goalChart, "gChart", hoverIdx);
+}
+
 function hideChartTip() {
 	var tip = document.getElementById("chartTip");
 	if (tip) tip.style.display = "none";
 }
 
-function bindChartHover() {
-	var c = document.getElementById("chart");
-	var tip = document.getElementById("chartTip");
+function bindHover(canvasId, tipId, getSt, drawFn) {
+	var c = document.getElementById(canvasId);
+	var tip = document.getElementById(tipId);
 	c.onmousemove = function (ev) {
-		var st = searchChart;
+		var st = getSt();
 		if (!st || !st.rows) return;
 		var row = st.rows[st.sel] || st.rows[0];
 		var n = row.cur.length;
@@ -3310,7 +3329,7 @@ function bindChartHover() {
 		var idx = Math.round((x - padL) / stepX);
 		if (idx < 0) idx = 0;
 		if (idx > n - 1) idx = n - 1;
-		drawSearchChart(idx);
+		drawFn(idx);
 		var nm = row.name;
 		var html = "<div><b>" + esc(nm) + "</b> " + keyToDmy(st.curKeys[idx]) + ": " + fmtNum(row.cur[idx]) + "</div>";
 		if (st.prevKeys && row.prev && row.prev[idx] != null) {
@@ -3325,11 +3344,18 @@ function bindChartHover() {
 		tip.style.left = left + "px";
 		tip.style.top = "36px";
 	};
-	c.onmouseleave = hideChartTip;
+	c.onmouseleave = function () { tip.style.display = "none"; };
 }
 
-function renderSearchRows() {
-	var st = searchChart;
+function bindChartHover() {
+	bindHover("chart", "chartTip", function () { return searchChart; }, drawSearchChart);
+}
+
+function bindGoalChartHover() {
+	bindHover("gChart", "gChartTip", function () { return goalChart; }, drawGoalChart);
+}
+
+function renderRows(st, wrapId, drawFn, updFn) {
 	var s = '<div class="srcHint">\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u043D\u0430 \u0441\u0442\u0440\u043E\u043A\u0443, \u0447\u0442\u043E\u0431\u044B \u0443\u0432\u0438\u0434\u0435\u0442\u044C \u0435\u0451 \u043D\u0430 \u0433\u0440\u0430\u0444\u0438\u043A\u0435</div><div class="srcRows">';
 	for (var i = 0; i < st.rows.length; i++) {
 		var r = st.rows[i];
@@ -3341,20 +3367,28 @@ function renderSearchRows() {
 			"</div>";
 	}
 	s += "</div>";
-	var wrap = document.getElementById("legend");
+	var wrap = document.getElementById(wrapId);
 	wrap.innerHTML = s;
 	wrap.onclick = function (ev) {
 		var el = ev.target;
 		while (el && el !== wrap && !(el.className && String(el.className).indexOf("srcRow") >= 0)) el = el.parentNode;
 		if (!el || el === wrap) return;
-		var st = searchChart;
+		var st2 = st;
 		var idx = Number(el.getAttribute("data-i"));
-		if (!st || isNaN(idx)) return;
-		st.sel = idx;
-		renderSearchRows();
-		updateSearchHead();
-		drawSearchChart(null);
+		if (!st2 || isNaN(idx)) return;
+		st2.sel = idx;
+		renderRows(st2, wrapId, drawFn, updFn);
+		updFn();
+		drawFn(null);
 	};
+}
+
+function renderSearchRows() {
+	renderRows(searchChart, "legend", drawSearchChart, updateSearchHead);
+}
+
+function renderGoalRows() {
+	renderRows(goalChart, "gLegend", drawGoalChart, updateGoalHead);
 }
 
 function addDays(dateStr, k) {
@@ -3908,6 +3942,206 @@ function renderLanding() {
 	card.className = "card";
 }
 
+var goalChart = null;
+var goalChartMode = "cmp";
+var GOAL_COLORS = ["#e8ecf3", "#f59e0b", "#3b82f6", "#22c55e", "#ef4444", "#a78bfa", "#14b8a6", "#f472b6"];
+
+function goalDailyRows() {
+	return payload && payload.data ? payload.data.goalsDaily || [] : [];
+}
+
+function goalWinRows(wf, wt) {
+	var gd = goalDailyRows();
+	var out = [];
+	for (var i = 0; i < gd.length; i++) {
+		var dt = String(gd[i].date || "");
+		if (dt >= wf && dt <= wt) out.push(gd[i]);
+	}
+	return out;
+}
+
+function goalVal(r, src) {
+	return src === "search" ? num(r.s) : num(r.a);
+}
+
+function buildGoalDefs(curFrom, curTo) {
+	var d = payload && payload.data ? payload.data : {};
+	var meta = d.goals || [];
+	var names = {};
+	for (var i = 0; i < meta.length; i++) names[meta[i].id] = meta[i].name;
+	var sums = {};
+	var winRows = goalWinRows(curFrom, curTo);
+	for (var j = 0; j < winRows.length; j++) {
+		var gid = Number(winRows[j].gid);
+		if (!sums[gid]) sums[gid] = 0;
+		sums[gid] += goalVal(winRows[j], goalSrc);
+	}
+	var list = [];
+	for (var g in sums) {
+		if (!Object.prototype.hasOwnProperty.call(sums, g)) continue;
+		list.push({ gid: Number(g), total: sums[g], name: names[g] || ("\u0426\u0435\u043B\u044C " + g) });
+	}
+	list.sort(function (x, y) { return y.total - x.total; });
+	var defs = [{ gid: null, name: "\u0412\u0441\u0435 \u0446\u0435\u043B\u0438", color: GOAL_COLORS[0] }];
+	for (var k = 0; k < list.length && defs.length < 6; k++) {
+		if (!list[k].total) break;
+		defs.push({ gid: list[k].gid, name: list[k].name, color: GOAL_COLORS[defs.length] });
+	}
+	return defs;
+}
+
+function cmpGoalVals(wf, wt, gid) {
+	var ln = Number(String(wt).slice(-2), 10);
+	var arr = [];
+	for (var j = 0; j < ln; j++) arr.push(0);
+	var total = 0;
+	var winRows = goalWinRows(wf, wt);
+	for (var i = 0; i < winRows.length; i++) {
+		if (gid != null && Number(winRows[i].gid) !== Number(gid)) continue;
+		var dt = String(winRows[i].date || "");
+		var di = Number(dt.slice(-2), 10) - 1;
+		if (di >= 0 && di < ln) {
+			var v = goalVal(winRows[i], goalSrc);
+			arr[di] += v;
+			total += v;
+		}
+	}
+	return { arr: arr, total: total };
+}
+
+function bucketGoalVals(wf, wt, base, group, cnt, gid) {
+	var arr = [];
+	for (var j = 0; j < cnt; j++) arr.push(0);
+	var total = 0;
+	var winRows = goalWinRows(wf, wt);
+	for (var i = 0; i < winRows.length; i++) {
+		if (gid != null && Number(winRows[i].gid) !== Number(gid)) continue;
+		var dt = String(winRows[i].date || "");
+		var idx = bucketIdxOf(dt, base, group);
+		if (idx >= 0 && idx < cnt) {
+			var v = goalVal(winRows[i], goalSrc);
+			arr[idx] += v;
+			total += v;
+		}
+	}
+	return { arr: arr, total: total };
+}
+
+function cmpGoalModel(months) {
+	var defs = buildGoalDefs(months[0].start, months[0].end);
+	var rows = [];
+	for (var k = 0; k < defs.length; k++) {
+		var r1 = cmpGoalVals(months[0].start, months[0].end, defs[k].gid);
+		var r2 = cmpGoalVals(months[1].start, months[1].end, defs[k].gid);
+		rows.push({ name: defs[k].name, color: defs[k].color, gid: defs[k].gid, cur: r1.arr, prev: r2.arr, total: r1.total, totalPrev: r2.total });
+	}
+	var ln0 = Number(String(months[0].end).slice(-2), 10);
+	var ln1 = Number(String(months[1].end).slice(-2), 10);
+	var curKeys = [], prevKeys = [], labels = [];
+	var mm = Number(String(months[0].key).slice(5, 7)) - 1;
+	for (var i = 0; i < ln0; i++) {
+		curKeys.push(months[0].key + "-" + pad2(i + 1));
+		labels.push((i + 1) + " " + MONTHS[mm].slice(0, 3));
+	}
+	for (var i2 = 0; i2 < ln1; i2++) prevKeys.push(months[1].key + "-" + pad2(i2 + 1));
+	return { rows: rows, curKeys: curKeys, prevKeys: prevKeys, labels: labels, sel: 0 };
+}
+
+function rangeGoalModel(from, to, prevFrom, prevTo, group) {
+	var span = Math.round((new Date(to + "T00:00:00") - new Date(from + "T00:00:00")) / 864e5) + 1;
+	var cnt;
+	if (group === "month") {
+		cnt = (Number(String(to).slice(0, 4)) - Number(String(from).slice(0, 4))) * 12 +
+			(Number(String(to).slice(5, 7)) - Number(String(from).slice(5, 7))) + 1;
+	} else if (group === "week") {
+		cnt = Math.ceil(span / 7);
+	} else {
+		cnt = span;
+	}
+	var curKeys = [], prevKeys = [], labels = [];
+	for (var i = 0; i < cnt; i++) {
+		var off = group === "week" ? i * 7 : i;
+		if (group === "month") {
+			var mm = Number(String(from).slice(5, 7)) - 1 + i;
+			var yy = Number(String(from).slice(0, 4)) + Math.floor(mm / 12);
+			curKeys.push(yy + "-" + pad2((mm % 12) + 1) + "-01");
+			var mm2 = Number(String(prevFrom).slice(5, 7)) - 1 + i;
+			var yy2 = Number(String(prevFrom).slice(0, 4)) + Math.floor(mm2 / 12);
+			prevKeys.push(yy2 + "-" + pad2((mm2 % 12) + 1) + "-01");
+		} else {
+			curKeys.push(addDays(from, off));
+			prevKeys.push(addDays(prevFrom, off));
+		}
+		labels.push(labelOf(curKeys[i]));
+	}
+	var defs = buildGoalDefs(from, to);
+	var rows = [];
+	for (var k = 0; k < defs.length; k++) {
+		var a1 = bucketGoalVals(from, to, from, group, cnt, defs[k].gid);
+		var a2 = bucketGoalVals(prevFrom, prevTo, prevFrom, group, cnt, defs[k].gid);
+		rows.push({ name: defs[k].name, color: defs[k].color, gid: defs[k].gid, cur: a1.arr, prev: a2.arr, total: a1.total, totalPrev: a2.total });
+	}
+	return { rows: rows, curKeys: curKeys, prevKeys: prevKeys, labels: labels, sel: 0 };
+}
+
+function todayGoalModel() {
+	var td = new Date();
+	var yd = new Date(); yd.setDate(yd.getDate() - 1);
+	var t0 = fmtDate(td);
+	var t1 = fmtDate(yd);
+	var f14 = new Date(); f14.setDate(f14.getDate() - 13);
+	var f14s = fmtDate(f14);
+	var cnt = 14;
+	var curKeys = [], labels = [];
+	for (var i = 0; i < cnt; i++) {
+		var k = addDays(f14s, i);
+		curKeys.push(k);
+		labels.push(labelOf(k));
+	}
+	var defs = buildGoalDefs(t0, t0);
+	var rows = [];
+	for (var k2 = 0; k2 < defs.length; k2++) {
+		var agg = bucketGoalVals(f14s, t0, f14s, "day", cnt, defs[k2].gid);
+		var today = bucketGoalVals(t0, t0, t0, "day", 1, defs[k2].gid);
+		var yest = bucketGoalVals(t1, t1, t1, "day", 1, defs[k2].gid);
+		rows.push({ name: defs[k2].name, color: defs[k2].color, gid: defs[k2].gid, cur: agg.arr, prev: null, total: today.total, totalPrev: yest.total });
+	}
+	return { rows: rows, curKeys: curKeys, prevKeys: null, labels: labels, sel: 0 };
+}
+
+function updateGoalHead() {
+	var st = goalChart;
+	if (!st || !st.rows) return;
+	var row = st.rows[st.sel] || st.rows[0];
+	document.getElementById("gChartTotalV").textContent = fmtNum(row.total);
+	document.getElementById("gChartTotalB").innerHTML = trendBadge(row.total, row.totalPrev);
+}
+
+function applyGoalChart(model, title) {
+	goalChart = model;
+	var card = document.getElementById("goalsChartCard");
+	var d = payload && payload.data ? payload.data : {};
+	if (!model || !(d.goalsDaily || []).length) {
+		card.className = "card hidden";
+		goalChart = null;
+		return;
+	}
+	card.className = "card";
+	document.getElementById("gChartTitle").textContent = title;
+	renderGoalRows();
+	updateGoalHead();
+	drawGoalChart(null);
+	bindGoalChartHover();
+}
+
+function refreshGoalChart() {
+	var t = "\u0414\u043E\u0441\u0442\u0438\u0436\u0435\u043D\u0438\u0435 \u0446\u0435\u043B\u0435\u0439 \u043F\u043E \u0434\u043D\u044F\u043C";
+	if (!goalCtx) { applyGoalChart(null, t); return; }
+	if (goalChartMode === "cmp") applyGoalChart(cmpGoalModel(lastMonths(2)), t);
+	else if (goalChartMode === "today") applyGoalChart(todayGoalModel(), t);
+	else applyGoalChart(rangeGoalModel(goalCtx.from, goalCtx.to, goalCtx.prevFrom, goalCtx.prevTo, group), t);
+}
+
 function paintCompare() {
 	var months = lastMonths(2);
 	applySearchModel(cmpSearchModel(months), "\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
@@ -3917,6 +4151,8 @@ function paintCompare() {
 		curLabel: labelRange(months[0].start, months[0].end),
 		prevLabel: labelRange(months[1].start, months[1].end)
 	};
+	goalChartMode = "cmp";
+	refreshGoalChart();
 	renderGoals();
 	renderBrowsers();
 	renderDevices();
@@ -3988,6 +4224,8 @@ function paintPeriod() {
 		curLabel: withPrev ? labelRange(fromStr, toStr) : "",
 		prevLabel: withPrev ? labelRange(prevFrom, prevTo) : ""
 	};
+	goalChartMode = "range";
+	refreshGoalChart();
 	renderGoals();
 	renderBrowsers();
 	renderDevices();
@@ -4024,6 +4262,8 @@ function paintToday() {
 		curLabel: "\u0441\u0435\u0433\u043E\u0434\u043D\u044F, " + labelRange(t0, t0),
 		prevLabel: "\u0432\u0447\u0435\u0440\u0430, " + labelRange(t1, t1)
 	};
+	goalChartMode = "today";
+	refreshGoalChart();
 	renderGoals();
 	renderBrowsers();
 	renderDevices();
@@ -4160,8 +4400,8 @@ async function boot() {
 	};
 	var gsA = document.getElementById("gSrcAll");
 	var gsS = document.getElementById("gSrcSearch");
-	if (gsA) gsA.onclick = function () { goalSrc = "all"; setGoalSrcUI(); renderGoals(); };
-	if (gsS) gsS.onclick = function () { goalSrc = "search"; setGoalSrcUI(); renderGoals(); };
+	if (gsA) gsA.onclick = function () { goalSrc = "all"; setGoalSrcUI(); renderGoals(); refreshGoalChart(); };
+	if (gsS) gsS.onclick = function () { goalSrc = "search"; setGoalSrcUI(); renderGoals(); refreshGoalChart(); };
 	window.onresize = function () {
 		if (lastLabels.length) drawSeries(lastLabels, lastSeries);
 	};

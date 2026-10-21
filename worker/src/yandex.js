@@ -71,6 +71,47 @@ async function pagesForMonth(site, goalMetrics, from, to) {
   return out;
 }
 __name(pagesForMonth, "pagesForMonth");
+async function pagesForMonthsAll(site, goalMetrics, monthList) {
+  const metrics = ["ym:s:visits"].concat(goalMetrics).join(",");
+  const url = statUrl({
+    ids: site.counter_id,
+    metrics,
+    dimensions: "ym:s:startURL,ym:s:date",
+    date1: monthList[monthList.length - 1].from,
+    date2: monthList[0].to,
+    limit: 1e5,
+    accuracy: "full"
+  });
+  const data = await getJson(url, site.token);
+  const perMonth = {};
+  for (const m of monthList) perMonth[m.key] = {};
+  for (const row of data.data || []) {
+    const pageUrl = row.dimensions[0].name;
+    const d = row.dimensions[1].name;
+    if (!pageUrl) continue;
+    let m = null;
+    for (const mm of monthList) {
+      if (d >= mm.from && d <= mm.to) { m = mm; break; }
+    }
+    if (!m) continue;
+    const bucket = perMonth[m.key];
+    let rec = bucket[pageUrl];
+    if (!rec) rec = bucket[pageUrl] = { visits: 0, conversions: 0 };
+    rec.visits += Number(row.metrics[0]) || 0;
+    for (let i = 1; i < row.metrics.length; i++) rec.conversions += Number(row.metrics[i]) || 0;
+  }
+  const out = {};
+  for (const m of monthList) {
+    const list = [];
+    for (const u of Object.keys(perMonth[m.key])) {
+      list.push({ url: u, visits: perMonth[m.key][u].visits, conversions: perMonth[m.key][u].conversions });
+    }
+    list.sort((a, b) => b.visits - a.visits);
+    out[m.key] = list.slice(0, MAX_PAGES);
+  }
+  return out;
+}
+__name(pagesForMonthsAll, "pagesForMonthsAll");
 async function landingForMonth(site, from, to) {
   const url = statUrl({
     ids: site.counter_id,
@@ -98,6 +139,58 @@ async function landingForMonth(site, from, to) {
   return out;
 }
 __name(landingForMonth, "landingForMonth");
+async function landingForMonthsAll(site, monthList) {
+  const url = statUrl({
+    ids: site.counter_id,
+    metrics: "ym:s:visits,ym:s:bounceRate,ym:s:sumGoalReachesAny",
+    dimensions: "ym:s:startURL,ym:s:date",
+    filters: "ym:s:lastTrafficSource=='organic'",
+    date1: monthList[monthList.length - 1].from,
+    date2: monthList[0].to,
+    limit: 1e5,
+    accuracy: "full"
+  });
+  const data = await getJson(url, site.token);
+  const perMonth = {};
+  for (const m of monthList) perMonth[m.key] = {};
+  for (const row of data.data || []) {
+    const pageUrl = row.dimensions[0].name;
+    const d = row.dimensions[1].name;
+    if (!pageUrl) continue;
+    let m = null;
+    for (const mm of monthList) {
+      if (d >= mm.from && d <= mm.to) { m = mm; break; }
+    }
+    if (!m) continue;
+    const bucket = perMonth[m.key];
+    let rec = bucket[pageUrl];
+    if (!rec) rec = bucket[pageUrl] = { visits: 0, bounceSum: 0, bounceN: 0, conversions: 0 };
+    const v = Number(row.metrics[0]) || 0;
+    rec.visits += v;
+    if (v > 0) {
+      rec.bounceSum += (Number(row.metrics[1]) || 0) * v;
+      rec.bounceN += v;
+    }
+    rec.conversions += Number(row.metrics[2]) || 0;
+  }
+  const out = {};
+  for (const m of monthList) {
+    const list = [];
+    for (const u of Object.keys(perMonth[m.key])) {
+      const rec = perMonth[m.key][u];
+      list.push({
+        url: u,
+        visits: rec.visits,
+        bounce: rec.bounceN ? rec.bounceSum / rec.bounceN : 0,
+        conversions: rec.conversions
+      });
+    }
+    list.sort((a, b) => b.visits - a.visits);
+    out[m.key] = list.slice(0, MAX_PAGES);
+  }
+  return out;
+}
+__name(landingForMonthsAll, "landingForMonthsAll");
 async function collectSite(site) {
   const errors = [];
   const now = /* @__PURE__ */ new Date();
@@ -321,8 +414,8 @@ async function collectSite(site) {
     errors.push("\u0420\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u0438\u044F: " + e.message);
   }
   if (goalMetrics.length) {
-    for (let gi = 0; gi < goalMetrics.length; gi += 8) {
-      const part = goalMetrics.slice(gi, gi + 8);
+    for (let gi = 0; gi < goalMetrics.length; gi += 16) {
+      const part = goalMetrics.slice(gi, gi + 16);
       const gIds = part.map((m) => Number(m.replace(/\D/g, "")));
       const rounds = [
         { filters: null, field: "a" },
@@ -365,23 +458,27 @@ async function collectSite(site) {
       }
     }
   }
-  for (const off of PAGE_MONTHS) {
-    const m = monthRange(off);
-    try {
-      result.pagesMonths[m.key] = await pagesForMonth(site, goalMetrics, m.from, m.to);
-    } catch (e) {
-      errors.push("\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u044B " + m.key + ": " + e.message);
-      result.pagesMonths[m.key] = [];
+  try {
+    const ms = [];
+    for (const off of PAGE_MONTHS) ms.push(monthRange(off));
+    const pm = await pagesForMonthsAll(site, goalMetrics, ms);
+    for (const m of ms) result.pagesMonths[m.key] = pm[m.key] || [];
+  } catch (e) {
+    for (const off of PAGE_MONTHS) {
+      result.pagesMonths[monthRange(off).key] = [];
     }
+    errors.push("\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u044B: " + e.message);
   }
-  for (const off of [0].concat(PAGE_MONTHS)) {
-    const m = monthRange(off);
-    try {
-      result.landingMonths[m.key] = await landingForMonth(site, m.from, m.to);
-    } catch (e) {
-      errors.push("\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u044B \u0432\u0445\u043E\u0434\u0430 " + m.key + ": " + e.message);
-      result.landingMonths[m.key] = [];
+  try {
+    const ms = [];
+    for (const off of PAGE_MONTHS) ms.push(monthRange(off));
+    const lm = await landingForMonthsAll(site, ms);
+    for (const m of ms) result.landingMonths[m.key] = lm[m.key] || [];
+  } catch (e) {
+    for (const off of PAGE_MONTHS) {
+      result.landingMonths[monthRange(off).key] = [];
     }
+    errors.push("\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u044B \u0432\u0445\u043E\u0434\u0430: " + e.message);
   }
   if (site.host_id) {
     let userId = null;
@@ -444,9 +541,17 @@ async function collectAll(env, siteId) {
   const now = /* @__PURE__ */ new Date();
   const q = siteId ? env.DB.prepare("SELECT * FROM sites WHERE id = ?").bind(siteId) : env.DB.prepare("SELECT * FROM sites WHERE active = 1");
   const { results } = await q.all();
-  let count = 0;
+  const queue = [];
   for (const site of results) {
-    if (!siteId && !isDue(site, now)) continue;
+    if (siteId) queue.push(site);
+    else if (isDue(site, now)) queue.push(site);
+  }
+  if (!siteId) {
+    queue.sort((a, b) => String(a.last_run_at || "").localeCompare(String(b.last_run_at || "")));
+    if (queue.length > 2) queue.length = 2;
+  }
+  let count = 0;
+  for (const site of queue) {
     const startedAt = (/* @__PURE__ */ new Date()).toISOString();
     let status = "ok";
     let message = "";
@@ -463,15 +568,21 @@ async function collectAll(env, siteId) {
       status = "error";
       message = String(e && e.message ? e.message : e).slice(0, 400);
     }
-    await env.DB.prepare(
-      "INSERT INTO runs (site_id, started_at, status, message) VALUES (?, ?, ?, ?)"
-    ).bind(site.id, startedAt, status, message).run();
-    await env.DB.prepare("UPDATE sites SET last_run_at = ? WHERE id = ?").bind((/* @__PURE__ */ new Date()).toISOString(), site.id).run();
+    try {
+      await env.DB.prepare(
+        "INSERT INTO runs (site_id, started_at, status, message) VALUES (?, ?, ?, ?)"
+      ).bind(site.id, startedAt, status, message).run();
+      await env.DB.prepare("UPDATE sites SET last_run_at = ? WHERE id = ?").bind((/* @__PURE__ */ new Date()).toISOString(), site.id).run();
+    } catch (e) {
+    }
     count++;
   }
-  await env.DB.prepare(
-    "DELETE FROM runs WHERE id NOT IN (SELECT id FROM runs ORDER BY id DESC LIMIT 300)"
-  ).run();
+  try {
+    await env.DB.prepare(
+      "DELETE FROM runs WHERE id NOT IN (SELECT id FROM runs ORDER BY id DESC LIMIT 300)"
+    ).run();
+  } catch (e) {
+  }
   return count;
 }
 __name(collectAll, "collectAll");

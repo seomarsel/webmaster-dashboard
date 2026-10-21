@@ -2329,6 +2329,7 @@ tr[data-child] td { color: var(--text-2); font-size: 12.5px; }
 		<h2 id="chartTitle">\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438</h2>
 		<div class="chartTotal"><span class="cv" id="chartTotalV"></span><span id="chartTotalB"></span></div>
 	</div>
+	<div class="chipbar hidden" id="sMonthChips"></div>
 	<div class="chartWrap">
 		<canvas id="chart"></canvas>
 		<div class="tip" id="chartTip"></div>
@@ -2489,6 +2490,8 @@ var lastSeries = [];
 
 var MONTHS = ["\u044F\u043D\u0432\u0430\u0440\u044F","\u0444\u0435\u0432\u0440\u0430\u043B\u044F","\u043C\u0430\u0440\u0442\u0430","\u0430\u043F\u0440\u0435\u043B\u044F","\u043C\u0430\u044F","\u0438\u044E\u043D\u044F","\u0438\u044E\u043B\u044F",
 	"\u0430\u0432\u0433\u0443\u0441\u0442\u0430","\u0441\u0435\u043D\u0442\u044F\u0431\u0440\u044F","\u043E\u043A\u0442\u044F\u0431\u0440\u044F","\u043D\u043E\u044F\u0431\u0440\u044F","\u0434\u0435\u043A\u0430\u0431\u0440\u044F"];
+var MONTHS_NOM = ["\u042F\u043D\u0432\u0430\u0440\u044C","\u0424\u0435\u0432\u0440\u0430\u043B\u044C","\u041C\u0430\u0440\u0442","\u0410\u043F\u0440\u0435\u043B\u044C","\u041C\u0430\u0439","\u0418\u044E\u043D\u044C","\u0418\u044E\u043B\u044C",
+	"\u0410\u0432\u0433\u0443\u0441\u0442","\u0421\u0435\u043D\u0442\u044F\u0431\u0440\u044C","\u041E\u043A\u0442\u044F\u0431\u0440\u044C","\u041D\u043E\u044F\u0431\u0440\u044C","\u0414\u0435\u043A\u0430\u0431\u0440\u044C"];
 
 function esc(s) {
 	return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
@@ -3440,23 +3443,67 @@ function aggWindow(winFrom, winTo, base, group, cnt, eng) {
 	return { arr: arr, total: total };
 }
 
-function cmpSearchModel(months) {
+function cmpSearchModel(months, off) {
+	var sel = off != null ? off : 0;
+	var A = months[sel];
+	var B = months[sel + 1] || months[sel];
 	var defs = searchDefs();
 	var rows = [];
 	for (var k = 0; k < defs.length; k++) {
-		var r = searchDefVals(months, defs[k].eng);
+		var r = searchDefVals([A, B], defs[k].eng);
 		rows.push({ name: defs[k].name, color: defs[k].color, cur: r.vals[0], prev: r.vals[1], total: r.totals[0], totalPrev: r.totals[1] });
 	}
-	var ln0 = Number(String(months[0].end).slice(-2), 10);
-	var ln1 = Number(String(months[1].end).slice(-2), 10);
+	var ln0 = Number(String(A.end).slice(-2), 10);
+	var ln1 = Number(String(B.end).slice(-2), 10);
 	var curKeys = [], prevKeys = [], labels = [];
-	var mm = Number(String(months[0].key).slice(5, 7)) - 1;
+	var mm = Number(String(A.key).slice(5, 7)) - 1;
 	for (var i = 0; i < ln0; i++) {
-		curKeys.push(months[0].key + "-" + pad2(i + 1));
+		curKeys.push(A.key + "-" + pad2(i + 1));
 		labels.push((i + 1) + " " + MONTHS[mm].slice(0, 3));
 	}
-	for (var i2 = 0; i2 < ln1; i2++) prevKeys.push(months[1].key + "-" + pad2(i2 + 1));
-	return { rows: rows, curKeys: curKeys, prevKeys: prevKeys, labels: labels, sel: 0 };
+	for (var i2 = 0; i2 < ln1; i2++) prevKeys.push(B.key + "-" + pad2(i2 + 1));
+	return { rows: rows, curKeys: curKeys, prevKeys: prevKeys, labels: labels, sel: 0, month: A, prevMonth: B };
+}
+
+var cmpMonths = null;
+var srchMonthOff = 1;
+
+function monthListFrom(off0, n) {
+	var out = [];
+	for (var i = 0; i < n; i++) {
+		var d0 = monthStart(off0 + i);
+		out.push({ start: fmtDate(d0), end: fmtDate(monthEnd(off0 + i)), key: monthKey(d0), label: monthLabel(d0) });
+	}
+	return out;
+}
+
+function renderSrchMonthChips() {
+	var bar = document.getElementById("sMonthChips");
+	if (!bar) return;
+	if (!compare || !cmpMonths) {
+		bar.className = "chipbar hidden";
+		bar.innerHTML = "";
+		bar.onclick = null;
+		return;
+	}
+	var s = '<span class="cbLbl">\u041C\u0435\u0441\u044F\u0446</span>';
+	for (var i = 0; i < 3 && i < cmpMonths.length; i++) {
+		var m = cmpMonths[i];
+		var d0 = new Date(m.start + "T00:00:00");
+		var nm = MONTHS_NOM[d0.getMonth()] + (d0.getFullYear() !== new Date().getFullYear() ? " " + d0.getFullYear() : "");
+		s += '<button type="button" class="chip' + (i === srchMonthOff ? " on" : "") + '" data-m="' + i + '">' + esc(nm) + "</button>";
+	}
+	bar.className = "chipbar";
+	bar.innerHTML = s;
+	bar.onclick = function (ev) {
+		var el = ev.target;
+		if (!el || el.getAttribute("data-m") == null) return;
+		var idx = Number(el.getAttribute("data-m"));
+		if (isNaN(idx) || idx === srchMonthOff) return;
+		srchMonthOff = idx;
+		applySearchModel(cmpSearchModel(cmpMonths, srchMonthOff), "\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
+		renderSrchMonthChips();
+	};
 }
 
 function rangeSearchModel(from, to, prevFrom, prevTo, group) {
@@ -4144,7 +4191,10 @@ function refreshGoalChart() {
 
 function paintCompare() {
 	var months = lastMonths(2);
-	applySearchModel(cmpSearchModel(months), "\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
+	srchMonthOff = 1;
+	cmpMonths = monthListFrom(0, 4);
+	applySearchModel(cmpSearchModel(cmpMonths, srchMonthOff), "\u041E\u0442\u043A\u0443\u0434\u0430 \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0442 \u0432\u0438\u0437\u0438\u0442\u044B \u0438\u0437 \u043F\u043E\u0438\u0441\u043A\u0430");
+	renderSrchMonthChips();
 	goalCtx = {
 		from: months[0].start, to: months[0].end,
 		prevFrom: months[1].start, prevTo: months[1].end,
@@ -4225,6 +4275,7 @@ function paintPeriod() {
 		prevLabel: withPrev ? labelRange(prevFrom, prevTo) : ""
 	};
 	goalChartMode = "range";
+	renderSrchMonthChips();
 	refreshGoalChart();
 	renderGoals();
 	renderBrowsers();
@@ -4263,6 +4314,7 @@ function paintToday() {
 		prevLabel: "\u0432\u0447\u0435\u0440\u0430, " + labelRange(t1, t1)
 	};
 	goalChartMode = "today";
+	renderSrchMonthChips();
 	refreshGoalChart();
 	renderGoals();
 	renderBrowsers();

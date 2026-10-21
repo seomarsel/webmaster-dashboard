@@ -2341,6 +2341,7 @@ tr[data-child] td { color: var(--text-2); font-size: 12.5px; }
 		<h2 id="gChartTitle">\u0414\u043E\u0441\u0442\u0438\u0436\u0435\u043D\u0438\u0435 \u0446\u0435\u043B\u0435\u0439 \u043F\u043E \u0434\u043D\u044F\u043C</h2>
 		<div class="chartTotal"><span class="cv" id="gChartTotalV"></span><span id="gChartTotalB"></span></div>
 	</div>
+	<div class="chipbar"><span class="cbLbl">\u0418\u0441\u0442\u043E\u0447\u043D\u0438\u043A</span><button type="button" class="chip on" id="gSrcAll">\u0412\u0435\u0441\u044C \u0442\u0440\u0430\u0444\u0438\u043A</button><button type="button" class="chip" id="gSrcSearch">\u0422\u043E\u043B\u044C\u043A\u043E \u043F\u043E\u0438\u0441\u043A\u043E\u0432\u044B\u0439 \u0442\u0440\u0430\u0444\u0438\u043A</button></div>
 	<div class="chartWrap">
 		<canvas id="gChart"></canvas>
 		<div class="tip" id="gChartTip"></div>
@@ -2352,7 +2353,6 @@ tr[data-child] td { color: var(--text-2); font-size: 12.5px; }
 	<div class="chartHead">
 		<h2>\u0414\u043E\u0441\u0442\u0438\u0436\u0435\u043D\u0438\u0435 \u0446\u0435\u043B\u0435\u0439</h2>
 	</div>
-	<div class="chipbar"><span class="cbLbl">\u0418\u0441\u0442\u043E\u0447\u043D\u0438\u043A</span><button type="button" class="chip on" id="gSrcAll">\u0412\u0435\u0441\u044C \u0442\u0440\u0430\u0444\u0438\u043A</button><button type="button" class="chip" id="gSrcSearch">\u0422\u043E\u043B\u044C\u043A\u043E \u043F\u043E\u0438\u0441\u043A\u043E\u0432\u044B\u0439 \u0442\u0440\u0430\u0444\u0438\u043A</button></div>
 	<table>
 		<thead><tr id="gHead"></tr></thead>
 		<tbody id="gRows"></tbody>

@@ -1,474 +1,394 @@
 {
-  "updated": "2026-10-10T11:47",
+  "updated": "2026-10-26T12:08",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
     {
       "query": "igear",
-      "shows": 206.0,
-      "clicks": 144.0,
-      "ctr": 69.9,
-      "position": 1.1
-    },
-    {
-      "query": "куртка рабочая ветровка тактическая утепленная",
-      "shows": 160.0,
-      "clicks": 0,
-      "ctr": 0.0,
-      "position": 6.7
-    },
-    {
-      "query": "брюки цифра",
-      "shows": 72.0,
-      "clicks": 0,
-      "ctr": 0.0,
-      "position": 11.9
-    },
-    {
-      "query": "ranger green",
-      "shows": 73.0,
-      "clicks": 0,
-      "ctr": 0.0,
-      "position": 5.9
-    },
-    {
-      "query": "igear официальный сайт",
-      "shows": 70.0,
-      "clicks": 47.0,
-      "ctr": 67.14,
-      "position": 1.2
-    },
-    {
-      "query": "тактические брюки",
-      "shows": 64.0,
-      "clicks": 2.0,
-      "ctr": 3.12,
-      "position": 10.6
-    },
-    {
-      "query": "igear одежда тактическая",
-      "shows": 57.0,
-      "clicks": 36.0,
-      "ctr": 63.16,
+      "shows": 87.0,
+      "clicks": 62.0,
+      "ctr": 71.26,
       "position": 1.0
     },
     {
-      "query": "куртка тактическая зимняя",
-      "shows": 43.0,
+      "query": "куртка рабочая ветровка тактическая утепленная",
+      "shows": 64.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 11.0
+      "position": 6.8
+    },
+    {
+      "query": "ranger green",
+      "shows": 36.0,
+      "clicks": 0,
+      "ctr": 0.0,
+      "position": 4.9
+    },
+    {
+      "query": "igear официальный сайт",
+      "shows": 33.0,
+      "clicks": 19.0,
+      "ctr": 57.58,
+      "position": 1.4
+    },
+    {
+      "query": "igear одежда тактическая",
+      "shows": 19.0,
+      "clicks": 13.0,
+      "ctr": 68.42,
+      "position": 1.0
     },
     {
       "query": "российские производители тактической одежды",
-      "shows": 35.0,
-      "clicks": 3.0,
-      "ctr": 8.57,
-      "position": 4.6
+      "shows": 16.0,
+      "clicks": 0,
+      "ctr": 0.0,
+      "position": 5.8
     },
     {
-      "query": "тактическая куртка",
-      "shows": 33.0,
+      "query": "брюки цифра",
+      "shows": 9.0,
       "clicks": 0,
       "ctr": 0.0,
       "position": 12.2
+    },
+    {
+      "query": "брюки тактические",
+      "shows": 14.0,
+      "clicks": 0,
+      "ctr": 0.0,
+      "position": 9.9
+    },
+    {
+      "query": "куртка apex",
+      "shows": 12.0,
+      "clicks": 3.0,
+      "ctr": 25.0,
+      "position": 5.6
+    },
+    {
+      "query": "магазин военной одежды в уфе",
+      "shows": 10.0,
+      "clicks": 0,
+      "ctr": 0.0,
+      "position": 7.4
     }
   ],
   "query_analytics": {
     "total_queries": 500,
     "position_buckets": {
-      "top3": 96,
-      "top4_10": 284,
-      "top11_50": 120,
+      "top3": 126,
+      "top4_10": 242,
+      "top11_50": 124,
       "top50plus": 0
     },
     "opportunities": [
       {
         "query": "куртка рабочая ветровка тактическая утепленная",
-        "shows": 160.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 6.7
-      },
-      {
-        "query": "ranger green",
-        "shows": 73.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 5.9
-      },
-      {
-        "query": "брюки тактические",
-        "shows": 33.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 10.0
-      },
-      {
-        "query": "российские производители тактической одежды",
-        "shows": 35.0,
-        "clicks": 3.0,
-        "ctr": 8.57,
-        "position": 4.6
-      },
-      {
-        "query": "магазин тактической одежды",
-        "shows": 28.0,
-        "clicks": 1.0,
-        "ctr": 3.57,
-        "position": 8.9
-      },
-      {
-        "query": "тактические городские брюки",
-        "shows": 24.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 9.6
-      },
-      {
-        "query": "ranger green цвет",
-        "shows": 23.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 8.6
-      },
-      {
-        "query": "штаны мультикам",
-        "shows": 22.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 9.5
-      },
-      {
-        "query": "куртка apex",
-        "shows": 24.0,
-        "clicks": 3.0,
-        "ctr": 12.5,
-        "position": 7.1
-      },
-      {
-        "query": "российские бренды тактической одежды",
-        "shows": 20.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 7.0
-      }
-    ],
-    "new_count": 322,
-    "new_queries": [
-      {
-        "query": "штаны тактические мужские купить",
-        "shows": 20.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 11.2
-      },
-      {
-        "query": "мужские тактические брюки",
-        "shows": 20.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 13.4
-      },
-      {
-        "query": "игил шоп",
-        "shows": 19.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 3.7
-      },
-      {
-        "query": "тактические штаны",
-        "shows": 18.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 10.0
-      },
-      {
-        "query": "тактические штаны academygear.ru",
-        "shows": 16.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 5.7
-      },
-      {
-        "query": "штаны тактические",
-        "shows": 14.0,
-        "clicks": 2.0,
-        "ctr": 14.29,
-        "position": 9.1
-      },
-      {
-        "query": "купить мужские тактические брюки",
-        "shows": 13.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 11.5
-      },
-      {
-        "query": "куртка койот",
-        "shows": 13.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 8.3
-      },
-      {
-        "query": "амуниция academygear.ru",
-        "shows": 12.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 7.5
-      },
-      {
-        "query": "igear магазин",
-        "shows": 11.0,
-        "clicks": 4.0,
-        "ctr": 36.36,
-        "position": 1.5
-      },
-      {
-        "query": "тактические штаны мужские купить",
-        "shows": 10.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 13.8
-      },
-      {
-        "query": "тактические штаны мультикам",
-        "shows": 10.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 9.7
-      },
-      {
-        "query": "tavgeer одежда",
-        "shows": 10.0,
-        "clicks": 2.0,
-        "ctr": 20.0,
-        "position": 1.9
-      },
-      {
-        "query": "брюки тактические для охоты и рыбалки сина гир",
-        "shows": 9.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 10.2
-      },
-      {
-        "query": "мужские тактические брюки купить",
-        "shows": 9.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 11.6
-      }
-    ],
-    "lost_count": 322,
-    "lost_queries": [
-      {
-        "query": "брюки койот летние купить",
-        "shows": 88.0,
+        "shows": 64.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 6.8
       },
       {
-        "query": "apex тактическая одежда купить",
-        "shows": 77.0,
+        "query": "ranger green",
+        "shows": 36.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 3.4
+        "position": 4.9
       },
       {
-        "query": "тактическая одежда официальный сайт academygear.ru",
-        "shows": 35.0,
+        "query": "российские производители тактической одежды",
+        "shows": 16.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 7.7
+        "position": 5.8
       },
       {
-        "query": "военный магазин academygear.ru",
-        "shows": 19.0,
+        "query": "брюки тактические",
+        "shows": 14.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 9.3
+        "position": 9.9
       },
       {
-        "query": "летние штаны мультикам купить",
-        "shows": 17.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 6.3
-      },
-      {
-        "query": "брюки тактические кайот купить",
-        "shows": 11.0,
-        "clicks": 1.0,
-        "ctr": 9.09,
-        "position": 2.5
-      },
-      {
-        "query": "штаны черные тактические academygear.ru",
+        "query": "магазин военной одежды в уфе",
         "shows": 10.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 9.8
+        "position": 7.4
       },
       {
-        "query": "тактическая рубашка academygear.ru",
+        "query": "тактические штаны academygear.ru",
         "shows": 10.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 7.1
+        "position": 6.0
       },
       {
-        "query": "поло олива мужское купить",
+        "query": "игил шоп",
+        "shows": 10.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 4.1
+      },
+      {
+        "query": "куртка apex",
+        "shows": 12.0,
+        "clicks": 3.0,
+        "ctr": 25.0,
+        "position": 5.6
+      },
+      {
+        "query": "ranger green цвет",
         "shows": 9.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 9.6
+        "position": 8.4
       },
       {
-        "query": "milgear официальный сайт",
-        "shows": 8.0,
+        "query": "ectegger",
+        "shows": 9.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 4.7
+      }
+    ],
+    "new_count": 343,
+    "new_queries": [
+      {
+        "query": "ectegger",
+        "shows": 9.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 4.7
+      },
+      {
+        "query": "куртка атакс",
+        "shows": 6.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.2
+      },
+      {
+        "query": "куртка апех",
+        "shows": 6.0,
         "clicks": 1.0,
-        "ctr": 12.5,
-        "position": 11.9
+        "ctr": 16.67,
+        "position": 6.2
       },
       {
-        "query": "джемпер igear",
-        "shows": 8.0,
-        "clicks": 4.0,
-        "ctr": 50.0,
-        "position": 1.4
+        "query": "apex одежда",
+        "shows": 6.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 11.5
       },
       {
-        "query": "штаны isgale",
-        "shows": 8.0,
+        "query": "ветровка igear мох",
+        "shows": 6.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 2.5
+      },
+      {
+        "query": "ranger green zyphar",
+        "shows": 6.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 2.0
+      },
+      {
+        "query": "regear.ru",
+        "shows": 5.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 5.8
+      },
+      {
+        "query": "куртка igear hybrid",
+        "shows": 5.0,
+        "clicks": 1.0,
+        "ctr": 20.0,
+        "position": 2.0
+      },
+      {
+        "query": "игеар урал форменная одежда купить валдбериз",
+        "shows": 5.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 3.4
       },
       {
-        "query": "ybear официальный сайт",
-        "shows": 8.0,
+        "query": "atacs fg/fg-x",
+        "shows": 5.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 5.2
       },
       {
-        "query": "республика башкортостан уфа улица менделеева 137 военторг",
-        "shows": 7.0,
+        "query": "куртка тактическая осенняя",
+        "shows": 4.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 8.9
+        "position": 16.8
       },
       {
-        "query": "тактик уфа",
-        "shows": 7.0,
+        "query": "зимняя куртка тактическая мультикам",
+        "shows": 4.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 7.3
+        "position": 12.8
+      },
+      {
+        "query": "военторг на менделеева",
+        "shows": 4.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.8
+      },
+      {
+        "query": "брюки воин кайот",
+        "shows": 4.0,
+        "clicks": 1.0,
+        "ctr": 25.0,
+        "position": 3.8
+      },
+      {
+        "query": "r ighes куртка",
+        "shows": 4.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.0
+      }
+    ],
+    "lost_count": 343,
+    "lost_queries": [
+      {
+        "query": "магазин тактической одежды",
+        "shows": 34.0,
+        "clicks": 2.0,
+        "ctr": 5.88,
+        "position": 10.1
+      },
+      {
+        "query": "куртка мужская тактическая",
+        "shows": 34.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 15.1
+      },
+      {
+        "query": "брюки койот летние купить",
+        "shows": 34.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 6.3
+      },
+      {
+        "query": "apex тактическая одежда купить",
+        "shows": 32.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 3.2
+      },
+      {
+        "query": "куртка тактическая",
+        "shows": 32.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 12.5
+      },
+      {
+        "query": "igear shop",
+        "shows": 31.0,
+        "clicks": 11.0,
+        "ctr": 35.48,
+        "position": 1.5
+      },
+      {
+        "query": "военная одежда уфа",
+        "shows": 22.0,
+        "clicks": 1.0,
+        "ctr": 4.55,
+        "position": 5.1
+      },
+      {
+        "query": "мужские тактические брюки",
+        "shows": 19.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 12.2
+      },
+      {
+        "query": "брюки тактические мультикам",
+        "shows": 17.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 8.7
+      },
+      {
+        "query": "купить штаны тактические",
+        "shows": 17.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 10.5
+      },
+      {
+        "query": "городские тактические брюки",
+        "shows": 17.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 10.1
+      },
+      {
+        "query": "купить полевую рубашку тактическую цифру спб",
+        "shows": 16.0,
+        "clicks": 1.0,
+        "ctr": 6.25,
+        "position": 6.4
+      },
+      {
+        "query": "smgear",
+        "shows": 16.0,
+        "clicks": 1.0,
+        "ctr": 6.25,
+        "position": 8.1
+      },
+      {
+        "query": "цвет койот",
+        "shows": 16.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 8.8
+      },
+      {
+        "query": "izer одежда",
+        "shows": 16.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.8
       }
     ],
     "intents": {
       "commercial": {
-        "count": 93,
-        "shows": 458.0,
-        "clicks": 28.0
+        "count": 91,
+        "shows": 195.0,
+        "clicks": 17.0
       },
       "informational": {
-        "count": 7,
-        "shows": 19.0,
-        "clicks": 0
+        "count": 12,
+        "shows": 22.0,
+        "clicks": 1.0
       },
       "other": {
-        "count": 400,
-        "shows": 2977.0,
-        "clicks": 416.0
+        "count": 397,
+        "shows": 1274.0,
+        "clicks": 199.0
       }
     }
   },
   "history": [
-    {
-      "date": "2026-07-12",
-      "shows": 143.0,
-      "clicks": 12.0
-    },
-    {
-      "date": "2026-07-13",
-      "shows": 185.0,
-      "clicks": 22.0
-    },
-    {
-      "date": "2026-07-14",
-      "shows": 241.0,
-      "clicks": 30.0
-    },
-    {
-      "date": "2026-07-15",
-      "shows": 186.0,
-      "clicks": 15.0
-    },
-    {
-      "date": "2026-07-16",
-      "shows": 232.0,
-      "clicks": 14.0
-    },
-    {
-      "date": "2026-07-17",
-      "shows": 194.0,
-      "clicks": 21.0
-    },
-    {
-      "date": "2026-07-18",
-      "shows": 157.0,
-      "clicks": 9.0
-    },
-    {
-      "date": "2026-07-19",
-      "shows": 253.0,
-      "clicks": 5.0
-    },
-    {
-      "date": "2026-07-20",
-      "shows": 186.0,
-      "clicks": 15.0
-    },
-    {
-      "date": "2026-07-21",
-      "shows": 224.0,
-      "clicks": 19.0
-    },
-    {
-      "date": "2026-07-22",
-      "shows": 209.0,
-      "clicks": 23.0
-    },
-    {
-      "date": "2026-07-23",
-      "shows": 245.0,
-      "clicks": 17.0
-    },
-    {
-      "date": "2026-07-24",
-      "shows": 202.0,
-      "clicks": 13.0
-    },
-    {
-      "date": "2026-07-25",
-      "shows": 218.0,
-      "clicks": 16.0
-    },
-    {
-      "date": "2026-07-26",
-      "shows": 258.0,
-      "clicks": 20.0
-    },
-    {
-      "date": "2026-07-27",
-      "shows": 186.0,
-      "clicks": 18.0
-    },
     {
       "date": "2026-07-28",
       "shows": 170.0,
@@ -831,8 +751,8 @@
     },
     {
       "date": "2026-10-08",
-      "shows": 0,
-      "clicks": 0
+      "shows": 244.0,
+      "clicks": 26.0
     },
     {
       "date": "2026-10-09",
@@ -843,53 +763,89 @@
       "date": "2026-10-10",
       "shows": 0,
       "clicks": 0
+    },
+    {
+      "date": "2026-10-11",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-12",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-13",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-14",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-15",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-16",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-17",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-18",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-19",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-20",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-21",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-22",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-23",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-24",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-25",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-10-26",
+      "shows": 0,
+      "clicks": 0
     }
   ],
   "pages_in_search": [
-    {
-      "date": "2026-07-12",
-      "value": 127
-    },
-    {
-      "date": "2026-07-13",
-      "value": 126
-    },
-    {
-      "date": "2026-07-14",
-      "value": 127
-    },
-    {
-      "date": "2026-07-16",
-      "value": 127
-    },
-    {
-      "date": "2026-07-18",
-      "value": 127
-    },
-    {
-      "date": "2026-07-20",
-      "value": 127
-    },
-    {
-      "date": "2026-07-21",
-      "value": 127
-    },
-    {
-      "date": "2026-07-23",
-      "value": 127
-    },
-    {
-      "date": "2026-07-24",
-      "value": 127
-    },
-    {
-      "date": "2026-07-25",
-      "value": 127
-    },
-    {
-      "date": "2026-07-27",
-      "value": 127
-    },
     {
       "date": "2026-07-29",
       "value": 127
@@ -1032,50 +988,6 @@
     }
   ],
   "pages_excluded": [
-    {
-      "date": "2026-07-12",
-      "value": 0
-    },
-    {
-      "date": "2026-07-13",
-      "value": 1
-    },
-    {
-      "date": "2026-07-14",
-      "value": 0
-    },
-    {
-      "date": "2026-07-16",
-      "value": 0
-    },
-    {
-      "date": "2026-07-18",
-      "value": 0
-    },
-    {
-      "date": "2026-07-20",
-      "value": 0
-    },
-    {
-      "date": "2026-07-21",
-      "value": 0
-    },
-    {
-      "date": "2026-07-23",
-      "value": 0
-    },
-    {
-      "date": "2026-07-24",
-      "value": 0
-    },
-    {
-      "date": "2026-07-25",
-      "value": 0
-    },
-    {
-      "date": "2026-07-27",
-      "value": 0
-    },
     {
       "date": "2026-07-29",
       "value": 0
@@ -1232,6 +1144,12 @@
   "health": {
     "problems": [
       {
+        "code": "DOCUMENTS_MISSING_DESCRIPTION",
+        "title": "Страницы без description",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
         "code": "DUPLICATE_CONTENT_ATTRS",
         "title": "DUPLICATE_CONTENT_ATTRS",
         "severity": "POSSIBLE_PROBLEM",
@@ -1240,12 +1158,6 @@
       {
         "code": "DOCUMENTS_MISSING_TITLE",
         "title": "Страницы без title",
-        "severity": "POSSIBLE_PROBLEM",
-        "severity_ru": "Возможная"
-      },
-      {
-        "code": "DOCUMENTS_MISSING_DESCRIPTION",
-        "title": "Страницы без description",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       }
@@ -1407,140 +1319,12 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 2522,
-    "users": 1784,
-    "pageviews": 13099,
-    "bounceRate": 22.7
+    "visits": 2238,
+    "users": 1512,
+    "pageviews": 10458,
+    "bounceRate": 26.1
   },
   "metrika_history": [
-    {
-      "date": "2026-07-12",
-      "visits": 42,
-      "users": 38,
-      "pageviews": 255,
-      "bounceRate": 19.0,
-      "search_visits": 31
-    },
-    {
-      "date": "2026-07-13",
-      "visits": 50,
-      "users": 43,
-      "pageviews": 377,
-      "bounceRate": 14.0,
-      "search_visits": 33
-    },
-    {
-      "date": "2026-07-14",
-      "visits": 61,
-      "users": 52,
-      "pageviews": 304,
-      "bounceRate": 19.7,
-      "search_visits": 45
-    },
-    {
-      "date": "2026-07-15",
-      "visits": 50,
-      "users": 46,
-      "pageviews": 222,
-      "bounceRate": 26.0,
-      "search_visits": 30
-    },
-    {
-      "date": "2026-07-16",
-      "visits": 32,
-      "users": 26,
-      "pageviews": 169,
-      "bounceRate": 15.6,
-      "search_visits": 28
-    },
-    {
-      "date": "2026-07-17",
-      "visits": 42,
-      "users": 39,
-      "pageviews": 244,
-      "bounceRate": 14.3,
-      "search_visits": 33
-    },
-    {
-      "date": "2026-07-18",
-      "visits": 24,
-      "users": 22,
-      "pageviews": 116,
-      "bounceRate": 20.8,
-      "search_visits": 17
-    },
-    {
-      "date": "2026-07-19",
-      "visits": 29,
-      "users": 28,
-      "pageviews": 143,
-      "bounceRate": 13.8,
-      "search_visits": 21
-    },
-    {
-      "date": "2026-07-20",
-      "visits": 37,
-      "users": 34,
-      "pageviews": 177,
-      "bounceRate": 29.7,
-      "search_visits": 20
-    },
-    {
-      "date": "2026-07-21",
-      "visits": 43,
-      "users": 38,
-      "pageviews": 219,
-      "bounceRate": 23.3,
-      "search_visits": 31
-    },
-    {
-      "date": "2026-07-22",
-      "visits": 55,
-      "users": 46,
-      "pageviews": 220,
-      "bounceRate": 34.5,
-      "search_visits": 43
-    },
-    {
-      "date": "2026-07-23",
-      "visits": 45,
-      "users": 39,
-      "pageviews": 186,
-      "bounceRate": 26.7,
-      "search_visits": 35
-    },
-    {
-      "date": "2026-07-24",
-      "visits": 37,
-      "users": 29,
-      "pageviews": 183,
-      "bounceRate": 32.4,
-      "search_visits": 26
-    },
-    {
-      "date": "2026-07-25",
-      "visits": 53,
-      "users": 44,
-      "pageviews": 264,
-      "bounceRate": 30.2,
-      "search_visits": 31
-    },
-    {
-      "date": "2026-07-26",
-      "visits": 57,
-      "users": 45,
-      "pageviews": 349,
-      "bounceRate": 28.1,
-      "search_visits": 40
-    },
-    {
-      "date": "2026-07-27",
-      "visits": 39,
-      "users": 33,
-      "pageviews": 193,
-      "bounceRate": 17.9,
-      "search_visits": 26
-    },
     {
       "date": "2026-07-28",
       "visits": 52,
@@ -2135,11 +1919,139 @@
     },
     {
       "date": "2026-10-10",
-      "visits": 37,
-      "users": 36,
-      "pageviews": 136,
-      "bounceRate": 37.8,
-      "search_visits": 24
+      "visits": 63,
+      "users": 58,
+      "pageviews": 257,
+      "bounceRate": 39.7,
+      "search_visits": 40
+    },
+    {
+      "date": "2026-10-11",
+      "visits": 71,
+      "users": 61,
+      "pageviews": 296,
+      "bounceRate": 28.2,
+      "search_visits": 36
+    },
+    {
+      "date": "2026-10-12",
+      "visits": 87,
+      "users": 75,
+      "pageviews": 455,
+      "bounceRate": 27.6,
+      "search_visits": 37
+    },
+    {
+      "date": "2026-10-13",
+      "visits": 70,
+      "users": 58,
+      "pageviews": 337,
+      "bounceRate": 31.4,
+      "search_visits": 39
+    },
+    {
+      "date": "2026-10-14",
+      "visits": 77,
+      "users": 70,
+      "pageviews": 340,
+      "bounceRate": 24.7,
+      "search_visits": 38
+    },
+    {
+      "date": "2026-10-15",
+      "visits": 74,
+      "users": 64,
+      "pageviews": 210,
+      "bounceRate": 29.7,
+      "search_visits": 31
+    },
+    {
+      "date": "2026-10-16",
+      "visits": 60,
+      "users": 54,
+      "pageviews": 271,
+      "bounceRate": 30.0,
+      "search_visits": 32
+    },
+    {
+      "date": "2026-10-17",
+      "visits": 83,
+      "users": 74,
+      "pageviews": 315,
+      "bounceRate": 28.9,
+      "search_visits": 48
+    },
+    {
+      "date": "2026-10-18",
+      "visits": 61,
+      "users": 55,
+      "pageviews": 399,
+      "bounceRate": 27.9,
+      "search_visits": 29
+    },
+    {
+      "date": "2026-10-19",
+      "visits": 83,
+      "users": 72,
+      "pageviews": 363,
+      "bounceRate": 34.9,
+      "search_visits": 47
+    },
+    {
+      "date": "2026-10-20",
+      "visits": 83,
+      "users": 75,
+      "pageviews": 369,
+      "bounceRate": 36.1,
+      "search_visits": 40
+    },
+    {
+      "date": "2026-10-21",
+      "visits": 64,
+      "users": 57,
+      "pageviews": 266,
+      "bounceRate": 25.0,
+      "search_visits": 33
+    },
+    {
+      "date": "2026-10-22",
+      "visits": 67,
+      "users": 65,
+      "pageviews": 368,
+      "bounceRate": 23.9,
+      "search_visits": 38
+    },
+    {
+      "date": "2026-10-23",
+      "visits": 92,
+      "users": 74,
+      "pageviews": 451,
+      "bounceRate": 13.0,
+      "search_visits": 55
+    },
+    {
+      "date": "2026-10-24",
+      "visits": 63,
+      "users": 55,
+      "pageviews": 366,
+      "bounceRate": 19.0,
+      "search_visits": 37
+    },
+    {
+      "date": "2026-10-25",
+      "visits": 60,
+      "users": 50,
+      "pageviews": 301,
+      "bounceRate": 18.3,
+      "search_visits": 44
+    },
+    {
+      "date": "2026-10-26",
+      "visits": 42,
+      "users": 38,
+      "pageviews": 113,
+      "bounceRate": 19.0,
+      "search_visits": 20
     }
   ]
 }

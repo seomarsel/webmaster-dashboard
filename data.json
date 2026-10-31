@@ -1,35 +1,35 @@
 {
-  "updated": "2026-10-30T12:00",
+  "updated": "2026-10-31T11:36",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
     {
       "query": "igear",
-      "shows": 52.0,
-      "clicks": 37.0,
-      "ctr": 71.15,
+      "shows": 43.0,
+      "clicks": 30.0,
+      "ctr": 69.77,
       "position": 1.0
     },
     {
       "query": "куртка рабочая ветровка тактическая утепленная",
-      "shows": 42.0,
+      "shows": 33.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 7.0
+      "position": 6.8
     },
     {
       "query": "ranger green",
-      "shows": 25.0,
+      "shows": 17.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 5.3
+      "position": 5.5
     },
     {
       "query": "igear официальный сайт",
-      "shows": 23.0,
-      "clicks": 14.0,
-      "ctr": 60.87,
-      "position": 1.4
+      "shows": 17.0,
+      "clicks": 10.0,
+      "ctr": 58.82,
+      "position": 1.6
     },
     {
       "query": "куртка apex",
@@ -40,7 +40,7 @@
     },
     {
       "query": "российские производители тактической одежды",
-      "shows": 10.0,
+      "shows": 9.0,
       "clicks": 0,
       "ctr": 0.0,
       "position": 5.2
@@ -53,56 +53,49 @@
       "position": 7.3
     },
     {
-      "query": "igear одежда тактическая",
-      "shows": 9.0,
-      "clicks": 6.0,
-      "ctr": 66.67,
-      "position": 1.0
-    },
-    {
-      "query": "куртка апекс",
-      "shows": 9.0,
-      "clicks": 1.0,
-      "ctr": 11.11,
-      "position": 6.8
-    },
-    {
       "query": "ectegger",
       "shows": 9.0,
       "clicks": 0,
       "ctr": 0.0,
       "position": 4.7
+    },
+    {
+      "query": "igear одежда тактическая",
+      "shows": 8.0,
+      "clicks": 5.0,
+      "ctr": 62.5,
+      "position": 1.0
+    },
+    {
+      "query": "игил шоп",
+      "shows": 8.0,
+      "clicks": 0,
+      "ctr": 0.0,
+      "position": 4.0
     }
   ],
   "query_analytics": {
-    "total_queries": 457,
+    "total_queries": 395,
     "position_buckets": {
-      "top3": 110,
-      "top4_10": 227,
-      "top11_50": 106,
+      "top3": 93,
+      "top4_10": 192,
+      "top11_50": 97,
       "top50plus": 0
     },
     "opportunities": [
       {
         "query": "куртка рабочая ветровка тактическая утепленная",
-        "shows": 42.0,
+        "shows": 33.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 7.0
+        "position": 6.8
       },
       {
         "query": "ranger green",
-        "shows": 25.0,
+        "shows": 17.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 5.3
-      },
-      {
-        "query": "российские производители тактической одежды",
-        "shows": 10.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 5.2
+        "position": 5.5
       },
       {
         "query": "куртка apex",
@@ -110,6 +103,13 @@
         "clicks": 3.0,
         "ctr": 25.0,
         "position": 5.6
+      },
+      {
+        "query": "российские производители тактической одежды",
+        "shows": 9.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 5.2
       },
       {
         "query": "магазин военной одежды в уфе",
@@ -126,13 +126,6 @@
         "position": 4.7
       },
       {
-        "query": "куртка апекс",
-        "shows": 9.0,
-        "clicks": 1.0,
-        "ctr": 11.11,
-        "position": 6.8
-      },
-      {
         "query": "игил шоп",
         "shows": 8.0,
         "clicks": 0,
@@ -140,11 +133,11 @@
         "position": 4.0
       },
       {
-        "query": "брюки тактические",
+        "query": "куртка апекс",
         "shows": 8.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.9
+        "position": 7.0
       },
       {
         "query": "тактические брюки мультикам",
@@ -152,17 +145,17 @@
         "clicks": 0,
         "ctr": 0.0,
         "position": 9.4
-      }
-    ],
-    "new_count": 288,
-    "new_queries": [
+      },
       {
-        "query": "ectegger",
-        "shows": 9.0,
+        "query": "брюки тактические",
+        "shows": 7.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 4.7
-      },
+        "position": 6.6
+      }
+    ],
+    "new_count": 250,
+    "new_queries": [
       {
         "query": "apex одежда",
         "shows": 6.0,
@@ -199,13 +192,6 @@
         "position": 4.8
       },
       {
-        "query": "куртка тактическая осенняя",
-        "shows": 4.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 16.8
-      },
-      {
         "query": "куртка тактическая апекс",
         "shows": 4.0,
         "clicks": 1.0,
@@ -220,25 +206,11 @@
         "position": 3.8
       },
       {
-        "query": "мужские брюки ranger на lamoda",
-        "shows": 4.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 11.5
-      },
-      {
         "query": "мужская одежда кайот иваново",
         "shows": 4.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 6.8
-      },
-      {
-        "query": "где найти igari одежду",
-        "shows": 4.0,
-        "clicks": 1.0,
-        "ctr": 25.0,
-        "position": 3.0
       },
       {
         "query": "зимняя куртка тактическая мультикам",
@@ -260,9 +232,37 @@
         "clicks": 1.0,
         "ctr": 33.33,
         "position": 3.0
+      },
+      {
+        "query": "купить одежду апекс зимнюю",
+        "shows": 3.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 6.0
+      },
+      {
+        "query": "atacs официальный",
+        "shows": 3.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 5.7
+      },
+      {
+        "query": "куртка тактическая осенняя",
+        "shows": 3.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 18.0
+      },
+      {
+        "query": "куртка igear зимняя",
+        "shows": 3.0,
+        "clicks": 3.0,
+        "ctr": 100.0,
+        "position": 2.0
       }
     ],
-    "lost_count": 331,
+    "lost_count": 355,
     "lost_queries": [
       {
         "query": "куртка мужская тактическая",
@@ -279,13 +279,6 @@
         "position": 10.0
       },
       {
-        "query": "igear shop",
-        "shows": 31.0,
-        "clicks": 11.0,
-        "ctr": 35.48,
-        "position": 1.5
-      },
-      {
         "query": "куртка тактическая",
         "shows": 29.0,
         "clicks": 0,
@@ -293,18 +286,18 @@
         "position": 12.4
       },
       {
-        "query": "брюки койот летние купить",
-        "shows": 26.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 5.8
+        "query": "igear shop",
+        "shows": 28.0,
+        "clicks": 10.0,
+        "ctr": 35.71,
+        "position": 1.5
       },
       {
         "query": "apex тактическая одежда купить",
-        "shows": 22.0,
+        "shows": 21.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 3.3
+        "position": 3.1
       },
       {
         "query": "мужские тактические брюки",
@@ -314,11 +307,11 @@
         "position": 13.4
       },
       {
-        "query": "брюки тактические мультикам",
-        "shows": 17.0,
+        "query": "брюки койот летние купить",
+        "shows": 20.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 8.7
+        "position": 6.1
       },
       {
         "query": "купить штаны тактические",
@@ -349,6 +342,20 @@
         "position": 8.8
       },
       {
+        "query": "брюки igear",
+        "shows": 15.0,
+        "clicks": 3.0,
+        "ctr": 20.0,
+        "position": 1.5
+      },
+      {
+        "query": "тактические ветровки",
+        "shows": 14.0,
+        "clicks": 1.0,
+        "ctr": 7.14,
+        "position": 8.1
+      },
+      {
         "query": "городские тактические брюки",
         "shows": 14.0,
         "clicks": 0,
@@ -356,44 +363,32 @@
         "position": 9.9
       },
       {
-        "query": "куртка койот",
+        "query": "военная одежда уфа",
         "shows": 14.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 8.5
-      },
-      {
-        "query": "производители тактической одежды",
-        "shows": 11.0,
         "clicks": 1.0,
-        "ctr": 9.09,
-        "position": 11.3
+        "ctr": 7.14,
+        "position": 2.4
       }
     ],
     "intents": {
       "commercial": {
-        "count": 79,
-        "shows": 131.0,
-        "clicks": 19.0
+        "count": 65,
+        "shows": 109.0,
+        "clicks": 15.0
       },
       "informational": {
-        "count": 11,
-        "shows": 18.0,
+        "count": 8,
+        "shows": 10.0,
         "clicks": 4.0
       },
       "other": {
-        "count": 367,
-        "shows": 896.0,
-        "clicks": 138.0
+        "count": 322,
+        "shows": 735.0,
+        "clicks": 110.0
       }
     }
   },
   "history": [
-    {
-      "date": "2026-08-01",
-      "shows": 138.0,
-      "clicks": 13.0
-    },
     {
       "date": "2026-08-02",
       "shows": 217.0,
@@ -843,13 +838,14 @@
       "date": "2026-10-30",
       "shows": 0,
       "clicks": 0
+    },
+    {
+      "date": "2026-10-31",
+      "shows": 0,
+      "clicks": 0
     }
   ],
   "pages_in_search": [
-    {
-      "date": "2026-08-01",
-      "value": 127
-    },
     {
       "date": "2026-08-02",
       "value": 127
@@ -980,10 +976,6 @@
     }
   ],
   "pages_excluded": [
-    {
-      "date": "2026-08-01",
-      "value": 0
-    },
     {
       "date": "2026-08-02",
       "value": 0
@@ -1128,6 +1120,12 @@
   "health": {
     "problems": [
       {
+        "code": "DOCUMENTS_MISSING_DESCRIPTION",
+        "title": "Страницы без description",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
         "code": "DUPLICATE_CONTENT_ATTRS",
         "title": "DUPLICATE_CONTENT_ATTRS",
         "severity": "POSSIBLE_PROBLEM",
@@ -1136,12 +1134,6 @@
       {
         "code": "DOCUMENTS_MISSING_TITLE",
         "title": "Страницы без title",
-        "severity": "POSSIBLE_PROBLEM",
-        "severity_ru": "Возможная"
-      },
-      {
-        "code": "DOCUMENTS_MISSING_DESCRIPTION",
-        "title": "Страницы без description",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       }
@@ -1303,20 +1295,12 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 2223,
-    "users": 1491,
-    "pageviews": 10278,
-    "bounceRate": 27.0
+    "visits": 2233,
+    "users": 1496,
+    "pageviews": 10242,
+    "bounceRate": 27.3
   },
   "metrika_history": [
-    {
-      "date": "2026-08-01",
-      "visits": 49,
-      "users": 41,
-      "pageviews": 188,
-      "bounceRate": 22.4,
-      "search_visits": 27
-    },
     {
       "date": "2026-08-02",
       "visits": 52,
@@ -2031,11 +2015,19 @@
     },
     {
       "date": "2026-10-30",
-      "visits": 49,
-      "users": 46,
-      "pageviews": 174,
-      "bounceRate": 26.5,
-      "search_visits": 27
+      "visits": 84,
+      "users": 77,
+      "pageviews": 319,
+      "bounceRate": 29.8,
+      "search_visits": 37
+    },
+    {
+      "date": "2026-10-31",
+      "visits": 39,
+      "users": 36,
+      "pageviews": 234,
+      "bounceRate": 23.1,
+      "search_visits": 21
     }
   ]
 }

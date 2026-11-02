@@ -1,42 +1,42 @@
 {
-  "updated": "2026-11-01T12:33",
+  "updated": "2026-11-02T14:36",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [
     {
       "query": "igear",
-      "shows": 41.0,
-      "clicks": 28.0,
-      "ctr": 68.29,
-      "position": 1.0
+      "shows": 33.0,
+      "clicks": 23.0,
+      "ctr": 69.7,
+      "position": 1.1
     },
     {
       "query": "куртка рабочая ветровка тактическая утепленная",
-      "shows": 29.0,
+      "shows": 20.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 7.0
-    },
-    {
-      "query": "ranger green",
-      "shows": 14.0,
-      "clicks": 0,
-      "ctr": 0.0,
-      "position": 5.2
+      "position": 6.2
     },
     {
       "query": "igear официальный сайт",
-      "shows": 13.0,
-      "clicks": 7.0,
-      "ctr": 53.85,
-      "position": 1.7
+      "shows": 12.0,
+      "clicks": 6.0,
+      "ctr": 50.0,
+      "position": 1.8
+    },
+    {
+      "query": "ranger green",
+      "shows": 11.0,
+      "clicks": 0,
+      "ctr": 0.0,
+      "position": 5.4
     },
     {
       "query": "куртка apex",
-      "shows": 12.0,
-      "clicks": 3.0,
+      "shows": 8.0,
+      "clicks": 2.0,
       "ctr": 25.0,
-      "position": 5.6
+      "position": 5.4
     },
     {
       "query": "куртка апекс",
@@ -46,63 +46,56 @@
       "position": 7.0
     },
     {
-      "query": "igear магазин",
-      "shows": 8.0,
-      "clicks": 2.0,
-      "ctr": 25.0,
-      "position": 1.8
+      "query": "igear одежда тактическая",
+      "shows": 6.0,
+      "clicks": 4.0,
+      "ctr": 66.67,
+      "position": 1.0
     },
     {
-      "query": "российские производители тактической одежды",
-      "shows": 7.0,
+      "query": "apex одежда",
+      "shows": 6.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 4.9
+      "position": 11.5
     },
     {
-      "query": "тактические брюки мультикам",
-      "shows": 7.0,
+      "query": "ветровка igear мох",
+      "shows": 6.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 9.4
+      "position": 2.5
     },
     {
-      "query": "магазин военной одежды в уфе",
-      "shows": 7.0,
+      "query": "игил шоп",
+      "shows": 6.0,
       "clicks": 0,
       "ctr": 0.0,
-      "position": 7.1
+      "position": 4.3
     }
   ],
   "query_analytics": {
-    "total_queries": 346,
+    "total_queries": 294,
     "position_buckets": {
-      "top3": 82,
-      "top4_10": 166,
-      "top11_50": 87,
+      "top3": 70,
+      "top4_10": 141,
+      "top11_50": 76,
       "top50plus": 0
     },
     "opportunities": [
       {
         "query": "куртка рабочая ветровка тактическая утепленная",
-        "shows": 29.0,
+        "shows": 20.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 7.0
+        "position": 6.2
       },
       {
         "query": "ranger green",
-        "shows": 14.0,
+        "shows": 11.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 5.2
-      },
-      {
-        "query": "куртка apex",
-        "shows": 12.0,
-        "clicks": 3.0,
-        "ctr": 25.0,
-        "position": 5.6
+        "position": 5.4
       },
       {
         "query": "куртка апекс",
@@ -112,25 +105,11 @@
         "position": 7.0
       },
       {
-        "query": "российские производители тактической одежды",
-        "shows": 7.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 4.9
-      },
-      {
-        "query": "тактические брюки мультикам",
-        "shows": 7.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 9.4
-      },
-      {
-        "query": "магазин военной одежды в уфе",
-        "shows": 7.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 7.1
+        "query": "куртка apex",
+        "shows": 8.0,
+        "clicks": 2.0,
+        "ctr": 25.0,
+        "position": 5.4
       },
       {
         "query": "игил шоп",
@@ -140,21 +119,42 @@
         "position": 4.3
       },
       {
-        "query": "тактическая ветровка",
+        "query": "regear.ru",
         "shows": 5.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 9.8
+        "position": 5.8
+      },
+      {
+        "query": "армейский магазин уфа",
+        "shows": 5.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 9.6
+      },
+      {
+        "query": "производители тактической одежды в россии",
+        "shows": 5.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 4.0
+      },
+      {
+        "query": "российские производители тактической одежды",
+        "shows": 4.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 5.8
       },
       {
         "query": "ветровка мультикам",
-        "shows": 5.0,
+        "shows": 4.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.2
+        "position": 6.0
       }
     ],
-    "new_count": 217,
+    "new_count": 168,
     "new_queries": [
       {
         "query": "apex одежда",
@@ -162,20 +162,6 @@
         "clicks": 0,
         "ctr": 0.0,
         "position": 11.5
-      },
-      {
-        "query": "ветровка igear мох",
-        "shows": 6.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 2.5
-      },
-      {
-        "query": "regear.ru",
-        "shows": 5.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 5.8
       },
       {
         "query": "игеар урал форменная одежда купить валдбериз",
@@ -206,27 +192,6 @@
         "position": 6.8
       },
       {
-        "query": "ranger одежда",
-        "shows": 3.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 5.3
-      },
-      {
-        "query": "куртки igear",
-        "shows": 3.0,
-        "clicks": 1.0,
-        "ctr": 33.33,
-        "position": 3.0
-      },
-      {
-        "query": "atacs официальный",
-        "shows": 3.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 5.7
-      },
-      {
         "query": "куртка тактическая осенняя",
         "shows": 3.0,
         "clicks": 0,
@@ -255,14 +220,49 @@
         "position": 1.7
       },
       {
-        "query": "магазин одежды трекинговой уфа около огней уфы",
+        "query": "производитель фирмы айгер",
         "shows": 3.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.3
+        "position": 2.0
+      },
+      {
+        "query": "боевые брюки atacs",
+        "shows": 3.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 6.0
+      },
+      {
+        "query": "gear hup",
+        "shows": 3.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 10.3
+      },
+      {
+        "query": "валберис тактические штаны кайот",
+        "shows": 3.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 6.0
+      },
+      {
+        "query": "otj тактические брюки",
+        "shows": 2.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 12.0
+      },
+      {
+        "query": "игеар урал форменная одежда олива купить озон",
+        "shows": 2.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 3.0
       }
     ],
-    "lost_count": 371,
+    "lost_count": 374,
     "lost_queries": [
       {
         "query": "куртка мужская тактическая",
@@ -307,18 +307,11 @@
         "position": 8.4
       },
       {
-        "query": "apex тактическая одежда купить",
-        "shows": 19.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 3.2
-      },
-      {
         "query": "брюки койот летние купить",
-        "shows": 19.0,
+        "shows": 18.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.2
+        "position": 6.1
       },
       {
         "query": "купить штаны тактические",
@@ -328,25 +321,11 @@
         "position": 10.5
       },
       {
-        "query": "цвет рейнджер грин",
-        "shows": 17.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 8.2
-      },
-      {
         "query": "купить полевую рубашку тактическую цифру спб",
         "shows": 16.0,
         "clicks": 1.0,
         "ctr": 6.25,
         "position": 6.4
-      },
-      {
-        "query": "производители военной одежды в россии",
-        "shows": 16.0,
-        "clicks": 1.0,
-        "ctr": 6.25,
-        "position": 5.8
       },
       {
         "query": "зимняя тактическая куртка мужская",
@@ -363,37 +342,53 @@
         "position": 5.7
       },
       {
-        "query": "цвет койот",
+        "query": "ип семин",
         "shows": 16.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 8.8
+        "position": 8.6
+      },
+      {
+        "query": "цвет рейнджер грин",
+        "shows": 16.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 8.1
+      },
+      {
+        "query": "производители военной одежды в россии",
+        "shows": 15.0,
+        "clicks": 1.0,
+        "ctr": 6.67,
+        "position": 5.4
+      },
+      {
+        "query": "брюки igear",
+        "shows": 15.0,
+        "clicks": 3.0,
+        "ctr": 20.0,
+        "position": 1.5
       }
     ],
     "intents": {
       "commercial": {
-        "count": 59,
-        "shows": 94.0,
-        "clicks": 13.0
+        "count": 48,
+        "shows": 73.0,
+        "clicks": 10.0
       },
       "informational": {
-        "count": 7,
-        "shows": 9.0,
+        "count": 6,
+        "shows": 7.0,
         "clicks": 4.0
       },
       "other": {
-        "count": 280,
-        "shows": 629.0,
-        "clicks": 97.0
+        "count": 240,
+        "shows": 517.0,
+        "clicks": 82.0
       }
     }
   },
   "history": [
-    {
-      "date": "2026-08-03",
-      "shows": 166.0,
-      "clicks": 25.0
-    },
     {
       "date": "2026-08-04",
       "shows": 169.0,
@@ -843,6 +838,11 @@
       "date": "2026-11-01",
       "shows": 0,
       "clicks": 0
+    },
+    {
+      "date": "2026-11-02",
+      "shows": 0,
+      "clicks": 0
     }
   ],
   "pages_in_search": [
@@ -1287,20 +1287,12 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 2266,
-    "users": 1519,
-    "pageviews": 10398,
+    "visits": 2255,
+    "users": 1506,
+    "pageviews": 10333,
     "bounceRate": 27.4
   },
   "metrika_history": [
-    {
-      "date": "2026-08-03",
-      "visits": 63,
-      "users": 48,
-      "pageviews": 252,
-      "bounceRate": 17.5,
-      "search_visits": 43
-    },
     {
       "date": "2026-08-04",
       "visits": 46,
@@ -2015,11 +2007,19 @@
     },
     {
       "date": "2026-11-01",
-      "visits": 42,
-      "users": 41,
-      "pageviews": 156,
-      "bounceRate": 38.1,
-      "search_visits": 18
+      "visits": 74,
+      "users": 64,
+      "pageviews": 281,
+      "bounceRate": 32.4,
+      "search_visits": 41
+    },
+    {
+      "date": "2026-11-02",
+      "visits": 21,
+      "users": 21,
+      "pageviews": 55,
+      "bounceRate": 47.6,
+      "search_visits": 14
     }
   ]
 }

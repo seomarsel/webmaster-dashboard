@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-06T13:38",
+  "updated": "2026-11-07T12:19",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [],
@@ -18,44 +18,44 @@
     "lost_queries": [
       {
         "query": "igear",
-        "shows": 229.0,
-        "clicks": 160.0,
-        "ctr": 69.87,
+        "shows": 216.0,
+        "clicks": 150.0,
+        "ctr": 69.44,
         "position": 1.1
       },
       {
         "query": "куртка рабочая ветровка тактическая утепленная",
-        "shows": 181.0,
+        "shows": 176.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.6
+        "position": 6.7
       },
       {
         "query": "брюки цифра",
-        "shows": 79.0,
+        "shows": 78.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 11.9
       },
       {
         "query": "ranger green",
-        "shows": 79.0,
+        "shows": 75.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 6.0
       },
       {
         "query": "igear официальный сайт",
-        "shows": 78.0,
-        "clicks": 53.0,
-        "ctr": 67.95,
+        "shows": 73.0,
+        "clicks": 49.0,
+        "ctr": 67.12,
         "position": 1.2
       },
       {
         "query": "igear одежда тактическая",
-        "shows": 67.0,
-        "clicks": 43.0,
-        "ctr": 64.18,
+        "shows": 66.0,
+        "clicks": 42.0,
+        "ctr": 63.64,
         "position": 1.0
       },
       {
@@ -67,24 +67,24 @@
       },
       {
         "query": "куртка тактическая зимняя",
-        "shows": 54.0,
+        "shows": 53.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 10.8
       },
       {
         "query": "российские производители тактической одежды",
-        "shows": 43.0,
+        "shows": 41.0,
         "clicks": 5.0,
-        "ctr": 11.63,
-        "position": 4.8
+        "ctr": 12.2,
+        "position": 4.6
       },
       {
         "query": "тактическая куртка",
-        "shows": 38.0,
+        "shows": 37.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 12.6
+        "position": 12.1
       },
       {
         "query": "брюки тактические",
@@ -102,24 +102,24 @@
       },
       {
         "query": "магазин тактической одежды",
-        "shows": 32.0,
+        "shows": 30.0,
         "clicks": 2.0,
-        "ctr": 6.25,
-        "position": 10.0
+        "ctr": 6.67,
+        "position": 8.7
       },
       {
-        "query": "тактическая ветровка",
-        "shows": 31.0,
+        "query": "тактические куртки",
+        "shows": 29.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 10.9
+        "position": 11.9
       },
       {
-        "query": "куртка мужская тактическая",
-        "shows": 31.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 15.5
+        "query": "igear shop",
+        "shows": 28.0,
+        "clicks": 10.0,
+        "ctr": 35.71,
+        "position": 1.5
       }
     ],
     "intents": {
@@ -141,11 +141,6 @@
     }
   },
   "history": [
-    {
-      "date": "2026-08-08",
-      "shows": 130.0,
-      "clicks": 14.0
-    },
     {
       "date": "2026-08-09",
       "shows": 127.0,
@@ -595,6 +590,11 @@
       "date": "2026-11-06",
       "shows": 0,
       "clicks": 0
+    },
+    {
+      "date": "2026-11-07",
+      "shows": 0,
+      "clicks": 0
     }
   ],
   "pages_in_search": [
@@ -1011,20 +1011,12 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 1922,
-    "users": 1302,
-    "pageviews": 8773,
-    "bounceRate": 28.0
+    "visits": 1842,
+    "users": 1254,
+    "pageviews": 8453,
+    "bounceRate": 27.7
   },
   "metrika_history": [
-    {
-      "date": "2026-08-08",
-      "visits": 33,
-      "users": 30,
-      "pageviews": 161,
-      "bounceRate": 30.3,
-      "search_visits": 23
-    },
     {
       "date": "2026-08-09",
       "visits": 30,
@@ -1739,6 +1731,14 @@
     },
     {
       "date": "2026-11-06",
+      "visits": 0,
+      "users": 0,
+      "pageviews": 0,
+      "bounceRate": 0.0,
+      "search_visits": 0
+    },
+    {
+      "date": "2026-11-07",
       "visits": 0,
       "users": 0,
       "pageviews": 0,

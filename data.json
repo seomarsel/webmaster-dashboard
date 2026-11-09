@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-08T12:39",
+  "updated": "2026-11-09T14:58",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [],
@@ -18,37 +18,37 @@
     "lost_queries": [
       {
         "query": "igear",
-        "shows": 210.0,
-        "clicks": 147.0,
-        "ctr": 70.0,
+        "shows": 206.0,
+        "clicks": 144.0,
+        "ctr": 69.9,
         "position": 1.1
       },
       {
         "query": "куртка рабочая ветровка тактическая утепленная",
-        "shows": 169.0,
+        "shows": 160.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.8
-      },
-      {
-        "query": "брюки цифра",
-        "shows": 76.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 11.9
+        "position": 6.7
       },
       {
         "query": "ranger green",
-        "shows": 74.0,
+        "shows": 73.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 5.9
       },
       {
-        "query": "igear официальный сайт",
+        "query": "брюки цифра",
         "shows": 72.0,
-        "clicks": 49.0,
-        "ctr": 68.06,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 11.9
+      },
+      {
+        "query": "igear официальный сайт",
+        "shows": 70.0,
+        "clicks": 47.0,
+        "ctr": 67.14,
         "position": 1.2
       },
       {
@@ -60,66 +60,66 @@
       },
       {
         "query": "igear одежда тактическая",
-        "shows": 59.0,
-        "clicks": 37.0,
-        "ctr": 62.71,
+        "shows": 57.0,
+        "clicks": 36.0,
+        "ctr": 63.16,
         "position": 1.0
       },
       {
         "query": "куртка тактическая зимняя",
-        "shows": 48.0,
+        "shows": 43.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 10.9
+        "position": 11.0
       },
       {
         "query": "российские производители тактической одежды",
-        "shows": 39.0,
-        "clicks": 5.0,
-        "ctr": 12.82,
-        "position": 4.5
-      },
-      {
-        "query": "тактическая куртка",
-        "shows": 37.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 12.1
-      },
-      {
-        "query": "брюки тактические",
-        "shows": 36.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 9.4
+        "shows": 35.0,
+        "clicks": 3.0,
+        "ctr": 8.57,
+        "position": 4.6
       },
       {
         "query": "российский производитель туристической одежды",
-        "shows": 35.0,
+        "shows": 34.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 11.2
       },
       {
+        "query": "тактическая куртка",
+        "shows": 33.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 12.2
+      },
+      {
+        "query": "брюки тактические",
+        "shows": 33.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 10.0
+      },
+      {
         "query": "магазин тактической одежды",
-        "shows": 30.0,
-        "clicks": 2.0,
-        "ctr": 6.67,
-        "position": 8.7
+        "shows": 28.0,
+        "clicks": 1.0,
+        "ctr": 3.57,
+        "position": 8.9
       },
       {
         "query": "тактические куртки",
-        "shows": 29.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 11.9
-      },
-      {
-        "query": "куртка мужская тактическая",
         "shows": 28.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 15.9
+        "position": 12.0
+      },
+      {
+        "query": "тактическая ветровка",
+        "shows": 27.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 10.9
       }
     ],
     "intents": {
@@ -141,11 +141,6 @@
     }
   },
   "history": [
-    {
-      "date": "2026-08-10",
-      "shows": 162.0,
-      "clicks": 18.0
-    },
     {
       "date": "2026-08-11",
       "shows": 163.0,
@@ -595,13 +590,14 @@
       "date": "2026-11-08",
       "shows": 0,
       "clicks": 0
+    },
+    {
+      "date": "2026-11-09",
+      "shows": 0,
+      "clicks": 0
     }
   ],
   "pages_in_search": [
-    {
-      "date": "2026-08-10",
-      "value": 127
-    },
     {
       "date": "2026-08-12",
       "value": 127
@@ -708,10 +704,6 @@
     }
   ],
   "pages_excluded": [
-    {
-      "date": "2026-08-10",
-      "value": 0
-    },
     {
       "date": "2026-08-12",
       "value": 0
@@ -832,12 +824,6 @@
   "health": {
     "problems": [
       {
-        "code": "DOCUMENTS_MISSING_TITLE",
-        "title": "Страницы без title",
-        "severity": "POSSIBLE_PROBLEM",
-        "severity_ru": "Возможная"
-      },
-      {
         "code": "DUPLICATE_CONTENT_ATTRS",
         "title": "DUPLICATE_CONTENT_ATTRS",
         "severity": "POSSIBLE_PROBLEM",
@@ -846,6 +832,12 @@
       {
         "code": "DOCUMENTS_MISSING_DESCRIPTION",
         "title": "Страницы без description",
+        "severity": "POSSIBLE_PROBLEM",
+        "severity_ru": "Возможная"
+      },
+      {
+        "code": "DOCUMENTS_MISSING_TITLE",
+        "title": "Страницы без title",
         "severity": "POSSIBLE_PROBLEM",
         "severity_ru": "Возможная"
       }
@@ -1003,20 +995,12 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 1756,
-    "users": 1198,
-    "pageviews": 8022,
+    "visits": 1680,
+    "users": 1147,
+    "pageviews": 7694,
     "bounceRate": 27.3
   },
   "metrika_history": [
-    {
-      "date": "2026-08-10",
-      "visits": 58,
-      "users": 47,
-      "pageviews": 244,
-      "bounceRate": 20.7,
-      "search_visits": 34
-    },
     {
       "date": "2026-08-11",
       "visits": 70,
@@ -1731,6 +1715,14 @@
     },
     {
       "date": "2026-11-08",
+      "visits": 0,
+      "users": 0,
+      "pageviews": 0,
+      "bounceRate": 0.0,
+      "search_visits": 0
+    },
+    {
+      "date": "2026-11-09",
       "visits": 0,
       "users": 0,
       "pageviews": 0,

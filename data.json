@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12T14:31",
+  "updated": "2026-11-13T13:49",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [],
@@ -18,38 +18,31 @@
     "lost_queries": [
       {
         "query": "igear",
-        "shows": 190.0,
-        "clicks": 137.0,
-        "ctr": 72.11,
+        "shows": 183.0,
+        "clicks": 132.0,
+        "ctr": 72.13,
         "position": 1.1
       },
       {
         "query": "куртка рабочая ветровка тактическая утепленная",
-        "shows": 138.0,
+        "shows": 133.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.8
+        "position": 6.9
       },
       {
         "query": "ranger green",
-        "shows": 66.0,
+        "shows": 65.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 6.0
+        "position": 5.9
       },
       {
         "query": "тактические брюки",
-        "shows": 63.0,
-        "clicks": 2.0,
-        "ctr": 3.17,
-        "position": 10.2
-      },
-      {
-        "query": "брюки цифра",
         "shows": 61.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 12.0
+        "clicks": 1.0,
+        "ctr": 1.64,
+        "position": 9.7
       },
       {
         "query": "igear официальный сайт",
@@ -59,25 +52,25 @@
         "position": 1.2
       },
       {
+        "query": "брюки цифра",
+        "shows": 53.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 12.0
+      },
+      {
         "query": "igear одежда тактическая",
-        "shows": 46.0,
+        "shows": 43.0,
         "clicks": 27.0,
-        "ctr": 58.7,
+        "ctr": 62.79,
         "position": 1.0
       },
       {
         "query": "куртка тактическая зимняя",
-        "shows": 38.0,
+        "shows": 35.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 11.0
-      },
-      {
-        "query": "российские производители тактической одежды",
-        "shows": 32.0,
-        "clicks": 2.0,
-        "ctr": 6.25,
-        "position": 4.9
+        "position": 11.1
       },
       {
         "query": "брюки тактические",
@@ -87,18 +80,18 @@
         "position": 9.8
       },
       {
+        "query": "российские производители тактической одежды",
+        "shows": 31.0,
+        "clicks": 2.0,
+        "ctr": 6.45,
+        "position": 4.9
+      },
+      {
         "query": "тактические куртки",
         "shows": 28.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 12.0
-      },
-      {
-        "query": "российский производитель туристической одежды",
-        "shows": 27.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 11.3
       },
       {
         "query": "igear shop",
@@ -109,17 +102,24 @@
       },
       {
         "query": "igear тактическая одежда",
-        "shows": 26.0,
+        "shows": 24.0,
         "clicks": 14.0,
-        "ctr": 53.85,
+        "ctr": 58.33,
         "position": 1.5
       },
       {
-        "query": "куртка apex",
+        "query": "российский производитель туристической одежды",
         "shows": 24.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 11.4
+      },
+      {
+        "query": "куртка apex",
+        "shows": 22.0,
         "clicks": 3.0,
-        "ctr": 12.5,
-        "position": 7.1
+        "ctr": 13.64,
+        "position": 6.8
       }
     ],
     "intents": {
@@ -141,11 +141,6 @@
     }
   },
   "history": [
-    {
-      "date": "2026-08-14",
-      "shows": 176.0,
-      "clicks": 17.0
-    },
     {
       "date": "2026-08-15",
       "shows": 171.0,
@@ -595,13 +590,14 @@
       "date": "2026-11-12",
       "shows": 0,
       "clicks": 0
+    },
+    {
+      "date": "2026-11-13",
+      "shows": 0,
+      "clicks": 0
     }
   ],
   "pages_in_search": [
-    {
-      "date": "2026-08-14",
-      "value": 127
-    },
     {
       "date": "2026-08-17",
       "value": 127
@@ -700,10 +696,6 @@
     }
   ],
   "pages_excluded": [
-    {
-      "date": "2026-08-14",
-      "value": 0
-    },
     {
       "date": "2026-08-17",
       "value": 0
@@ -987,10 +979,10 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 1481,
-    "users": 1022,
-    "pageviews": 6779,
-    "bounceRate": 26.7
+    "visits": 1484,
+    "users": 1031,
+    "pageviews": 6731,
+    "bounceRate": 26.3
   },
   "metrika_history": []
 }

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22T13:56",
+  "updated": "2026-11-23T17:12",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [],
@@ -18,37 +18,37 @@
     "lost_queries": [
       {
         "query": "igear",
-        "shows": 127.0,
-        "clicks": 88.0,
-        "ctr": 69.29,
+        "shows": 119.0,
+        "clicks": 82.0,
+        "ctr": 68.91,
         "position": 1.1
       },
       {
         "query": "куртка рабочая ветровка тактическая утепленная",
-        "shows": 92.0,
+        "shows": 86.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 6.9
       },
       {
         "query": "igear официальный сайт",
-        "shows": 49.0,
-        "clicks": 30.0,
-        "ctr": 61.22,
-        "position": 1.3
+        "shows": 47.0,
+        "clicks": 29.0,
+        "ctr": 61.7,
+        "position": 1.4
       },
       {
         "query": "ranger green",
-        "shows": 47.0,
+        "shows": 44.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 5.2
+        "position": 4.9
       },
       {
         "query": "igear одежда тактическая",
-        "shows": 27.0,
-        "clicks": 17.0,
-        "ctr": 62.96,
+        "shows": 25.0,
+        "clicks": 16.0,
+        "ctr": 64.0,
         "position": 1.0
       },
       {
@@ -59,13 +59,6 @@
         "position": 5.8
       },
       {
-        "query": "тактические брюки",
-        "shows": 18.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 9.9
-      },
-      {
         "query": "куртка apex",
         "shows": 17.0,
         "clicks": 3.0,
@@ -74,34 +67,27 @@
       },
       {
         "query": "брюки тактические",
-        "shows": 17.0,
+        "shows": 16.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 10.0
       },
       {
         "query": "ranger green цвет",
-        "shows": 15.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 8.5
-      },
-      {
-        "query": "igear тактическая одежда",
-        "shows": 14.0,
-        "clicks": 6.0,
-        "ctr": 42.86,
-        "position": 1.3
-      },
-      {
-        "query": "тактическая ветровка",
         "shows": 13.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 10.7
+        "position": 8.3
       },
       {
-        "query": "тактические городские брюки",
+        "query": "igear тактическая одежда",
+        "shows": 13.0,
+        "clicks": 6.0,
+        "ctr": 46.15,
+        "position": 1.0
+      },
+      {
+        "query": "тактические брюки",
         "shows": 12.0,
         "clicks": 0,
         "ctr": 0.0,
@@ -115,11 +101,25 @@
         "position": 1.0
       },
       {
-        "query": "игил шоп",
+        "query": "apex куртка",
         "shows": 12.0,
+        "clicks": 3.0,
+        "ctr": 25.0,
+        "position": 5.7
+      },
+      {
+        "query": "брюки цифра",
+        "shows": 11.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 3.9
+        "position": 12.3
+      },
+      {
+        "query": "амуниция academygear.ru",
+        "shows": 11.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 7.3
       }
     ],
     "intents": {
@@ -141,11 +141,6 @@
     }
   },
   "history": [
-    {
-      "date": "2026-08-24",
-      "shows": 201.0,
-      "clicks": 22.0
-    },
     {
       "date": "2026-08-25",
       "shows": 183.0,
@@ -578,13 +573,13 @@
     },
     {
       "date": "2026-11-19",
-      "shows": 0,
-      "clicks": 0
+      "shows": 235.0,
+      "clicks": 27.0
     },
     {
       "date": "2026-11-20",
-      "shows": 0,
-      "clicks": 0
+      "shows": 224.0,
+      "clicks": 26.0
     },
     {
       "date": "2026-11-21",
@@ -593,6 +588,11 @@
     },
     {
       "date": "2026-11-22",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-11-23",
       "shows": 0,
       "clicks": 0
     }
@@ -681,6 +681,10 @@
     {
       "date": "2026-11-13",
       "value": 128
+    },
+    {
+      "date": "2026-11-22",
+      "value": 128
     }
   ],
   "pages_excluded": [
@@ -766,6 +770,10 @@
     },
     {
       "date": "2026-11-13",
+      "value": 0
+    },
+    {
+      "date": "2026-11-22",
       "value": 0
     }
   ],
@@ -940,20 +948,12 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 1396,
-    "users": 979,
-    "pageviews": 6719,
-    "bounceRate": 23.5
+    "visits": 1364,
+    "users": 965,
+    "pageviews": 6575,
+    "bounceRate": 24.0
   },
   "metrika_history": [
-    {
-      "date": "2026-08-24",
-      "visits": 82,
-      "users": 71,
-      "pageviews": 337,
-      "bounceRate": 13.4,
-      "search_visits": 51
-    },
     {
       "date": "2026-08-25",
       "visits": 93,
@@ -1668,11 +1668,19 @@
     },
     {
       "date": "2026-11-22",
-      "visits": 22,
-      "users": 21,
-      "pageviews": 139,
+      "visits": 33,
+      "users": 30,
+      "pageviews": 205,
       "bounceRate": 9.1,
-      "search_visits": 16
+      "search_visits": 25
+    },
+    {
+      "date": "2026-11-23",
+      "visits": 49,
+      "users": 42,
+      "pageviews": 241,
+      "bounceRate": 20.4,
+      "search_visits": 36
     }
   ]
 }

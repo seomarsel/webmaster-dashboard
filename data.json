@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T16:53",
+  "updated": "2026-11-25T16:41",
   "site": "igear-shop.ru",
   "sqi": 30,
   "queries": [],
@@ -18,24 +18,17 @@
     "lost_queries": [
       {
         "query": "igear",
-        "shows": 105.0,
-        "clicks": 74.0,
-        "ctr": 70.48,
+        "shows": 96.0,
+        "clicks": 67.0,
+        "ctr": 69.79,
         "position": 1.1
       },
       {
         "query": "куртка рабочая ветровка тактическая утепленная",
-        "shows": 77.0,
+        "shows": 72.0,
         "clicks": 0,
         "ctr": 0.0,
         "position": 6.8
-      },
-      {
-        "query": "igear официальный сайт",
-        "shows": 43.0,
-        "clicks": 26.0,
-        "ctr": 60.47,
-        "position": 1.4
       },
       {
         "query": "ranger green",
@@ -45,10 +38,17 @@
         "position": 4.9
       },
       {
+        "query": "igear официальный сайт",
+        "shows": 39.0,
+        "clicks": 24.0,
+        "ctr": 61.54,
+        "position": 1.4
+      },
+      {
         "query": "igear одежда тактическая",
-        "shows": 20.0,
+        "shows": 19.0,
         "clicks": 13.0,
-        "ctr": 65.0,
+        "ctr": 68.42,
         "position": 1.0
       },
       {
@@ -59,13 +59,6 @@
         "position": 5.8
       },
       {
-        "query": "брюки тактические",
-        "shows": 16.0,
-        "clicks": 0,
-        "ctr": 0.0,
-        "position": 10.0
-      },
-      {
         "query": "куртка apex",
         "shows": 15.0,
         "clicks": 3.0,
@@ -73,18 +66,11 @@
         "position": 5.6
       },
       {
-        "query": "тактические брюки",
-        "shows": 11.0,
+        "query": "брюки тактические",
+        "shows": 14.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 11.1
-      },
-      {
-        "query": "igear магазин",
-        "shows": 11.0,
-        "clicks": 4.0,
-        "ctr": 36.36,
-        "position": 1.5
+        "position": 9.9
       },
       {
         "query": "брюки цифра",
@@ -101,11 +87,11 @@
         "position": 12.0
       },
       {
-        "query": "тактическая ветровка",
+        "query": "тактические брюки",
         "shows": 10.0,
         "clicks": 0,
         "ctr": 0.0,
-        "position": 10.7
+        "position": 10.0
       },
       {
         "query": "магазин военной одежды в уфе",
@@ -120,6 +106,20 @@
         "clicks": 0,
         "ctr": 0.0,
         "position": 8.0
+      },
+      {
+        "query": "тактические штаны academygear.ru",
+        "shows": 10.0,
+        "clicks": 0,
+        "ctr": 0.0,
+        "position": 6.0
+      },
+      {
+        "query": "igear одежда",
+        "shows": 10.0,
+        "clicks": 9.0,
+        "ctr": 90.0,
+        "position": 1.0
       }
     ],
     "intents": {
@@ -141,11 +141,6 @@
     }
   },
   "history": [
-    {
-      "date": "2026-08-26",
-      "shows": 159.0,
-      "clicks": 19.0
-    },
     {
       "date": "2026-08-27",
       "shows": 170.0,
@@ -578,13 +573,13 @@
     },
     {
       "date": "2026-11-21",
-      "shows": 0,
-      "clicks": 0
+      "shows": 205.0,
+      "clicks": 21.0
     },
     {
       "date": "2026-11-22",
-      "shows": 0,
-      "clicks": 0
+      "shows": 378.0,
+      "clicks": 34.0
     },
     {
       "date": "2026-11-23",
@@ -593,6 +588,11 @@
     },
     {
       "date": "2026-11-24",
+      "shows": 0,
+      "clicks": 0
+    },
+    {
+      "date": "2026-11-25",
       "shows": 0,
       "clicks": 0
     }
@@ -810,10 +810,6 @@
     "total_count": 19,
     "history": [
       {
-        "date": "2025-11-25",
-        "value": 11
-      },
-      {
         "date": "2025-12-04",
         "value": 11
       },
@@ -940,20 +936,12 @@
     "broken_links": []
   },
   "metrika": {
-    "visits": 1362,
-    "users": 963,
-    "pageviews": 6615,
-    "bounceRate": 23.8
+    "visits": 1371,
+    "users": 969,
+    "pageviews": 6709,
+    "bounceRate": 23.9
   },
   "metrika_history": [
-    {
-      "date": "2026-08-26",
-      "visits": 80,
-      "users": 70,
-      "pageviews": 437,
-      "bounceRate": 15.0,
-      "search_visits": 45
-    },
     {
       "date": "2026-08-27",
       "visits": 69,
@@ -1640,7 +1628,7 @@
       "users": 54,
       "pageviews": 279,
       "bounceRate": 15.6,
-      "search_visits": 39
+      "search_visits": 42
     },
     {
       "date": "2026-11-21",
@@ -1648,7 +1636,7 @@
       "users": 36,
       "pageviews": 231,
       "bounceRate": 22.0,
-      "search_visits": 30
+      "search_visits": 31
     },
     {
       "date": "2026-11-22",
@@ -1668,11 +1656,19 @@
     },
     {
       "date": "2026-11-24",
-      "visits": 51,
-      "users": 46,
-      "pageviews": 308,
-      "bounceRate": 17.6,
-      "search_visits": 32
+      "visits": 58,
+      "users": 53,
+      "pageviews": 348,
+      "bounceRate": 17.2,
+      "search_visits": 37
+    },
+    {
+      "date": "2026-11-25",
+      "visits": 62,
+      "users": 49,
+      "pageviews": 355,
+      "bounceRate": 21.0,
+      "search_visits": 33
     }
   ]
 }
